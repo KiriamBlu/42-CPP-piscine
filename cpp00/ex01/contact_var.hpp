@@ -2,7 +2,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   phonebook.hpp                                       :+:      :+:    :+:   */
+/*   contact_var.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,23 +11,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#ifndef CONTACT_VAR_HPP
+#define CONTACT_VAR_HPP
 #include <string>
 #include <iostream>
-#include "contact_var.hpp"
 
-#define MAX_CONTACTS 8
-
-class	phonebook {
+class	contact_var {
 
 	private:
-		/*int		numcontacts;*/
+		std::string		first_name;
+		std::string		last_name;
+		std::string		nickname;
+		std::string		phone_nbr;
+		std::string		dark_secret;
+
 	public:
 
-		contact_var 	contacts[MAX_CONTACTS];
-		void	phonebook_start(void);
+		void	setdata(int row, std::string);
+		char	*getdata(int row);
 
-		phonebook( void );
-		~phonebook( void );
+		contact_var( void );
+		~contact_var( void );
 };
 
+#endif

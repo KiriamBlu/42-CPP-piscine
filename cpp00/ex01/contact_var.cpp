@@ -1,8 +1,7 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   phonebook.hpp                                       :+:      :+:    :+:   */
+/*   contact_var.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,23 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
-#include <string>
-#include <iostream>
 #include "contact_var.hpp"
 
-#define MAX_CONTACTS 8
+phonebook::phonebook( void ) {
 
-class	phonebook {
+  return ;
+  
+}
 
-	private:
-		/*int		numcontacts;*/
-	public:
+phonebook::~phonebook(void) {
+  
+  return ;
 
-		contact_var 	contacts[MAX_CONTACTS];
-		void	phonebook_start(void);
-
-		phonebook( void );
-		~phonebook( void );
-};
-
+}
