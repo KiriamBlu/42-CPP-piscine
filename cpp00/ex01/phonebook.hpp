@@ -21,7 +21,9 @@
 class	phonebook {
 
 	private:
-		/*int		numcontacts;*/
+		int		numcontacts;
+		void	getaddvariables(void);
+		void	getsearchvariables(void);
 	public:
 
 		contact_var 	contacts[MAX_CONTACTS];

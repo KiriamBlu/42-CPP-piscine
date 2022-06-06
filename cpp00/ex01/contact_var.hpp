@@ -27,8 +27,8 @@ class	contact_var {
 
 	public:
 
-		void	setdata(int row, std::string);
-		char	*getdata(int row);
+		void	setdata(std::string type, std::string info);
+		std::string	getdata(std::string type);
 
 		contact_var( void );
 		~contact_var( void );
