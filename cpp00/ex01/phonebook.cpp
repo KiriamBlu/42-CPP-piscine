@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "phonebook.hpp"
+#include <iomanip>
 
 phonebook::phonebook( void ) {
 
@@ -30,7 +31,7 @@ void	phonebook::phonebook_start(void){
 	
 	std::string	str;
 
-	while(790)
+	while(42)
 	{
 		std::cout << "Write the instruction(ADD, SEARCH, EXIT) that you wish to perform" << std::endl;
 		std::cout << "phonebook > ";
@@ -60,7 +61,7 @@ void	phonebook::getaddvariables(void){
 
 	while("NOT FINISHED")
 	{
-		num = this->numcontacts;
+		num = (this->numcontacts % 8);
 		std::cout << "Write the first name" << std::endl;
 		std::cout << "INFO > ";
 		std::cin >> filler;
@@ -102,8 +103,7 @@ void	phonebook::getaddvariables(void){
 			std::cout << std::endl;
 			if (!filler.compare("YES"))
 			{
-				if (this->numcontacts < MAX_CONTACTS)
-					this->numcontacts += 1;
+				this->numcontacts += 1;
 				return ;
 			}
 			else if (!filler.compare("NO"))
@@ -113,9 +113,9 @@ void	phonebook::getaddvariables(void){
 }
 
 void	display(std::string print){
-	std::cout << std::setw(10)
-	std::cout << print
-
+	std::cout << std::setw(10);
+	std::cout << print;
+	std::cout << std::setw(0);
 }
 
 void	phonebook::getsearchvariables(void){
@@ -123,7 +123,7 @@ void	phonebook::getsearchvariables(void){
 	if (this->numcontacts == 0)
 		std::cout << std::endl << "-----------NO CONTACTS REGISTERED-----------" << std::endl << std::endl;
 	else{
-
+		display(this->contacts[0].getdata("first_name"));
 	}
 
 }
