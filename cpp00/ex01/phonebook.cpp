@@ -103,6 +103,8 @@ void	phonebook::getaddvariables(void){
 			std::cout << std::endl;
 			if (!filler.compare("YES"))
 			{
+				if (this->realcontacts < 8)
+					this->realcontacts++;
 				this->numcontacts += 1;
 				return ;
 			}
@@ -113,18 +115,63 @@ void	phonebook::getaddvariables(void){
 }
 
 void	display(std::string print){
-	std::cout << std::setw(10);
-	std::cout << print;
-	std::cout << std::setw(0);
+	if (print.length() > 10)
+	{
+		for(int x = 0; x < 9; x++)
+			std::cout << print[x];
+		std::cout << ".";	
+	}
+	else
+	{
+		std::cout << std::setw(10);
+		std::cout << print;
+	}
+}
+
+std::string *fillermat(void)
+{
+	std::string *aux;
+
+	aux = new std::string[5];
+	aux[0] = "first_name";
+	aux[1] = "last_name";
+	aux[2] = "nickname";
+	aux[3] = "phone_nbr";
+	aux[4] = "dark_secret";
+	std::cout << '|';
+	display("INDEX");
+	std::cout << '|';
+	display("NAME");
+	std::cout << '|';
+	display("LST_NAME");
+	std::cout << '|';
+	display("NICKNAME");
+	std::cout << '|';
+	std::cout << std::endl;
+	std::cout << "---------------------------------------------";
+	std::cout << std::endl;
+	return (aux);
 }
 
 void	phonebook::getsearchvariables(void){
 
 	if (this->numcontacts == 0)
 		std::cout << std::endl << "-----------NO CONTACTS REGISTERED-----------" << std::endl << std::endl;
-	else{
-		display(this->contacts[0].getdata("first_name"));
+	else
+	{	
+		std::string *helper = fillermat();
+		for (int x = 0; x < realcontacts; ++x)
+		{
+			std::cout << '|';
+			display(std::to_string(x + 1));
+			std::cout << '|';
+			for (int i = 0; i < 3; ++i)
+			{
+				display(this->contacts[x].getdata(helper[i]));
+				std::cout << '|';	
+			}
+			std::cout << std::endl;
+		}
 	}
-
 }
 

@@ -22,6 +22,7 @@ class	phonebook {
 
 	private:
 		int		numcontacts;
+		int		realcontacts;
 		void	getaddvariables(void);
 		void	getsearchvariables(void);
 	public:
