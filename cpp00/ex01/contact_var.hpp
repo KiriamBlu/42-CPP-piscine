@@ -2,7 +2,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   contact_var.hpp                                       :+:      :+:    :+:   */
+/*   contact_var.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,8 +11,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CONTACT_VAR_HPP
-#define CONTACT_VAR_HPP
+#pragma once
 #include <string>
 #include <iostream>
 
@@ -33,5 +32,3 @@ class	contact_var {
 		contact_var( void );
 		~contact_var( void );
 };
-
-#endif

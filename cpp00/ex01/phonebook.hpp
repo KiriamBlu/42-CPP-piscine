@@ -15,20 +15,23 @@
 #include <string>
 #include <iostream>
 #include "contact_var.hpp"
+#include "contact_var.hpp"
+
 
 #define MAX_CONTACTS 8
 
-class	phonebook {
+class	phonebook  {
 
 	private:
 		int		numcontacts;
 		int		realcontacts;
-		void	getaddvariables(void);
-		void	getsearchvariables(void);
+		int		getaddvariables( void );
+		void	getsearchvariables( void );
+		int		userfinish( int num );	
 	public:
 
 		contact_var 	contacts[MAX_CONTACTS];
-		void	phonebook_start(void);
+		void	phonebook_start( void );
 
 		phonebook( void );
 		~phonebook( void );

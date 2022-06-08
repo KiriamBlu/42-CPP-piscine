@@ -1,6 +1,6 @@
 NAME = phonebook
 
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -g 
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -g #lldb
 
 SRCS = ./main.cpp	\
 	   ./contact_var.cpp	\
