@@ -45,6 +45,7 @@ int main(int argc, char const *argv[])
 					break;
 			}
 			outfile << goback.substr(0, goback.length());
+			outfile.close();
 		}
 		else
 		{
