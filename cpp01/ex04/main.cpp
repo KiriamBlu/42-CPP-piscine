@@ -35,18 +35,16 @@ int main(int argc, char const *argv[])
 				std::cerr << "Something failed while opening the second file" << std::endl;
 				exit (1);
 			}
-			std::istringstream iss(goback);
-			do{
-				std::string helper;
-
-				iss >> helper;
-				if ( !helper.compare(one) )
-					outfile << one;
-				else if ( !helper.compare(two) )
-					outfile << two;
+			while( goback.find(one) < goback.length() )
+			{
+				outfile << goback.substr(0, goback.find(one));
+				outfile << two;
+				if ( (goback.find(one) + one.length()) !=  goback.length())
+					goback = goback.substr(goback.find(one) + one.length(), goback.length());
 				else
-					outfile << helper;
-			}while (iss);
+					break;
+			}
+			outfile << goback.substr(0, goback.length());
 		}
 		else
 		{
