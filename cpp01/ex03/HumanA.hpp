@@ -1,7 +1,8 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Zombie.cpp                                         :+:      :+:    :+:   */
+/*   HumanA.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,37 +11,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Zombie.hpp"
+#ifndef HUMANA_HPP
+#define HUMANA_HPP
+#include <string>
+#include <iostream>
+#include "Weapon.hpp"
 
-Zombie::Zombie( std::string str ) {
+class	HumanA {
 
-  setzombiename( str );
+	private:
+		std::string _name;
+		Weapon *_Weapon;		
+	public:
+		void attack( void );
+		void setWeapon( Weapon& newWeapon );
+		HumanA ( std::string name, Weapon type );
+		~HumanA ( void );
+};
 
-}
-
-Zombie::Zombie ( void ) {
-
-	
-}
-
-Zombie::~Zombie( void ) {
-  
-  std::cout << this->getzombiename() << " got shot and died" << std::endl;
-
-}
-
-void Zombie::announce( void ) const {
-
-	std::cout << this->getzombiename() << " BRAINZZZZZZZ......" << std::endl;
-}
-
-std::string Zombie::getzombiename( void ) const {
-
-	return this->_Zombiename;
-}
-
-void	Zombie::setzombiename( std::string str ){
-
-	this->_Zombiename = str;
-	return ;
-}
+#endif

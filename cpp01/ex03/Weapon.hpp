@@ -1,7 +1,8 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Zombie.cpp                                         :+:      :+:    :+:   */
+/*   Weapon.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,37 +11,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Zombie.hpp"
+#ifndef WEAPON_HPP
+#define WEAPON_HPP
+#include <string>
+#include <iostream>
 
-Zombie::Zombie( std::string str ) {
+class	Weapon {
 
-  setzombiename( str );
+	private:
+		std::string _type;
+	public:
+		std::string const &getType( void );
+		void setType( std::string nuts );
+		Weapon ( std::string type );
+		~Weapon ( void );
+};
 
-}
-
-Zombie::Zombie ( void ) {
-
-	
-}
-
-Zombie::~Zombie( void ) {
-  
-  std::cout << this->getzombiename() << " got shot and died" << std::endl;
-
-}
-
-void Zombie::announce( void ) const {
-
-	std::cout << this->getzombiename() << " BRAINZZZZZZZ......" << std::endl;
-}
-
-std::string Zombie::getzombiename( void ) const {
-
-	return this->_Zombiename;
-}
-
-void	Zombie::setzombiename( std::string str ){
-
-	this->_Zombiename = str;
-	return ;
-}
+#endif

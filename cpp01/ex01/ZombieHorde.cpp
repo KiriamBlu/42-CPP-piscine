@@ -10,9 +10,13 @@ Zombie* zombieHorde( int N, std::string name ){
 		std::cout << "Not able to summon this kind of horde" << std::endl;
 	else
 	{
+		std::string aux;
 		newhorde = new Zombie[N];
-		for (int x; x < N; x++)
-			newhorde[x].setzombiename(name);
+		for (int x = 0; x < N; x++)
+		{
+			aux = name + std::to_string( x );
+			newhorde[x].setzombiename( aççux );
+		}
 	}
 	return newhorde;
 }

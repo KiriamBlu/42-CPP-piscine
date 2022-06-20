@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Zombie.cpp                                         :+:      :+:    :+:   */
+/*   Weapon.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,37 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Zombie.hpp"
+#include "Weapon.hpp"
 
-Zombie::Zombie( std::string str ) {
+//--------------------------Basic_constructor_destructor---------------------------------------------
 
-  setzombiename( str );
+Weapon::Weapon( std::string type ) : _type(type) {
 
-}
-
-Zombie::Zombie ( void ) {
-
-	
-}
-
-Zombie::~Zombie( void ) {
   
-  std::cout << this->getzombiename() << " got shot and died" << std::endl;
+}
+
+Weapon::~Weapon( void ) {
+  
 
 }
 
-void Zombie::announce( void ) const {
+//------------------------------------getter----------------------------------------------------------
 
-	std::cout << this->getzombiename() << " BRAINZZZZZZZ......" << std::endl;
+std::string const &Weapon::getType( void ){
+
+	return this->_type;
 }
 
-std::string Zombie::getzombiename( void ) const {
+void Weapon::setType( std::string nuts ) {
 
-	return this->_Zombiename;
-}
-
-void	Zombie::setzombiename( std::string str ){
-
-	this->_Zombiename = str;
-	return ;
+	this->_type = nuts;
 }

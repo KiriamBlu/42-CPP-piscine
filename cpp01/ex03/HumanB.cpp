@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Zombie.cpp                                         :+:      :+:    :+:   */
+/*   HumanB.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,37 +10,26 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Zombie.hpp"
+#include "HumanB.hpp"
 
-Zombie::Zombie( std::string str ) {
+//--------------------------Basic_constructor_destructor---------------------------------------------
 
-  setzombiename( str );
-
-}
-
-Zombie::Zombie ( void ) {
-
-	
-}
-
-Zombie::~Zombie( void ) {
+HumanB::HumanB( std::string name ) : _name(name){
   
-  std::cout << this->getzombiename() << " got shot and died" << std::endl;
-
 }
 
-void Zombie::announce( void ) const {
-
-	std::cout << this->getzombiename() << " BRAINZZZZZZZ......" << std::endl;
+HumanB::~HumanB( void ) {
+  
 }
 
-std::string Zombie::getzombiename( void ) const {
+//-----------------------------------Functions------------------------------------------------------
 
-	return this->_Zombiename;
+void HumanB::attack( void ) {
+
+	std::cout << this->_name << " attacks with his " << this->_Weapon->getType() << std::endl;
 }
 
-void	Zombie::setzombiename( std::string str ){
+void HumanB::setWeapon( Weapon& newWeapon ){
 
-	this->_Zombiename = str;
-	return ;
+	this->_Weapon = &newWeapon;
 }
