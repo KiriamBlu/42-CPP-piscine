@@ -29,4 +29,6 @@ class	Karen {
 		~Karen ( void );
 };
 
+void karenfilter( std::string level );
+
 #endif

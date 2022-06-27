@@ -44,7 +44,6 @@ void Karen::ERROR( void ){
   return ;
 }
 
-
 void Karen::complain( std::string level )
 {
   //std::cout << level << std::endl;
@@ -61,4 +60,63 @@ void Karen::complain( std::string level )
   }
   std::cout << "Karen doesnt accept this type of input"<< std::endl;
   return ;
+}
+
+void karenfilter( std::string level ){
+  std::string w_lvl[4] = {"ERROR", "WARNING", "INFO", "DEBUG"} ;
+  int k = 0;
+
+  while (k <= 4)
+  {
+    if (w_lvl[k].compare(level) == 0)
+        break;
+    k++;
+  }
+  
+  int lvl = 0;
+  Karen auxkaren;
+
+  if ( k == 5)
+  {
+    std::cout << "[ Probably complaining about insignificant problems ]" << std::endl;
+    return ;
+  }
+
+  while ( lvl <= k )
+  {
+    switch ( lvl )
+    {
+      case 0:
+
+        std::cout << "[ ERROR ]" << std::endl;
+        auxkaren.complain("ERROR");
+        std::cout << std::endl;
+        break ;
+
+      case 1:
+
+        std::cout << "[ WARNING ]" << std::endl;
+        auxkaren.complain("WARNING");
+        std::cout << std::endl;
+        break ;
+
+      case 2:
+
+        std::cout << "[ INFO ]" << std::endl;
+        auxkaren.complain("INFO");
+        std::cout << std::endl;
+        break ;
+
+      case 3:
+
+        std::cout << "[ DEBUG ]" << std::endl;
+        auxkaren.complain("DEBUG");
+        std::cout << std::endl;
+        break ;
+
+      default:
+        break;  
+    }
+    lvl++;
+  }
 }

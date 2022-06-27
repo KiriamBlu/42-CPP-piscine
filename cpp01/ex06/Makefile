@@ -1,4 +1,4 @@
-NAME = Karen
+NAME = karenFilter
 
 CXXFLAGS = -Wall -Werror -Wextra
 
