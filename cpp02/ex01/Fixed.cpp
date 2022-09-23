@@ -29,10 +29,37 @@ Fixed::Fixed( const Fixed &var ) {
 
 }
 
+Fixed::Fixed( const int num ) : _decpoint(num << this->_raw8) {
+
+	writter("Int constructor called");
+	
+}
+
+Fixed::Fixed( const float num ) : _decpoint(roundf(num * (float)(1 << this->_raw8))) {
+
+	writter("Int constructor called");
+
+}
+
+float Fixed::toFloat( void ) const {
+
+	return (this->_decpoint / (float)(1 << this->_raw8));
+}
+
+int Fixed::toInt( void ) const {
+
+	return (this->_decpoint >> this->_raw8);
+}
+
 Fixed::~Fixed( void ) {
   
 	writter("Destructor constructor called");
 
+}
+
+std::ostream & operator<<(std::ostream &paco, const Fixed &var){
+	paco << var.toFloat();
+	return paco;
 }
 
 Fixed & Fixed::operator=(Fixed const &var) {
@@ -47,7 +74,7 @@ int Fixed::getRawBits( void ) const{
 
 	writter("getRawBits member function called");
 	return this->_decpoint;
-	
+
 }
 
 void Fixed::setRawBits ( int const raw ){

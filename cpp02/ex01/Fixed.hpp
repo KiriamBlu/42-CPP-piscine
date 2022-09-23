@@ -1,7 +1,8 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Fixed.cpp                                       :+:      :+:    :+:   */
+/*   Fixed.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,47 +11,34 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Fixed.hpp"
+#ifndef FIXED_HPP
+#define FIXED_HPP
+#include <string>
+#include <iostream>
+#include <cmath>
 
-void writter( std::string str ) {
-	std::cout << str << std::endl;
-}
+class	Fixed {
 
-Fixed::Fixed( void ) : _decpoint(0) {
+	private:
+		int _decpoint;
+		static const int _raw8 = 8;
+	public:
 
-	writter("Default constructor called");
+		int getRawBits( void ) const;
+		void setRawBits ( int const raw ); 
+		
+		float toFloat( void ) const;
+		int toInt( void ) const;
 
-}
+		Fixed & operator = (Fixed const &var);
+		
+		Fixed ( void );
+		Fixed ( const Fixed &var );
+		Fixed ( const int num );
+		Fixed ( const float num );
+		~Fixed ( void );
+};
 
-Fixed::Fixed( const Fixed &var ) {
+std::ostream & operator<<(std::ostream &paco, const Fixed &var);
 
- 	writter("Copy constructor called");
-  *this = var;
-
-}
-
-Fixed::~Fixed( void ) {
-  
-	writter("Destructor constructor called");
-
-}
-
-Fixed & Fixed::operator=(Fixed const &var) {
-
-	writter("Assignation operator called");
-	if ( this != &var )
-		this->_decpoint = var.getRawBits();
-	return (*this);
-}
-
-int Fixed::getRawBits( void ) const{
-
-	writter("getRawBits member function called");
-	return this->_decpoint;
-	
-}
-
-void Fixed::setRawBits ( int const raw ){
-
-	this->_decpoint = raw;
-}
+#endif
