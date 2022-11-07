@@ -1,8 +1,8 @@
-NAME = 
+NAME = ClapTrap
 
 CXXFLAGS = -Wall -Werror -Wextra
 
-SRCS = 
+SRCS = ClapTrap.cpp main.cpp ScavTrap.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
@@ -13,6 +13,9 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	$(CXX) $(CFLAGS) $(OBJS) -o $(NAME)
 
+exe: $(NAME)
+	time ./$(NAME)
+	
 clean:
 	rm -f $(OBJS)
 

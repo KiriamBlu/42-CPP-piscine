@@ -5,17 +5,12 @@
 
 class	ClapTrap {
 
-	private:
+	protected:
 		std::string _name;
-		int 		_healthpoints = 10;
-		int			_energypoints = 10;
-		int			_damage = 0;
+		int 		_healthpoints;
+		int			_energypoints;
+		int			_damage;
 	public:
-
-		ClapTrap ( void );
-		ClapTrap ( std::string str );
-		ClapTrap ( const ClapTrap & var );
-		ClapTrap~ ( void );
 
 		std::string get_Name(void) const;
 		int get_Hp(void) const;
@@ -30,6 +25,15 @@ class	ClapTrap {
 		void attack(std::string const & target);
 		void takeDamage(unsigned int amount);
 		void beRepaired(unsigned int amount);
+
+		void announce_hp_left(void);
+
+		ClapTrap& operator = (ClapTrap const &var);
+
+		ClapTrap ( void );
+		ClapTrap ( std::string str );
+		ClapTrap ( const ClapTrap & var );
+		~ClapTrap ( void );
 };
 
 #endif
