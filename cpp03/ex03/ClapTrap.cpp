@@ -4,7 +4,7 @@
 
 ClapTrap::ClapTrap( void ) : _name("Default"),  _healthpoints(10), _energypoints(10), _damage(0){
 
-  std::cout << "Default ClapTrap woke up" << std::endl;
+  std::cout << "Default ClapTrap awoke" << std::endl;
   
 }
 
@@ -25,7 +25,7 @@ ClapTrap::~ClapTrap( void ) {
 
 /*----------------------Mandatory----------------------*/
 
-virtual void ClapTrap::attack(std::string const & target)
+void ClapTrap::attack(std::string const & target)
 {
   std::cout << "ClapTrap " << this->get_Name() << " attack " << target << ", causing " << this->get_Dmg() << " points of damage!" << std::endl;
 }
@@ -48,7 +48,7 @@ void ClapTrap::beRepaired(unsigned int amount)
 /*-----------------Getters and setters-----------------*/
 
 
-virtual std::string ClapTrap::get_Name( void ) const
+std::string ClapTrap::get_Name( void ) const
 {
   return(this->_name);
 }
@@ -68,7 +68,7 @@ int ClapTrap::get_Dmg( void ) const
   return(this->_damage);
 }
 
-virtual void ClapTrap::set_Name( std::string new_name )
+void ClapTrap::set_Name( std::string new_name )
 {
   this->_name = new_name;
 }

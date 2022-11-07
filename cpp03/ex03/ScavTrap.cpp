@@ -27,7 +27,7 @@ ScavTrap::ScavTrap( const ScavTrap & var ) : ClapTrap( var.get_Name() ){
 
 ScavTrap::~ScavTrap( void ) {
   
-  std::cout << "ScavTrap tryed to run through a wall" << std::endl;
+  std::cout << "ScavTrap got sniped form a building rooftop" << std::endl;
 
 }
 

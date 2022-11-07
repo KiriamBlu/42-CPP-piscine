@@ -1,5 +1,6 @@
 #include "ScavTrap.hpp"
 #include "FragTrap.hpp"
+#include "DiamondTrap.hpp"
 
 
 int main( void ) {
@@ -34,7 +35,7 @@ int main( void ) {
 	def.announce_hp_left();
 
 	std::cout << std::endl << "/*-------------------------------------------------*/" << std::endl << std::endl;
-
+	
 	ScavTrap	a("JOANSITO");
 
 	a.attack("a wall");
@@ -56,5 +57,25 @@ int main( void ) {
 	c.announce_hp_left();
 
 	c.highFivesGuys();
+
+	std::cout << std::endl << "/*-------------------------------------------------*/" << std::endl << std::endl; 
+
+	DiamondTrap		final;
+	DiamondTrap 	filled( "RobotronXD" );
+
+	final.attack( "TREE" );
+	final.whoAmI();
+	final.announce_hp_left();
+	final.attack(filled.get_Name());
+	filled.takeDamage(final.get_Dmg());
+	std::cout << std::endl;
+	filled.whoAmI();
+	filled.announce_hp_left();
+	filled.attack(final.get_Name());
+	final.takeDamage(filled.get_Dmg());
+	std::cout << std::endl;
+	DiamondTrap		copy(filled);
+	copy.whoAmI();
+	copy.announce_hp_left();
 }
 

@@ -1,8 +1,8 @@
-NAME = FragTrap
+NAME = DiamondTrap
 
-CXXFLAGS = -Wall -Werror -Wextra
+CXXFLAGS = -Wall -Werror -Wextra -Wshadow  -Wno-shadow
 
-SRCS = ClapTrap.cpp main.cpp ScavTrap.cpp FragTrap.cpp
+SRCS = ClapTrap.cpp main.cpp ScavTrap.cpp FragTrap.cpp DiamondTrap.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 

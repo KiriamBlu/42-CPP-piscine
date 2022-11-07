@@ -31,5 +31,4 @@ int main( void ) {
 	def = two;
 	three.announce_hp_left();
 	def.announce_hp_left();
-
 }
