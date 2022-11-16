@@ -1,20 +1,26 @@
 
 #include "Cat.hpp"
 
-Cat::Cat( void ) : Animal( "Cat" ) {
+Cat::Cat( void ) : Animal( "Cat" ), CatBrain(new Brain) {
 
   std::cout << "in the middle of the street a cat was just born" << std::endl;
   
 }
 
-Cat::Cat( const Cat & var ) : Animal( var.getType() ) {
-
+Cat::Cat( const Cat & var ) : Animal( var.getType() ){
+  if (this != &var)
+  {
+    delete this->CatBrain;
+    this->CatBrain = new CatBrain;
+    this->type = var.getType();
+  }
   std::cout << "Celular division created a perfect replica of " << var.getType() << std::endl;
   
 }
 
 Cat::~Cat( void ) {
   
+  delete this->CatBrain;
   std::cout << this->getType() << " was ran over a car" << std::endl;
 
 }
@@ -30,6 +36,11 @@ void  Cat::makeSound() const{
 
 Cat& Cat::operator = (Cat const &var)
 {
-  this->type = var.getType();
+  if (this != &var)
+  {
+    delete this->CatBrain;
+    this->CatBrain = new CatBrain;
+    this->type = var.getType();
+  }
   return *this;
 }

@@ -1,8 +1,8 @@
-NAME = Animal 
+NAME = Brain 
 
 CXXFLAGS = -Wall -Werror -Wextra -Wshadow  -Wno-shadow
 
-SRCS = Dog.cpp main.cpp Animal.cpp WrongAnimal.cpp WrongCat.cpp Cat.cpp WrongDog.cpp
+SRCS = Dog.cpp main.cpp Animal.cpp WrongAnimal.cpp WrongCat.cpp Cat.cpp WrongDog.cpp Brain.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 

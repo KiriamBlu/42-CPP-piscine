@@ -1,6 +1,6 @@
 NAME = DiamondTrap
 
-CXXFLAGS = -Wall -Werror -Wextra -Wshadow  -Wno-shadow
+CXXFLAGS = -Wall -Werror -Wextra -Wshadow -Wno-shadow
 
 SRCS = ClapTrap.cpp main.cpp ScavTrap.cpp FragTrap.cpp DiamondTrap.cpp
 
