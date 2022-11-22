@@ -1,0 +1,52 @@
+
+#include "Cat.hpp"
+
+Cat::Cat( void ) : CatBrain(new Brain) {
+
+  this->set_type("Cat");
+  std::cout << "in the middle of the street a cat was just born" << std::endl;
+  
+}
+
+Cat::Cat( const Cat & var ) {
+  if (this != &var)
+  {
+    this->set_type("Cat");
+    delete this->CatBrain;
+    this->CatBrain = new Brain;
+    for ( int x = 0; x < 100; x++)
+      this->CatBrain->set_idea(x , var.CatBrain->get_idea(x));
+    this->type = var.getType();
+  }
+  std::cout << "Celular division created a perfect replica of " << var.getType() << std::endl;
+  
+}
+
+Cat::~Cat( void ) {
+  
+  delete this->CatBrain;
+  std::cout << this->getType() << " was ran over a car" << std::endl;
+
+}
+
+std::string Cat::getType( void ) const {
+  return this->type;
+}
+
+void  Cat::makeSound() const{
+
+  std::cout << "Miau miau mf" << std::endl;
+}
+
+Cat& Cat::operator = (Cat const &var)
+{
+  if (this != &var)
+  {
+    delete this->CatBrain;
+    this->CatBrain = new Brain;
+    for ( int x = 0; x < 100; x++)
+      this->CatBrain->set_idea(x , var.CatBrain->get_idea(x));
+    this->type = var.getType();
+  }
+  return *this;
+}
