@@ -1,8 +1,10 @@
-NAME = Brain 
+NAME = 
 
-CXXFLAGS = -Wall -Wextra -Wshadow  -Wno-shadow
+VERSION = --std=c++98
 
-SRCS = Dog.cpp main.cpp Animal.cpp Cat.cpp Brain.cpp
+CXXFLAGS = -Wall -Werror -Wextra $(VERSION) -Wshadow  -Wno-shadow
+
+SRCS = 
 
 OBJS = $(SRCS:.cpp=.o)
 

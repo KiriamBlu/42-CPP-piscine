@@ -11,7 +11,9 @@ Cat::Cat( const Cat & var ) : Animal( var.getType() ){
   if (this != &var)
   {
     delete this->CatBrain;
-    this->CatBrain = new CatBrain;
+    this->CatBrain = new Brain;
+    for ( int x = 0; x < 100; x++)
+      this->CatBrain->set_idea(x , var.CatBrain->get_idea(x));
     this->type = var.getType();
   }
   std::cout << "Celular division created a perfect replica of " << var.getType() << std::endl;
@@ -39,7 +41,9 @@ Cat& Cat::operator = (Cat const &var)
   if (this != &var)
   {
     delete this->CatBrain;
-    this->CatBrain = new CatBrain;
+    this->CatBrain = new Brain;
+    for ( int x = 0; x < 100; x++)
+      this->CatBrain->set_idea(x , var.CatBrain->get_idea(x));
     this->type = var.getType();
   }
   return *this;

@@ -11,10 +11,12 @@ class	Brain {
 	public:
 
 		Brain ( void );
-		Brain ( std::string str );
 		Brain ( const Brain & var );
 		~Brain ( void );
-		Brain &operator=(const Brain &tmp);
+
+		std::string	get_idea( unsigned int number ) const;
+		void		set_idea( unsigned int number, std::string new_idea );
+		Brain		&operator=(const Brain &tmp);
 };
 
 #endif

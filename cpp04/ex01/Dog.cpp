@@ -6,19 +6,22 @@ Dog::Dog( void ) : Animal( "Dog" ), DogBrain( new Brain ) {
   
 }
 
-Dog::Dog( const Dog & var ) : Animal( var.getType(), DogBrain( new Brain ) ) {
+Dog::Dog( const Dog & var ) : Animal( var.getType() ) {
 
   if (this != &var)
   { 
     delete this->DogBrain;
-    this->DogBrain = new Brain; 
+    Brain* auxBrain = new Brain;
+    for ( int x = 0; x < 100; x++)
+      auxBrain->set_idea(x , var.DogBrain->get_idea(x));
+    this->DogBrain = auxBrain;
     this->type = var.getType();
   }
   std::cout << "Celular division created a perfect replica of " << var.getType() << std::endl;
   
 }
 
-Dog::~Dog( void ) {
+vvDog::~Dog( void ) {
   
   delete this->DogBrain;
   std::cout << this->getType() << " was ran over a car" << std::endl;
@@ -41,7 +44,10 @@ Dog& Dog::operator = (Dog const &var)
   if (this != &var)
   { 
     delete this->DogBrain;
-    this->DogBrain = new Brain; 
+    Brain* auxBrain = new Brain;
+    for ( int x = 0; x < 100; x++)
+      auxBrain->set_idea(x , var.DogBrain->get_idea(x));
+    this->DogBrain = auxBrain;
     this->type = var.getType();
   }
   return *this;
