@@ -1,10 +1,10 @@
-NAME = 
+NAME = MateriaSource
 
 VERSION = --std=c++98
 
 CXXFLAGS = -Wall -Werror -Wextra $(VERSION) -Wshadow  -Wno-shadow
 
-SRCS = 
+SRCS = AMateria.cpp ICharacter.cpp MateriaSource.cpp main.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 

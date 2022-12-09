@@ -1,5 +1,6 @@
 
 #include "AMateria.hpp"
+#include "ICharacter.hpp"
 
 /*-------------------------------------<Base Materia stuff>-----------------------------------------------*/
 
@@ -34,13 +35,13 @@ std::string const & AMateria::getType() const {
 
 void AMateria::use(ICharacter& target) {
 
-  std::cout << "What are you trying to use? Item " << this->getType() << " has no use" << std::endl;
+  std::cout << "What are you trying to use? Item " << this->getType() << " has no use to use against " << target.getName() << std::endl;
 }
 
 AMateria & AMateria::operator=(const AMateria &tmp) {
 
-  this->_type = tmp->getType();
-  std::cout << "One base block was adjusted to replicate " << tmp->getType() <<  std::endl;
+  this->_type = tmp.getType();
+  std::cout << "One base block was adjusted to replicate " << tmp.getType() <<  std::endl;
   return *this;
 }
 
@@ -56,7 +57,7 @@ Ice::Ice( void ) {
 
 Ice::Ice( std::string const & type ) {
 
-  this->_type = type
+  this->_type = type;
   std::cout << "A icy pice of " << this->getType() << " was crafted"  << std::endl;
   
 }
@@ -86,13 +87,13 @@ std::string const & Ice::getType() const {
 
 void Ice::use(ICharacter& target) {
 
-  std::cout << "You smash the ice crystal and obtained frost powers. You cast a ice ray to attack " << target->getType() << std::endl;
+  std::cout << " crushes the ice crystal and obtained frost powers. You cast a ice ray to attack " << target.getName() << std::endl;
 }
 
 Ice & Ice::operator=(const Ice &tmp) {
 
-  this->_type = tmp->getType();
-  std::cout << "An icy shard was transformed into " << tmp->getType() <<  std::endl;
+  this->_type = tmp.getType();
+  std::cout << "An icy shard was transformed into " << tmp.getType() <<  std::endl;
   return *this;
 }
 
@@ -100,14 +101,14 @@ Ice & Ice::operator=(const Ice &tmp) {
 
 Cure::Cure( void ) {
 
-  this->_type = "Cure";
+  this->_type = "cure";
   std::cout << "You find a healing potion" << std::endl;
   
 }
 
 Cure::Cure( std::string const & type ) {
 
-  this->_type = type
+  this->_type = type;
   std::cout << "Joining different materials that you have arround you craft a new " << type << std::endl;
   
 }
@@ -137,12 +138,12 @@ std::string const & Cure::getType() const {
 
 void Cure::use(ICharacter& target) {
 
-  std::cout << "You used your " << target->getType() << " to heal " << target.getType() << std::endl;
+  std::cout << " used heal potion" << " to heal " << target.getName() << std::endl;
 }
 
 Cure & Cure::operator=(const Cure &tmp) {
 
-  this->_type = tmp->getType();
-  std::cout << "One base block was adjusted to replicate a " << tmp->getType() <<  std::endl;
+  this->_type = tmp.getType();
+  std::cout << "One base block was adjusted to replicate a " << tmp.getType() <<  std::endl;
   return *this;
 }

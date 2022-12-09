@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 
+class ICharacter;
 class AMateria {
 	protected:
 		std::string _type;
@@ -28,6 +29,7 @@ class Ice : public AMateria {
 		Ice( const Ice & var );
 		~Ice( void );
 
+		std::string const & getType() const;
 		AMateria* clone() const;
 		void use(ICharacter&);
 
@@ -41,8 +43,11 @@ class Cure : public AMateria {
 		Cure( const Cure & var );
 		~Cure( void );
 
+		std::string const & getType() const;
 		AMateria* clone() const;
 		void use(ICharacter&);
 
 		Cure& operator = (Cure const &var);
 };
+
+#endif
