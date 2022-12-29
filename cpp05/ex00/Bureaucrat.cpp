@@ -37,3 +37,27 @@ std::ostream &operator<<(std::ostream& os, const Bureaucrat &tmp) {
 	return (os);
   
 }
+
+void Bureaucrat::gradeCheck( int grade ); const{
+  if ( grade > 150 )
+    throw (Bureaucrat::GradeTooLowException);
+  else if( grade < 1)
+    throw (Bureaucrat::GradeTooHighException);
+  return(); 
+}
+
+std::string const Bureaucrat::getName( void ) const {
+  return this->_name;
+}
+
+int const Bureaucrat::getGrade( void ) const {
+  return this->_grade;
+}
+
+void Bureaucrat::plusGrade(){
+  
+}
+
+void Bureaucrat::minusGrade(){
+  
+}

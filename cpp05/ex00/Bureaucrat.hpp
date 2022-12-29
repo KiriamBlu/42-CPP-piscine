@@ -12,8 +12,25 @@ class	Bureaucrat {
 		int _grade;
 	public:
 
-		Bureaucrat ( void );
-		Bureaucrat ( std::string str );
+		class GradeTooHighException : public std::exception{
+			public:
+				virtual const char* throwException() const throw() {
+					return ( "This grade is not archiveable" );
+				}
+		}
+
+		class GradeTooLowException : public std::exception{
+			public:
+				virtual const char* throwException() const throw() {
+					return ( "This grade ist posible" );
+				}
+		}
+		std::string const getName( void ) const;
+		int const getGrade( void ) const;
+		void plusGrade();
+		void minusGrade();
+
+		Bureaucrat ( std::string str, int grade );
 		Bureaucrat ( const Bureaucrat & var );
 		~Bureaucrat ( void );
 		Bureaucrat &operator=(const Bureaucrat &tmp);
