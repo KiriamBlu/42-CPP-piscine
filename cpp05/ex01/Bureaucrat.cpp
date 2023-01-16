@@ -23,11 +23,10 @@ Bureaucrat & Bureaucrat::operator=(const Bureaucrat &tmp) {
   return *this;
 }
 
-std::ostream &operator<<(std::ostream& os, const Bureaucrat &tmp) {
 
-	os << std::endl << "Bureaucrat: " << tmp.getName() << std::endl;
-	return (os);
-  
+std::ostream &operator<<(std::ostream& os, const Bureaucrat &tmp){
+  os << "I am " << tmp.getName() << " and my grade is " <<  tmp.getGrade();
+  return os;
 }
 
 void Bureaucrat::gradeCheck( int grade ) {
