@@ -44,8 +44,7 @@ void	phonebook::phonebook_start(void){
 		std::cout << "Write the instruction(ADD, SEARCH, EXIT) that you wish to perform" << std::endl;
 		std::cout << "phonebook > ";
 		if(!std::getline( std::cin, str ))
-		//if (!str.compare( "\0" ) )
-			exit(0);
+ 			exit(0);
 		std::cout << std::endl;
 		if ( !str.compare( "ADD" ) )	
 		{
