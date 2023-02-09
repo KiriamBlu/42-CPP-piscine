@@ -4,6 +4,9 @@
 #include <string>
 #include <iostream>
 #include <exception>
+#include "Form.hpp"
+
+class Form;
 
 class	Bureaucrat {
 
@@ -30,6 +33,7 @@ class	Bureaucrat {
 		int getGrade( void ) const;
 		void plusGrade( int const & sum );
 		void minusGrade( int const & sub );
+		void signForm( Form &var);
 
 		Bureaucrat ( std::string str, int grade );
 		Bureaucrat ( const Bureaucrat & var );

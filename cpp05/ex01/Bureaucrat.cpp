@@ -29,6 +29,16 @@ std::ostream &operator<<(std::ostream& os, const Bureaucrat &tmp){
   return os;
 }
 
+void Bureaucrat::signForm( Form &var){
+  if (this->_grade <= var.getSigGrade())
+  {
+    var.beSigned(*this);
+    std::cout << this->getName() <<  " signs " << var.getName() << std::endl;
+  }
+  else
+    std::cout << this->getName() << " cannot sign " << var.getName() << " becouse he doesnt have enough clerance level" << std::endl;
+}
+
 void Bureaucrat::gradeCheck( int grade ) {
   if ( grade > 150 )
     throw Bureaucrat::GradeTooLowException();
