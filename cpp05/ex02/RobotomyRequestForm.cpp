@@ -1,47 +1,48 @@
 
 #include "RobotomyRequestForm.hpp"
 
-RobotomyRequestForm::RobotomyRequestForm( void ) {
+RobotomyRequestForm::RobotomyRequestForm( std::string new_target ): Form("RobotomyRequest", 25, 5), _target(new_target) {
 
-  std::cout << "Default constructor called" << std::endl;
   return ;
 }
 
-RobotomyRequestForm::RobotomyRequestForm( std::string str ) {
 
-  (void) str;
-  std::cout << "Parameter constructor called" << std::endl;
-  return ;
-  
-}
-
-RobotomyRequestForm::RobotomyRequestForm( const RobotomyRequestForm & var ) {
-  
-  std::cout << "Copy constructor called" << std::endl;
+RobotomyRequestForm::RobotomyRequestForm( const RobotomyRequestForm & var ): Form(var.getName(), var.getSigGrade(), var.getExeGrade()), _target(var.getTarget()) {
   *this = var;
   return ;
   
 }
 
 RobotomyRequestForm::~RobotomyRequestForm( void ) {
-  
-  std::cout << "Destructor called" << std::endl;
-  return ;
 
+}
+
+std::string   RobotomyRequestForm::getTarget(void){
+  return this->_target;
 }
 
 RobotomyRequestForm & RobotomyRequestForm::operator=(const RobotomyRequestForm &tmp) {
-
-  (void) tmp;
-  std::cout << "Operator equalizer called" << std::endl;
-  return (*this);
+  if (this == &tmp)
+    return *this;
   
+  this->_target = tmp.getTarget();
+  Form::operator=(tmp); 
+  
+  return *this;
 }
+
 
 std::ostream &operator<<(std::ostream& os, const RobotomyRequestForm &tmp) {
 
   (void) tmp;
-	os << std::endl << "Operator output called" << std::endl;
-	return (os);
+  os << std::endl << static_cast<Form>(tmp) << "Signned: " << tmp->getSigned()  << std::endl;
+  return (os);
   
+}
+
+
+void RobotomyRequestForm::execute(Bureaucrat &tmp){
+
+  Form::execute(tmp)
+  std::cout << "Tells us" << tmp.getName() << " has been pardoned by Zafod Beeblebrox." << std::endl
 }
