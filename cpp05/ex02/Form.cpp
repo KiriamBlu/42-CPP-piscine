@@ -29,7 +29,8 @@ Form::~Form( void ) {
 
 
 Form & Form::operator=(const Form &tmp) {
-  this->_signed = tmp.getSigned();
+  if(*this != tmp)
+    this->_signed = tmp.getSigned();
   return (*this);
   
 }
@@ -42,6 +43,14 @@ std::ostream &operator<<(std::ostream& os, const Form &tmp) {
     os << "yes";
   os << std::endl << "Signning grade: " << tmp.getSigGrade() << std::endl << "Execute grade: " << tmp.getExeGrade() << std::endl; 
   return (os);
+}
+
+
+virtual void  execute(Bureaucrat const &var){
+  if (this->getSigned == 0)
+    throw Form::FormNotSigned();
+  if(this->getExeGrade() < var->getExeGrade())
+    throw Form::GradeTooLowException();
 }
 
 void  Form::beSigned(Bureaucrat const &var){

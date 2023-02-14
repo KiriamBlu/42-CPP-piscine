@@ -32,12 +32,14 @@ class	Form {
 		~Form			( void );
 		Form &operator=	(const Form &tmp);
 
+		virtual void	execute(Bureaucrat const &var);
 		void			beSigned(Bureaucrat const &var);
 		std::string 	getName(void) const;
 		int				getSigned( void ) const;
 		int 			getSigGrade( void ) const;
 		int 			getExeGrade( void ) const;
 		void			gradeCheck( int grade ) const;
+		void 			checkSigned( int check )const;
 
 
 		class GradeTooHighException : public std::exception{
@@ -51,6 +53,13 @@ class	Form {
 			public:
 				virtual const char* throwException() const throw() {
 					return ( "Not enough grade" );
+				}
+		};
+
+		class FormNotSigned : public std::exception{
+			public:
+				virtual const char* throwException() const throw() {
+					return ( "This form cant be executed, it isnt signed" );
 				}
 		};
 };
