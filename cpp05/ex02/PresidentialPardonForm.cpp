@@ -44,5 +44,5 @@ std::ostream &operator<<(std::ostream& os, const PresidentialPardonForm &tmp) {
 void PresidentialPardonForm::execute(Bureaucrat &tmp){
 
   Form::execute(tmp)
-  std::cout << "Tells us" << tmp.getName() << " has been pardoned by Zafod Beeblebrox." << std::endl
+  std::cout <<  tmp.getName() << " has been pardoned by Zafod Beeblebrox." << std::endl
 }

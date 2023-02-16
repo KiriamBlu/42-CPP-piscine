@@ -1,7 +1,7 @@
 
 #include "RobotomyRequestForm.hpp"
 
-RobotomyRequestForm::RobotomyRequestForm( std::string new_target ): Form("RobotomyRequest", 25, 5), _target(new_target) {
+RobotomyRequestForm::RobotomyRequestForm( std::string new_target ): Form("RobotomyRequest", 72, 45), _target(new_target) {
 
   return ;
 }
@@ -42,7 +42,10 @@ std::ostream &operator<<(std::ostream& os, const RobotomyRequestForm &tmp) {
 
 
 void RobotomyRequestForm::execute(Bureaucrat &tmp){
-
   Form::execute(tmp)
-  std::cout << "Tells us" << tmp.getName() << " has been pardoned by Zafod Beeblebrox." << std::endl
+  std::cout << "*-DRILLING-NOISES-*" << std::endl
+  if (rand(1) == 1)
+    std::cout << tmp.getName() << " has been sucessfully robotomized" << std::endl
+  else
+    std::cout << "Process of robotomization in subject " tmp.getName() << " has failed! please exit the building calmly" << std::endl << "*-The-screams-echoes-in-the-building-*" << std::endl
 }

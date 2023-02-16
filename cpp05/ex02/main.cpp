@@ -1,22 +1,29 @@
 #include "Bureaucrat.hpp"
 #include "Form.hpp"
+#include "PresidentialPardonForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "ShrubberyCreationForm.hpp"
 
 int main()
 {
 	try{
 		Bureaucrat Josemaria("Josemaria", 150);
-		Form basicForm("Bform",100, 1);
-		Form midForm("Mform", 50, 50);
-		Form highForm("Hform", 1, 50);
+		Bureaucrat Paco("Paco", 150);
+		Bureaucrat Joseluis("Joseluis", 150);
 
-		std::cout << basicForm << std::endl;
+		ShrubberyCreationForm arbol("Josemaria");
+		PresidentialPardonForm contrato("Paco")
+		RobotomyRequestForm lavado("Joseluis"):
+
+
+		std::cout << arbol << std::endl;
 		std::cout << Josemaria << std::endl;
-		Josemaria.signForm(basicForm);
-		std::cout << basicForm << std::endl;
-		std::cout << Josemaria << std::endl;
-		Josemaria.signForm(basicForm);
-		std::cout << midForm << std::endl;
-		Josemaria.signForm(midForm);
+		Josemaria.signForm(arbol);
+		std::cout << Joseluis << std::endl;
+		Joseluis.signForm(arbol);
+		Joseluis.plusGrade(50)
+		std::cout << Joseluis << std::endl;
+		Joseluis.signForm(arbol);
 		std::cout << Josemaria << std::endl;
 		Josemaria.plusGrade(50);
 		std::cout << Josemaria << std::endl;

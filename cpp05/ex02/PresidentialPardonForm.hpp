@@ -22,3 +22,4 @@ class	PresidentialPardonForm: public Form {
 std::ostream &operator<<(std::ostream& os, const PresidentialPardonForm &tmp);
 
 #endif
+s
