@@ -27,12 +27,12 @@ class	Form {
 		int const _sigGrade;
 		int const _exeGrade;
 	public:
-		Form 			( std::string const name, int const igGrade, int const exeGrade );
-		Form 			( const Form & var );
-		~Form			( void );
+				Form 			( std::string const name, int const igGrade, int const exeGrade );
+				Form 			( const Form & var );
+		virtual ~Form			( void );
 		Form &operator=	(const Form &tmp);
 
-		virtual void	execute(Bureaucrat const &var);
+		virtual void	execute(Bureaucrat const &var) const = 0;
 		void			beSigned(Bureaucrat const &var);
 		std::string 	getName(void) const;
 		int				getSigned( void ) const;

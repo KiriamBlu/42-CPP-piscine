@@ -2,7 +2,7 @@
 #include "ShrubberyCreationForm.hpp"
 
 
-ShrubberyCreationForm::ShrubberyCreationForm( std::string new_target ): Form("ShrubberyCreation", 145, 137), _target(new_target) {
+ShrubberyCreationForm::ShrubberyCreationForm( const std::string& target ): Form("ShrubberyCreation", 145, 137), _target(target) {
 
   return ;
 }
@@ -18,7 +18,7 @@ ShrubberyCreationForm::~ShrubberyCreationForm( void ) {
 
 }
 
-std::string   ShrubberyCreationForm::getTarget(void){
+std::string   ShrubberyCreationForm::getTarget(void) const{
   return this->_target;
 }
 
@@ -33,27 +33,14 @@ ShrubberyCreationForm & ShrubberyCreationForm::operator=(const ShrubberyCreation
 }
 
 
-std::ostream &operator<<(std::ostream& os, const ShrubberyCreationForm &tmp) {
-
-  (void) tmp;
-  os << std::endl << static_cast<Form>(tmp) << "Signned: " << tmp->getSigned()  << std::endl;
-  return (os);
-  
+std::ostream &operator<<(std::ostream &os, const Form &form) {
+    os << "Form Name: " << form.getName() << ", Sign Grade: " << form.getSigGrade() << ", Execute Grade: " << form.getExeGrade() << ", Signed: " << form.getSigned();
+    return os;
 }
 
-
-void ShrubberyCreationForm::execute(Bureaucrat &tmp){
-
-  Form::execute(tmp)
-  
-  std::fstream file;
-  file.open(tmp.getName() + "_shrubbery", std::ios::out )
-  file << printTree()
-  file.close()
-}
-
-
-std::ostream &printBranch(std::string prefix, int nodeNum, int depth, std::ostream &os) {
+std::ostream &printBranch(std::string prefix, int nodeNum, int depth) {
+    std::ostream os;
+    
     if (depth == 0) {
         return os;
     }
@@ -76,5 +63,20 @@ std::ostream &printTree(int depth, std::ostream &os) {
 
     printBranch(trunk, 3, depth, os);
     return os;
+}
+
+void ShrubberyCreationForm::execute(Bureaucrat const &var) const{
+
+  Form::execute(var);
+  
+  std::fstream file;
+  file.open(var.getName() + "_shrubbery", std::ios::out );
+  if (rand() == 1)
+    file << printTree("", 2);
+  else if (rand() == 1) 
+    file << printTree("", 3);
+  else
+    file << printTree("", 4);
+  file.close();
 }
 

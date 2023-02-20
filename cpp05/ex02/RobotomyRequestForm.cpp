@@ -1,7 +1,7 @@
 
 #include "RobotomyRequestForm.hpp"
 
-RobotomyRequestForm::RobotomyRequestForm( std::string new_target ): Form("RobotomyRequest", 72, 45), _target(new_target) {
+RobotomyRequestForm::RobotomyRequestForm( const std::string& target ): Form("RobotomyRequest", 72, 45), _target(target) {
 
   return ;
 }
@@ -17,7 +17,7 @@ RobotomyRequestForm::~RobotomyRequestForm( void ) {
 
 }
 
-std::string   RobotomyRequestForm::getTarget(void){
+std::string   RobotomyRequestForm::getTarget(void) const{
   return this->_target;
 }
 
@@ -32,20 +32,16 @@ RobotomyRequestForm & RobotomyRequestForm::operator=(const RobotomyRequestForm &
 }
 
 
-std::ostream &operator<<(std::ostream& os, const RobotomyRequestForm &tmp) {
-
-  (void) tmp;
-  os << std::endl << static_cast<Form>(tmp) << "Signned: " << tmp->getSigned()  << std::endl;
-  return (os);
-  
+std::ostream &operator<<(std::ostream &os, const Form &form) {
+    os << "Form Name: " << form.getName() << ", Sign Grade: " << form.getSigGrade() << ", Execute Grade: " << form.getExeGrade() << ", Signed: " << form.getSigned();
+    return os;
 }
 
-
-void RobotomyRequestForm::execute(Bureaucrat &tmp){
-  Form::execute(tmp)
-  std::cout << "*-DRILLING-NOISES-*" << std::endl
-  if (rand(1) == 1)
-    std::cout << tmp.getName() << " has been sucessfully robotomized" << std::endl
+void RobotomyRequestForm::execute(Bureaucrat const &var) const{
+  Form::execute(var);
+  std::cout << "*-DRILLING-NOISES-*" << std::endl;
+  if (rand() == 1)
+    std::cout << var.getName() << " has been sucessfully robotomized" << std::endl;
   else
-    std::cout << "Process of robotomization in subject " tmp.getName() << " has failed! please exit the building calmly" << std::endl << "*-The-screams-echoes-in-the-building-*" << std::endl
+    std::cout << "Process of robotomization in subject "  << var.getName() << " has failed! please exit the building calmly" << std::endl << "*-The-screams-echoes-in-the-building-*" << std::endl;
 }

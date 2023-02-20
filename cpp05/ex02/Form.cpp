@@ -46,7 +46,7 @@ std::ostream &operator<<(std::ostream& os, const Form &tmp) {
 }
 
 
-virtual void  execute(Bureaucrat const &var){
+virtual void  execute(Bureaucrat const &var) const{
   if (this->getSigned == 0)
     throw Form::FormNotSigned();
   if(this->getExeGrade() < var->getExeGrade())

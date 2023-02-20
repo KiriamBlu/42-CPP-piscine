@@ -1,7 +1,7 @@
 
 #include "PresidentialPardonForm.hpp"
 
-PresidentialPardonForm::PresidentialPardonForm( std::string new_target ): Form("PresidentialPardon", 25, 5), _target(new_target) {
+PresidentialPardonForm::PresidentialPardonForm( const std::string& target ): Form("PresidentialPardon", 25, 5), _target(target) {
 
   return ;
 }
@@ -17,7 +17,7 @@ PresidentialPardonForm::~PresidentialPardonForm( void ) {
 
 }
 
-std::string   PresidentialPardonForm::getTarget(void){
+std::string   PresidentialPardonForm::getTarget(void) const{
   return this->_target;
 }
 
@@ -32,17 +32,13 @@ PresidentialPardonForm & PresidentialPardonForm::operator=(const PresidentialPar
 }
 
 
-std::ostream &operator<<(std::ostream& os, const PresidentialPardonForm &tmp) {
-
-  (void) tmp;
-	os << std::endl << static_cast<Form>(tmp) << "Signned: " << tmp->getSigned()  << std::endl;
-	return (os);
-  
+std::ostream &operator<<(std::ostream &os, const Form &form) {
+    os << "Form Name: " << form.getName() << ", Sign Grade: " << form.getSigGrade() << ", Execute Grade: " << form.getExeGrade() << ", Signed: " << form.getSigned();
+    return os;
 }
 
+void PresidentialPardonForm::execute(Bureaucrat const &var) const{
 
-void PresidentialPardonForm::execute(Bureaucrat &tmp){
-
-  Form::execute(tmp)
-  std::cout <<  tmp.getName() << " has been pardoned by Zafod Beeblebrox." << std::endl
+  Form::execute(var);
+  std::cout <<  var.getName() << " has been pardoned by Zafod Beeblebrox." << std::endl;
 }

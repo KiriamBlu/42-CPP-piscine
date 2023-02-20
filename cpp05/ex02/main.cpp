@@ -12,8 +12,8 @@ int main()
 		Bureaucrat Joseluis("Joseluis", 150);
 
 		ShrubberyCreationForm arbol("Josemaria");
-		PresidentialPardonForm contrato("Paco")
-		RobotomyRequestForm lavado("Joseluis"):
+		PresidentialPardonForm contrato("Paco");
+		RobotomyRequestForm lavado("Joseluis");
 
 
 		std::cout << arbol << std::endl;
@@ -21,14 +21,16 @@ int main()
 		Josemaria.signForm(arbol);
 		std::cout << Joseluis << std::endl;
 		Joseluis.signForm(arbol);
-		Joseluis.plusGrade(50)
+		Joseluis.plusGrade(50);
 		std::cout << Joseluis << std::endl;
 		Joseluis.signForm(arbol);
-		std::cout << Josemaria << std::endl;
+		std::cout << arbol << std::endl;
+		arbol.execute(Joseluis);
 		Josemaria.plusGrade(50);
 		std::cout << Josemaria << std::endl;
-		Josemaria.signForm(midForm);
-		std::cout << midForm << std::endl;
+		Josemaria.signForm(arbol);
+		arbol.execute(Josemaria);
+		/*std::cout << midForm << std::endl;
 		Josemaria.plusGrade(50);
 		std::cout << Josemaria  << std::endl;
 		std::cout << highForm <<   std::endl;
@@ -39,7 +41,7 @@ int main()
 		Josemaria.signForm(highForm);
 		std::cout << highForm <<   std::endl;
 		Josemaria.minusGrade(150); //CAMBIAR
-		std::cout << Josemaria << std::endl;		
+		std::cout << Josemaria << std::endl;	*/	
 	}
 	catch( Bureaucrat::GradeTooHighException & e )
 	{
@@ -54,6 +56,10 @@ int main()
 		std::cout << e.throwException() << std::endl;
 	}
 	catch( Form::GradeTooLowException & e )
+	{
+		std::cout << e.throwException() << std::endl;
+	}
+	catch ( Form::FormNotSigned &e)
 	{
 		std::cout << e.throwException() << std::endl;
 	}
