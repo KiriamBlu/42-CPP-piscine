@@ -4,7 +4,7 @@ VERSION = --std=c++98
 
 CXXFLAGS = -Wall -Werror -Wextra $(VERSION) -Wshadow  -Wno-shadow
 
-SRCS = Bureaucrat.cpp main.cpp PresidentialPardonForm.cpp RobotomyRequestForm.cpp ShrubberyCreationForm.cpp
+SRCS = Bureaucrat.cpp Form.cpp main.cpp PresidentialPardonForm.cpp RobotomyRequestForm.cpp ShrubberyCreationForm.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 

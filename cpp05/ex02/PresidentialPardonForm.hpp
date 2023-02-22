@@ -2,6 +2,7 @@
 #define PRESIDENTIALPARDONFORM_HPP
 #include <string>
 #include <iostream>
+#include <random>
 #include "Form.hpp"
 
 class	PresidentialPardonForm: public Form {

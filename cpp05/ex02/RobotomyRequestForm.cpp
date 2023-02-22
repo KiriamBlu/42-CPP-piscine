@@ -32,15 +32,18 @@ RobotomyRequestForm & RobotomyRequestForm::operator=(const RobotomyRequestForm &
 }
 
 
-std::ostream &operator<<(std::ostream &os, const Form &form) {
+std::ostream &operator<<(std::ostream &os, const RobotomyRequestForm &form) {
     os << "Form Name: " << form.getName() << ", Sign Grade: " << form.getSigGrade() << ", Execute Grade: " << form.getExeGrade() << ", Signed: " << form.getSigned();
     return os;
 }
 
 void RobotomyRequestForm::execute(Bureaucrat const &var) const{
   Form::execute(var);
+  std::random_device rd; // obtener una semilla aleatoria del sistema
+  std::mt19937 gen(rd()); // generar números aleatorios con la semilla
+  std::uniform_int_distribution<> distrib(0, 1); // distribución uniforme en el rango 0-1
   std::cout << "*-DRILLING-NOISES-*" << std::endl;
-  if (rand() == 1)
+  if (distrib(gen) == 0)
     std::cout << var.getName() << " has been sucessfully robotomized" << std::endl;
   else
     std::cout << "Process of robotomization in subject "  << var.getName() << " has failed! please exit the building calmly" << std::endl << "*-The-screams-echoes-in-the-building-*" << std::endl;

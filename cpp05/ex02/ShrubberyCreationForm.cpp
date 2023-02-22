@@ -1,6 +1,7 @@
 
 #include "ShrubberyCreationForm.hpp"
 
+std::ostream &printTree(int depth, std::ostream &os);
 
 ShrubberyCreationForm::ShrubberyCreationForm( const std::string& target ): Form("ShrubberyCreation", 145, 137), _target(target) {
 
@@ -33,35 +34,42 @@ ShrubberyCreationForm & ShrubberyCreationForm::operator=(const ShrubberyCreation
 }
 
 
-std::ostream &operator<<(std::ostream &os, const Form &form) {
+std::ostream &operator<<(std::ostream &os, const ShrubberyCreationForm &form) {
     os << "Form Name: " << form.getName() << ", Sign Grade: " << form.getSigGrade() << ", Execute Grade: " << form.getExeGrade() << ", Signed: " << form.getSigned();
     return os;
 }
 
-std::ostream &printBranch(std::string prefix, int nodeNum, int depth) {
-    std::ostream os;
-    
-    if (depth == 0) {
-        return os;
+
+void printBranches(int numSpaces, int numBranches, std::ostream& os) {
+    for (int i = 0; i < numBranches; i++) {
+        os << std::string(numSpaces, ' ') << "#";
+        os << std::string(i, 'o') << "#";
+        os << std::string(numBranches - i - 1, 'o') << "#";
+        os << std::endl;
+        numSpaces--;
     }
-
-    std::string branch = prefix + (nodeNum % 2 == 0 ? "| " : "  ");
-    os << branch << "Node " << nodeNum << std::endl;
-
-    printBranch(branch + "+-", nodeNum * 2, depth - 1, os);
-
-    printBranch(branch + "`-", nodeNum * 2 + 1, depth - 1, os);
-
-    return os;
 }
 
-std::ostream &printTree(int depth, std::ostream &os) {
-    std::string trunk = "|-";
-    os << "Root" << std::endl;
+void printTrunk(int numSpaces, int trunkHeight, std::ostream& os) {
+    for (int i = 0; i < trunkHeight; i++) {
+        os << std::string(numSpaces, ' ') << "#";
+        os << std::string(trunkHeight - 1, '|') << "#";
+        os << std::endl;
+    }
+}
 
-    printBranch(trunk, 2, depth, os);
+std::ostream& printChristmasTree(int treeHeight, int trunkHeight, std::ostream& os) {
+    int numBranches = 1;
+    int numSpaces = treeHeight - 1;
 
-    printBranch(trunk, 3, depth, os);
+    for (int i = 0; i < treeHeight - trunkHeight; i++) {
+        printBranches(numSpaces, numBranches, os);
+        numSpaces--;
+        numBranches++;
+    }
+
+    printTrunk(treeHeight - trunkHeight, trunkHeight, os);
+
     return os;
 }
 
@@ -71,12 +79,19 @@ void ShrubberyCreationForm::execute(Bureaucrat const &var) const{
   
   std::fstream file;
   file.open(var.getName() + "_shrubbery", std::ios::out );
-  if (rand() == 1)
-    file << printTree("", 2);
-  else if (rand() == 1) 
-    file << printTree("", 3);
-  else
-    file << printTree("", 4);
+  std::random_device rd; // obtener una semilla aleatoria del sistema
+  std::mt19937 gen(rd()); // generar números aleatorios con la semilla
+  std::uniform_int_distribution<> distrib(0, 1); // distribución uniforme en el rango 0-1
+
+  if (distrib(gen) == 0){
+    printChristmasTree(5, 2, file);
+  }
+  else if (distrib(gen) == 1){
+    printChristmasTree(6, 3, file);
+  }
+  else{
+    printChristmasTree(16, 8, file);
+  }
   file.close();
 }
 

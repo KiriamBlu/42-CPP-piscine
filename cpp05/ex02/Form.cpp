@@ -29,7 +29,7 @@ Form::~Form( void ) {
 
 
 Form & Form::operator=(const Form &tmp) {
-  if(*this != tmp)
+  if(this != &tmp)
     this->_signed = tmp.getSigned();
   return (*this);
   
@@ -46,10 +46,10 @@ std::ostream &operator<<(std::ostream& os, const Form &tmp) {
 }
 
 
-virtual void  execute(Bureaucrat const &var) const{
-  if (this->getSigned == 0)
+void  Form::execute(Bureaucrat const &var) const{
+  if (this->getSigned() == 0)
     throw Form::FormNotSigned();
-  if(this->getExeGrade() < var->getExeGrade())
+  if(this->getExeGrade() < var.getGrade())
     throw Form::GradeTooLowException();
 }
 

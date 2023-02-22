@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <cstdlib>
+#include <random>
 #include "Form.hpp"
 
 class	ShrubberyCreationForm: public Form {

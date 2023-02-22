@@ -32,7 +32,7 @@ PresidentialPardonForm & PresidentialPardonForm::operator=(const PresidentialPar
 }
 
 
-std::ostream &operator<<(std::ostream &os, const Form &form) {
+std::ostream &operator<<(std::ostream &os, const PresidentialPardonForm &form) {
     os << "Form Name: " << form.getName() << ", Sign Grade: " << form.getSigGrade() << ", Execute Grade: " << form.getExeGrade() << ", Signed: " << form.getSigned();
     return os;
 }

@@ -2,7 +2,7 @@
 #define ROBOTOMYREQUESTFORM_HPP
 #include <string>
 #include <iostream>
-#include <cstdlib>
+#include <random>
 #include "Form.hpp"
 
 class	RobotomyRequestForm: public Form {
