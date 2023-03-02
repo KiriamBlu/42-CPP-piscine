@@ -15,7 +15,7 @@ Zombie* zombieHorde( int N, std::string name ){
 		for (int x = 0; x < N; x++)
 		{
 			aux = name + std::to_string( x );
-			newhorde[x].setzombiename( aççux );
+			newhorde[x].setzombiename( aux );
 		}
 	}
 	return newhorde;

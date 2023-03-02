@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Karen.cpp                                       :+:      :+:    :+:   */
+/*   Harl.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,46 +10,46 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Karen.hpp"
+#include "Harl.hpp"
 
-Karen::Karen( void ) {
+Harl::Harl( void ) {
 
-  std::cout << "Karen constructs itself before you" << std::endl;
+  std::cout << "Harl constructs itself before you" << std::endl;
   
 }
 
-Karen::~Karen( void ) {
+Harl::~Harl( void ) {
   
-  std::cout << "Karen dissappears infront of you" << std::endl;
+  std::cout << "Harl dissappears infront of you" << std::endl;
 
 }
 
-void Karen::DEBUG ( void ){
+void Harl::DEBUG ( void ){
   std::cout << "I love to get extra bacon for my 7XL-double-cheese-triple-pickle-special-ketchup burger. I just love it!" << std::endl;
   return ;
 }
 
-void Karen::INFO( void ){
+void Harl::INFO( void ){
   std::cout << "I cannot believe adding extra bacon cost more money. You don’t put enough! If you did I would not have to ask for it!." << std::endl;
   return ;
 }
 
-void Karen::WARNING( void ){
+void Harl::WARNING( void ){
   std::cout << "I think I deserve to have some extra bacon for free. I’ve been coming here for years and you just started working here last month.." << std::endl;
   return ;
 }
 
-void Karen::ERROR( void ){
+void Harl::ERROR( void ){
   std::cout << "This is unacceptable, I want to speak to the manager now.. " << std::endl;
   return ;
 }
 
 
-void Karen::complain( std::string level )
+void Harl::complain( std::string level )
 {
   //std::cout << level << std::endl;
   std::string w_lvl[4] = {"DEBUG", "INFO", "WARNING", "ERROR"} ;
-  void (Karen::*p_f[])( void ) = {&Karen::DEBUG, &Karen::INFO, &Karen::WARNING, &Karen::ERROR};
+  void (Harl::*p_f[])( void ) = {&Harl::DEBUG, &Harl::INFO, &Harl::WARNING, &Harl::ERROR};
 
   for (int k = 0; k < 4; k++)
   {
@@ -59,6 +59,6 @@ void Karen::complain( std::string level )
       return ;
     }
   }
-  std::cout << "Karen doesnt accept this type of input"<< std::endl;
+  std::cout << "Harl doesnt accept this type of input"<< std::endl;
   return ;
 }

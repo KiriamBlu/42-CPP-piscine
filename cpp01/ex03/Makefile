@@ -6,7 +6,7 @@ SRCS = HumanB.cpp HumanA.cpp main.cpp Weapon.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
-CXX = clang++
+CXX = c++
 
 all: $(NAME)
 

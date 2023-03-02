@@ -1,8 +1,8 @@
-NAME = karenFilter
+NAME = HarlFilter
 
 CXXFLAGS = -Wall -Werror -Wextra
 
-SRCS = Karen.cpp main.cpp
+SRCS = Harl.cpp main.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 

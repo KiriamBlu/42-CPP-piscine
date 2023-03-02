@@ -1,8 +1,7 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Karen.hpp                                       :+:      :+:    :+:   */
+/*   Harl.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef KAREN_HPP
-#define KAREN_HPP
+#ifndef Harl_HPP
+#define Harl_HPP
 #include <string>
 #include <iostream>
 #include <vector>
 
-class	Karen {
+class	Harl {
 
 	private:
 		void DEBUG( void );
@@ -26,8 +25,10 @@ class	Karen {
 		void ERROR( void );
 	public:
 		void complain( std::string level );
-		Karen ( void );
-		~Karen ( void );
+		Harl ( void );
+		~Harl ( void );
 };
+
+void Harlfilter( std::string level );
 
 #endif

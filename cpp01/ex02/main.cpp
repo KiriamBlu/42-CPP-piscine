@@ -10,7 +10,8 @@ int main( void ){
 
 	std::cout << ptr << std::endl;
 	std::cout << ref << std::endl;
+	std::cout << str << std::endl;
 	std::cout << *ptr << std::endl;
 	std::cout << &ref << std::endl;
-
+	std::cout << &str << std::endl;
 }

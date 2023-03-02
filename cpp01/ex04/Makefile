@@ -2,11 +2,11 @@ NAME = replace
 
 CXXFLAGS = -Wall -Werror -Wextra
 
-SRCS = main.cpp
+SRCS = main.cpp replacer.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
-CXX = clang++
+CXX = c++
 
 all: $(NAME)
 
