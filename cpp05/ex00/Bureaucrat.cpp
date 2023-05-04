@@ -8,6 +8,7 @@ Bureaucrat::Bureaucrat( std::string str, int grade): _name( str ) {
 }
 
 Bureaucrat::Bureaucrat( const Bureaucrat & var ) {
+  if(this != &var)
   *this = var;
 }
 
