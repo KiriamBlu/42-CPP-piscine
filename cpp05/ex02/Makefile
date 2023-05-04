@@ -8,7 +8,7 @@ SRCS = Bureaucrat.cpp Form.cpp main.cpp PresidentialPardonForm.cpp RobotomyReque
 
 OBJS = $(SRCS:.cpp=.o)
 
-CXX = clang++
+CXX = c++
 
 all: $(NAME)
 

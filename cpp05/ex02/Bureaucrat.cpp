@@ -54,12 +54,12 @@ int Bureaucrat::getGrade( void ) const {
   return this->_grade;
 }
 
-void Bureaucrat::plusGrade( int const & sum ){
-  gradeCheck(this->_grade - sum);
-  this->_grade -= sum;
+void Bureaucrat::plusGrade( void ){
+  gradeCheck(this->_grade - 1);
+  this->_grade -= 1;
 }
 
-void Bureaucrat::minusGrade( int const & sub ){
-  gradeCheck(this->_grade + sub);
-  this->_grade += sub;
+void Bureaucrat::minusGrade( void ){
+  gradeCheck(this->_grade + 1);
+  this->_grade += 1;
 }

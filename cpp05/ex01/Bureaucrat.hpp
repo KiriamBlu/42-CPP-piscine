@@ -31,8 +31,8 @@ class	Bureaucrat {
 		void gradeCheck( int grade );
 		std::string getName( void ) const;
 		int getGrade( void ) const;
-		void plusGrade( int const & sum );
-		void minusGrade( int const & sub );
+		void plusGrade( void );
+		void minusGrade( void );
 		void signForm( Form &var);
 
 		Bureaucrat ( std::string str, int grade );

@@ -2,16 +2,30 @@
 
 int main()
 {
-	try
-	{
-		Bureaucrat Josemaria("Josemaria", 18333);
-	}
-	catch(Bureaucrat::GradeTooHighException & e)
-	{
-		std::cout << e.throwException() << std::endl;
-	}
-	catch(Bureaucrat::GradeTooLow & e)
-	{
-		std::cout << e.throwException() << std::endl;
-	}
+    try {
+        Bureaucrat john("John", 100);
+        std::cout << john << std::endl;
+
+        john.plusGrade();
+        std::cout << john << std::endl;
+
+        john.plusGrade();
+        std::cout << john << std::endl;
+
+        john.minusGrade();
+        std::cout << john << std::endl;
+
+        john.minusGrade();
+        std::cout << john << std::endl;
+
+        Bureaucrat mary("Mary", 0);
+        std::cout << mary << std::endl;
+    }
+    catch (const Bureaucrat::GradeTooHighException& e) {
+        std::cout << e.throwException() << std::endl;
+    }
+    catch (const Bureaucrat::GradeTooLowException& e) {
+        std::cout << e.throwException() << std::endl;
+    }
+    return 0;
 }
