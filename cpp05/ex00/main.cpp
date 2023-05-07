@@ -15,7 +15,7 @@ int main()
         john.minusGrade();
         std::cout << john << std::endl;
 
-        john.minusGrade();
+        for (int i=0; i < 50; i++){john.plusGrade();};
         std::cout << john << std::endl;
 
         Bureaucrat mary("Mary", 0);
