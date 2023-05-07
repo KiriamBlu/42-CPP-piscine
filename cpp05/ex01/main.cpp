@@ -24,7 +24,7 @@ int main()
         std::cout << "Formulario medio intentado firmar por " << Josemaria.getName() << std::endl;
         std::cout << midForm << std::endl;
 
-        for (int i=0, i< 50, i++){Josemaria.plusGrade();
+       for (int i=0; i < 50; i++){Josemaria.plusGrade();};
         std::cout << "Burócrata " << Josemaria.getName() << " ascendido a grado " << Josemaria.getGrade() << std::endl;
         std::cout << Josemaria << std::endl;
 
@@ -36,7 +36,7 @@ int main()
         std::cout << "Formulario de grado alto intentado firmar por " << Josemaria.getName() << std::endl;
         std::cout << highForm << std::endl;
 
-        for (int i=0, i< 50, i++){Josemaria.plusGrade();
+        for (int i=0; i < 50; i++){Josemaria.plusGrade();};
         std::cout << "Burócrata " << Josemaria.getName() << " ascendido a grado " << Josemaria.getGrade() << std::endl;
         std::cout << Josemaria << std::endl;
 
