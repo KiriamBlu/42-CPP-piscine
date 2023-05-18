@@ -13,24 +13,29 @@ Converter::~Converter( void ) {
   return ;
 }
 
-std::ostream &Converter::print_Value(char type, const std::string& value, std::ostream& os) {
+void Converter::print_Value(char type, const std::string& value, std::ostream& os) {
   os << value;
   try {
-    setAnyValue(type);
     switch (type) {
       case 'C':
-        return os << this->getValueChar() << std::endl;
+        setChar(inputString);
+        os << getValueChar() << std::endl;
+        break; 
       case 'I':
-        return os << this->getValueInt() << std::endl;
+        setInt(inputString);
+        os << getValueInt() << std::endl;
+        break;
       case 'F':
-        return os << this->getValueFloat() << ((this->valueFloat - this->valueInt) != 0 ? "f" : ".0f") << std::endl;
+        setFloat(inputString);
+        os << getValueFloat() << ((valueFloat - valueInt) != 0 ? "f" : ".0f") << std::endl;
+        break;
       case 'D':
-        return os << this->getValueDouble() << std::endl;
+        setDouble(inputString);
+        os << getValueDouble() << std::endl;
     }
-  } catch (const char* err) {
-    return os  << err << std::endl;
+  } catch (const char* err){
+   os  << err << std::endl;
   }
-  return os;
 }
 
 std::ostream &operator<<(std::ostream& os,Converter &tmp) {
@@ -41,77 +46,96 @@ std::ostream &operator<<(std::ostream& os,Converter &tmp) {
   return os;
 } 
 
+void Converter::setChar(std::string &str){
+  if (!isprint(std::stoi(str)))
+    throw "Non displeyeable";
+  try{
+      valueChar = static_cast<char>(std::stoi(str));
+  }
+  catch (...) {
+    throw "Impossible";
+  }
+}
 
+void Converter::setInt(std::string &str){
+  try{
+    valueInt = static_cast<int>(std::stoi(str));;
+  } 
+  catch (...) {
+    throw "Impossible";
+  }
+}
 
-void Converter::setAnyValue(char type) {
+void Converter::setFloat(std::string &str){
 
-  if (!this->inputString.compare("+inf") && (type == 'F' || type == 'D')) {
+  if (!str.compare("+inf")) {
+  
     throw "inf";
-  }else if (!this->inputString.compare("-inf") && (type == 'F' || type == 'D')) {
+  
+  } else if (!str.compare("-inf")) {
+
     throw "-inf";
-  }else {
-    try {
-      switch (type) {
-        case 'C':
+  
+  } else if (!str.compare("nan")){
 
-          if (!isprint(std::stoi(this->inputString)))
-            throw "Non displeyeable";
-          this->valueChar = static_cast<char>(std::stoi(this->inputString));
-          
-          break;
+    throw "nanf";
+  
+  } else{
+    
+    try{
+      valueFloat = static_cast<float>(std::stof(str));
+    } 
+    catch (...) {
+      throw "Impossible";
+    }
+  }
+}
 
-        case 'I':
+void  Converter::setDouble(std::string &str){
 
-          this->valueInt = static_cast<int>(std::stoi(this->inputString));
-          
-          break;
+  if (!str.compare("+inf")) {
+  
+    throw "inf";
+  
+  } else if (!str.compare("-inf")) {
 
-        case 'F':
+    throw "-inf";
+  
+  } else if (!str.compare("nan")){
 
-          if (!this->inputString.compare("nan"))
-              throw "nanf";
-          this->valueFloat = static_cast<float>(std::stof(this->inputString));
-          
-          break;
-
-        case 'D':
-
-          if (!this->inputString.compare("nan"))
-            throw "nan";
-          this->valueDouble = static_cast<double>(std::stod(this->inputString));
-          
-          break;
-        default:
-          return;
-      }
-    } catch (const char* err) {
-        throw err;
-    } catch (...) {
-        throw "Impossible";
+    throw "nan";
+  
+  } else{
+    
+    try{
+      valueDouble = static_cast<double>(std::stod(str));
+    } 
+    catch (...) {
+      throw "Impossible";
     }
   }
 }
 
 void Converter::fillValue(std::string str){
-  this->inputString = str;
+  inputString = str;
 }
 
 std::string Converter::getInputString() const {
-  return this->inputString;
+  return inputString;
 }
 
 char Converter::getValueChar() const {
-  return this->valueChar;
+  return valueChar;
 }
 
 int Converter::getValueInt() const {
-  return this->valueInt;
+  return valueInt;
 }
 
 float Converter::getValueFloat() const {
-  return this->valueFloat;
+  return valueFloat;
 }
 
 double Converter::getValueDouble() const {
-  return this->valueDouble;
+  return valueDouble;
 }
