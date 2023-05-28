@@ -1,10 +1,10 @@
-NAME = min_max_swap
+NAME = array
 
 VERSION = --std=c++98
 
 CXXFLAGS = -Wall -Werror -Wextra $(VERSION) -Wshadow  -Wno-shadow
 
-SRCS = templates.cpp main.cpp
+SRCS = main.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
