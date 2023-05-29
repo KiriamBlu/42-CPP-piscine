@@ -2,7 +2,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Array.hpp                                       :+:      :+:    :+:   */
+/*   Array.hpp                                           :+:      :+:    :+:  */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,21 +13,45 @@
 
 #ifndef ARRAY_HPP
 #define ARRAY_HPP
-#include <string>
+
 #include <iostream>
 
-class	Array {
+template <typename T>
+class Array {
+private:
+    T* arr;
+    unsigned int size;
 
-	private:
+public:
+    Array() : arr(new T[0]), size(0) {}
 
-	public:
+    Array(unsigned int number) : arr(new T[number]), size(number) {}
 
-		Array 			( void );
-		Array 			( std::string str );
-		Array 			( const Array & var );
-		~Array			( void );
-		Array &operator=	(const Array &tmp);
+    Array(const Array<T>& tmp) : arr(nullptr), size(0) {
+        *this = tmp;
+    }
+
+    ~Array() {
+        delete[] arr;
+    }
+
+    Array<T>& operator=(const Array<T>& other) {
+        if (this != &other) {
+            delete[] arr;
+            size = other.size;
+            arr = new T[size];
+            for (unsigned int i = 0; i < size; i++) {
+                arr[i] = other.arr[i];
+            }
+        }
+        return *this;
+    }
+
+    T& operator[](unsigned int index) {
+        if (index >= size || index < 0)
+            throw std::runtime_error("Index out of range");
+        return arr[index];
+    }
 };
-std::ostream &operator<<(std::ostream& os, const Array &tmp);
 
 #endif
