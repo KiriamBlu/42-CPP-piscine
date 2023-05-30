@@ -1,8 +1,8 @@
-NAME = 
+NAME = easyfind
 
 CXXFLAGS = -Wall -Werror -Wextra
 
-SRCS = 
+SRCS = main.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
