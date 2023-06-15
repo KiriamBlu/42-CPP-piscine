@@ -20,14 +20,14 @@ template <typename T>
 class Array {
 private:
     T* arr;
-    unsigned int size;
+    unsigned int _size;
 
 public:
-    Array() : arr(new T[0]), size(0) {}
+    Array() : arr(new T[0]), _size(0) {}
 
-    Array(unsigned int number) : arr(new T[number]), size(number) {}
+    Array(unsigned int number) : arr(new T[number]), _size(number) {}
 
-    Array(const Array<T>& tmp) : arr(nullptr), size(0) {
+    Array(const Array<T>& tmp) : arr(nullptr), _size(0) {
         *this = tmp;
     }
 
@@ -35,12 +35,16 @@ public:
         delete[] arr;
     }
 
+    unsigned int size(void) const{
+        return _size;
+    }
+
     Array<T>& operator=(const Array<T>& other) {
         if (this != &other) {
             delete[] arr;
-            size = other.size;
-            arr = new T[size];
-            for (unsigned int i = 0; i < size; i++) {
+            _size = other.size();
+            arr = new T[_size];
+            for (unsigned int i = 0; i < _size; i++) {
                 arr[i] = other.arr[i];
             }
         }
@@ -48,7 +52,7 @@ public:
     }
 
     T& operator[](unsigned int index) {
-        if (index >= size || index < 0)
+        if (index >= _size || index < 0)
             throw std::runtime_error("Index out of range");
         return arr[index];
     }

@@ -7,6 +7,9 @@ int main(int, char**)
     Array<double> numbers(MAX_VAL);
     double* mirror = new double[MAX_VAL];
     srand(time(NULL));
+
+    int * a = new int();
+    std::cout << "Value: " << *a << std::endl; 
     for (int i = 0; i < MAX_VAL; i++)
     {
         const int value = rand();
@@ -49,6 +52,7 @@ int main(int, char**)
         numbers[i] = rand();
         std::cout << numbers[i]<< std::endl;
     }
+    std::cout << "Size = " << numbers.size() << std::endl;
     delete [] mirror;//
     system("leaks array");
     return 0;
