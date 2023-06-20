@@ -3,7 +3,7 @@
 #include <vector>
 #include <random>
 
-#define ARRNUM 6000
+#define ARRNUM 40
 int main() {
 
 	int x;

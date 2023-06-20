@@ -1,8 +1,10 @@
-NAME = easyfind
+NAME = Span
 
-CXXFLAGS = -Wall -Werror -Wextra
+VERSION = --std=c++98
 
-SRCS = main.cpp
+CXXFLAGS = -Wall -Werror -Wextra $(VERSION) -Wshadow  -Wno-shadow
+
+SRCS = main.cpp Span.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
@@ -12,6 +14,9 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CXX) $(CFLAGS) $(OBJS) -o $(NAME)
+
+exe: $(NAME)
+	time ./$(NAME)
 
 clean:
 	rm -f $(OBJS)
