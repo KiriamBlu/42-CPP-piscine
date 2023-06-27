@@ -1,7 +1,7 @@
 #include "Span.hpp"
 #include <random>
 
-#define TESTNUM 20000
+#define TESTNUM 25000
 
 std::vector<int> fillVectorWithNums(unsigned int size){
 	std::random_device rd;
@@ -19,24 +19,33 @@ int main()
 {
 	try{
 
-		Span sp = Span(TESTNUM);
-		/*sp.addNumber(6);
+		int 		*values;
+		
+		Span sp = Span(TESTNUM);/*
+		sp.addNumber(6);
 		sp.addNumber(3);
 		sp.addNumber(17);
 		sp.addNumber(9);
 		sp.addNumber(11);
 
-		sp.printValues();
+
 		std::cout << "Filled:" << sp.getFilled() << " - To fill:" << TESTNUM - sp.getFilled() << std::endl;
-		std::cout << "shortestSpan: " << sp.shortestSpan() << std::endl;
-		std::cout << "longestSpan: " << sp.longestSpan() << std::endl;
+		std::cout << "Shortest span: " << sp.shortestSpan();
+		values = (sp.getNumbers()); 
+		std::cout << " numbers: n1=(" << values[0] << ") n2=(" << values[1] << ")"  <<std::endl;
+		std::cout << "Longest span: " << sp.longestSpan();
+		values = (sp.getNumbers()); 
+		std::cout << " numbers: n1=(" << values[0] << ") n2=(" << values[1] << ")"  <<std::endl;
 
 		sp.addRange(8, 14);//10
 
-		sp.printValues();
 		std::cout << "Filled:" << sp.getFilled() << " - To fill:" << TESTNUM - sp.getFilled() << std::endl;
-		std::cout << "shortestSpan: " << sp.shortestSpan() << std::endl;
-		std::cout << "longestSpan: " << sp.longestSpan() << std::endl;
+		std::cout << "Shortest span: " << sp.shortestSpan();
+		values = (sp.getNumbers()); 
+		std::cout << " numbers: n1=(" << values[0] << ") n2=(" << values[1] << ")"  <<std::endl;
+		std::cout << "Longest span: " << sp.longestSpan();
+		values = (sp.getNumbers()); 
+		std::cout << " numbers: n1=(" << values[0] << ") n2=(" << values[1] << ")"  <<std::endl;
 
 		std::vector<int> numbers;
 		numbers.push_back(15);
@@ -51,18 +60,27 @@ int main()
 
 
 
-		sp.printValues();
 		std::cout << "Filled:" << sp.getFilled() << " - To fill:" << TESTNUM - sp.getFilled() << std::endl;
-		std::cout << "Shortest span: " << sp.shortestSpan() << std::endl;
-		std::cout << "Longest span: " << sp.longestSpan() << std::endl;*/
+		std::cout << "Shortest span: " << sp.shortestSpan();
+		values = (sp.getNumbers()); 
+		std::cout << " numbers: n1=(" << values[0] << ") n2=(" << values[1] << ")"  <<std::endl;
+		std::cout << "Longest span: " << sp.longestSpan();
+		values = (sp.getNumbers()); 
+		std::cout << " numbers: n1=(" << values[0] << ") n2=(" << values[1] << ")"  <<std::endl;*/
 
+		
 		std::vector<int> random = fillVectorWithNums(TESTNUM - 16);
 
 		sp.addArrVector(random);
 		sp.printValues();
+
 		std::cout << "Filled:" << sp.getFilled() << " - To fill:" << TESTNUM - sp.getFilled() << std::endl;
-		std::cout << "Shortest span: " << sp.shortestSpan() << std::endl;
-		std::cout << "Longest span: " << sp.longestSpan() << std::endl;
+		std::cout << "Shortest span: " << sp.shortestSpan();
+		values = (sp.getNumbers()); 
+		std::cout << " numbers: n1=(" << values[0] << ") n2=(" << values[1] << ")"  <<std::endl;
+		std::cout << "Longest span: " << sp.longestSpan();
+		values = (sp.getNumbers()); 
+		std::cout << " numbers: n1=(" << values[0] << ") n2=(" << values[1] << ")"  <<std::endl;
 	}
     catch (const Span::vectorIndexOutLimits &ex) {
 		std::cout << "Exception caught: " << ex.throwException() << std::endl;

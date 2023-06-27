@@ -12,6 +12,7 @@ class	Span {
 		unsigned int		N;
 		unsigned int		filled;
 		std::vector<int>	storage;
+		int 				numbers[2];
 	public:
 
 		Span 			( void );
@@ -23,6 +24,8 @@ class	Span {
 		int  &operator[]( unsigned int iter );
 
 		unsigned int 	getFilled(void) const ;
+
+		int				*getNumbers(void);
 
 		void			addNumber( int number );
 		void			addRange( int start, int end );

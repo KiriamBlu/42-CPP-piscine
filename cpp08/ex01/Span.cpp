@@ -82,8 +82,6 @@ void Span::addArrVector( std::vector<int>& vector ) {
 /*------------------------------------------------------------------------*/
 
 int  Span::shortestSpan( void ){
-  int n1;
-  int n2;
   if(this->filled <= 1)
     throw notEnoughNumbers();
 
@@ -93,19 +91,16 @@ int  Span::shortestSpan( void ){
     for( std::vector<int>::iterator it2 = std::next(it1); it2 != this->storage.end(); it2++ ){
       int shotestDifference = abs( *it2 - *it1 );
       if ( maxElement > shotestDifference ){
-        n1 = *it2;
-        n2 = *it1;
+        this->numbers[0] = *it2;
+        this->numbers[1] = *it1;
         maxElement = shotestDifference;
       }  
     }    
   }
-  std::cout << "Number1:" << n1 << " Number2:" << n2 << std::endl;
   return(maxElement);
 }
 
 int  Span::longestSpan( void ){
-  int n1;
-  int n2;
   if(this->filled <= 1)
     throw notEnoughNumbers();
 
@@ -115,13 +110,12 @@ int  Span::longestSpan( void ){
     for( std::vector<int>::iterator it2 = std::next(it1); it2 != this->storage.end(); it2++ ){
       int longestSpan = abs( *it2 - *it1 );
       if ( minElement < longestSpan ){
-        n1 = *it2;
-        n2 = *it1;
+        this->numbers[0] = *it2;
+        this->numbers[1] = *it1;
         minElement = longestSpan;
       }
     }    
   }
-  std::cout << "Number1:" << n1 << " Number2:" << n2 << std::endl;
   return(minElement);
 }
 
@@ -129,6 +123,10 @@ int  Span::longestSpan( void ){
 
 unsigned int Span::getFilled(void) const{
   return this->filled;
+}
+
+int       *Span::getNumbers(void){
+  return this->numbers;
 }
 
 void Span::printValues( void ) const {
