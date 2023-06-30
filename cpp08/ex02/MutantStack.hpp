@@ -13,48 +13,41 @@
 
 #ifndef MUTANTSTACK_HPP
 #define MUTANTSTACK_HPP
-#include <string>
+
+#include <stack>
 #include <iostream>
 
-
 template <typename T>
-class	MutantStack {
+class MutantStack : public std::stack<T>
+{
+public:
+	using typename std::stack<T>::stack;
+	using typename std::stack<T>::container_type;
+	typedef typename std::stack<T>::container_type::iterator iterator;
 
-	private:
-		std::stack<T>	storage;
+	T &getElement(std::size_t index)
+	{
+		std::stack<T> tempStack = this->c;
 
-	public:
-		iterator 					&end( void );
-		iterator				 	&begin( void );
-		T 							top( void );
-		std::size_t					size( void );
-		void						push( const T value );
-		void						pop( void );
+		for (std::size_t i = 0; i < index; i++)
+			tempStack.pop();
 
-		MutantStack 				( void );
-		MutantStack 				( const std::stack<T> &stack );
-		MutantStack 				( const MutantStack &var );
-		~MutantStack				( void );
-		MutantStack &operator=		( const MutantStack &tmp );
+		return tempStack.top();
+	}
+	
+	T &operator[](std::size_t index){return this->getElement(index);}
 
-		T& 							getElement(std::size_t index);
+	iterator begin(){
+		iterator it = this->c.begin();
+		return it;
+	}
 
-		T&							operator[](std::size_t index);
-		
-		class iterator {
-			private:
-				MutantStack<T>& stack;
-				std::size_t index;
-
-    		public:
-        		iterator		(MutantStack<T>& s, std::size_t i);
-
-        		T				&operator*(void) const;
-        		iterator		&operator++(void) const;
-        		iterator		&operator--(void) const;
-        		bool			operator!=(const iterator& other) const;
-        		bool			operator==(const iterator& other) const;
-		};
+	iterator end()
+	{
+		iterator it = this->c.end();
+		return it;
+	}
 };
- 
+
 #endif
+

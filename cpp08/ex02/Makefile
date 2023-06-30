@@ -1,10 +1,10 @@
-NAME = 
+NAME = MutantStack
 
 VERSION = --std=c++98
 
 CXXFLAGS = -Wall -Werror -Wextra $(VERSION) -Wshadow  -Wno-shadow
 
-SRCS = MutantStack.cpp
+SRCS = MutantStack.cpp main.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
