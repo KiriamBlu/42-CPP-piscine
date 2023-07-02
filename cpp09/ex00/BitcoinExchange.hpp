@@ -7,13 +7,13 @@
 class	BitcoinExchange {
 
 	private:
-		std::multimap<, > storage,
+		std::multimap<, > storage;
 	public:
-
 		BitcoinExchange ( void );
 		BitcoinExchange ( std::string str );
-		BitcoinExchange ( const BitcoinExchange & var );
 		BitcoinExchange~ ( void );
+
+		void	loadCsv(std::string fileName);
 };
 
 #endif
