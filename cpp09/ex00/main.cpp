@@ -11,7 +11,6 @@ int main(int argc, char **argv){
 
 	try{
 		BitcoinExchange btc("data.csv");
-		std::cout << "paso" << std::endl;
 		std::cout << btc << std::endl;
 	}
 	catch(std::runtime_error &err){
