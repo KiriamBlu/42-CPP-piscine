@@ -56,7 +56,7 @@ void BitcoinExchange::loadStorage(std::string fileName) {
 }
 
 std::string BitcoinExchange::convertTimeToDate(time_t time) {
-    char buffer[10];
+    char buffer[11];
     struct tm* timeinfo;
 
     timeinfo = std::localtime(&time);
