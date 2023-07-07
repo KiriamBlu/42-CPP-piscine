@@ -17,12 +17,12 @@ size_t BitcoinExchange::size() {
 	return this->storage.size();
 }
 
-std::multimap<time_t, int>::iterator BitcoinExchange::getIterator() {
+std::multimap<time_t, float>::iterator BitcoinExchange::getIterator() {
 	return this->storage.begin();
 }
 
 std::ostream& operator<<(std::ostream& out, BitcoinExchange& exchange) {
-	std::multimap<time_t, int>::const_iterator it = exchange.getIterator();
+	std::multimap<time_t, float>::const_iterator it = exchange.getIterator();
 	size_t total_length = exchange.size();
 
 	for (size_t i = 0; i < total_length; i++) {
@@ -49,7 +49,7 @@ void BitcoinExchange::loadStorage(std::string fileName) {
     ss >> std::get_time(&aux, "%Y-%m-%d");
     time = mktime(&aux);
     std::cout << str.substr(pos + 1, str.length()) << std::endl;
-    storage.insert(std::make_pair(time, std::stoi(str.substr(pos + 1, str.length()))));
+    storage.insert(std::make_pair(time, std::stof(str.substr(pos + 1, str.length()))));
   }
 
 	file.close();

@@ -11,7 +11,7 @@
 class	BitcoinExchange {
 
 	private:
-		std::multimap<time_t, int> storage;
+		std::multimap<time_t, float> storage;
 
 
 			
@@ -23,7 +23,7 @@ class	BitcoinExchange {
 
 		void	loadStorage(std::string fileName);
 		size_t 	size(void);
-		std::multimap<time_t, int>::iterator getIterator(void);
+		std::multimap<time_t, float>::iterator getIterator(void);
 		std::string	convertTimeToDate(time_t time);
 };
 std::ostream& operator<<(std::ostream& out, BitcoinExchange& exchange);
