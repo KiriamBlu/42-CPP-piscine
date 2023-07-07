@@ -2,20 +2,30 @@
 #define BITCOINEXCHANGE_HPP
 #include <string>
 #include <iostream>
-#include <multimap>
+#include <map>
 #include <fstream>
+#include <iomanip>
+#include <sstream>
+#include <ctime>
 
 class	BitcoinExchange {
 
 	private:
-		std::multimap<, > storage;
+		std::multimap<time_t, int> storage;
+
+
+			
 
 	public:
-		BitcoinExchange ( void );
-		BitcoinExchange ( std::string str );
-		BitcoinExchange~ ( void );
+		BitcoinExchange		( void );
+		BitcoinExchange		( std::string fileName );
+		~BitcoinExchange	( void );
 
 		void	loadStorage(std::string fileName);
+		size_t 	size(void);
+		std::multimap<time_t, int>::iterator getIterator(void);
+		std::string	convertTimeToDate(time_t time);
 };
+std::ostream& operator<<(std::ostream& out, BitcoinExchange& exchange);
 
 #endif
