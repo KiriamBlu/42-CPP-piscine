@@ -2,7 +2,7 @@
 
 BitcoinExchange::BitcoinExchange(std::string fileName) {
 	try {
-		this->loadStorage(fileName);
+		this->loadStorage(fileName, this->storage, ',');
 	}
 	catch (std::runtime_error& err) {
 		std::cout << err.what() << std::endl;
@@ -32,26 +32,47 @@ std::ostream& operator<<(std::ostream& out, BitcoinExchange& exchange) {
 	return out;
 }
 
-void BitcoinExchange::loadStorage(std::string fileName) {
+/*bool BitcoinExchange::parseInsert(std::string str){
+
+
+	storage.insert(std::make_pair(time, std::stof(str.substr(pos + 1, str.length()))));
+}*/
+
+void BitcoinExchange::loadStorage(std::string fileName, std::multimap<time_t, float> &storage, int limiter) {
 	std::ifstream file(fileName);
 	std::string str;
 	struct tm aux;
 	size_t pos;
 	time_t time;
 
+	std::memset(&aux, 0, sizeof(aux));
 	if (!file.is_open()) {
 		throw std::runtime_error("Error: File could not be opened");
 	}
-	file >> str;
 	while (file >> str) {
-    pos = str.find(",");
-    std::istringstream ss(str.substr(0, pos));
-    ss >> std::get_time(&aux, "%Y-%m-%d");
-    time = mktime(&aux);
-    std::cout << str.substr(pos + 1, str.length()) << std::endl;
-    storage.insert(std::make_pair(time, std::stof(str.substr(pos + 1, str.length()))));
-  }
+		pos = str.find((char)limiter);
+		
+		std::cout << "(" << str.substr(0, pos) << ")" << std::endl;
+		
+		std::istringstream ss(str.substr(0, pos));
 
+		std::cout << ss << std::endl;
+		
+		ss >> std::get_time(&aux, "%Y-%m-%d");
+		time = mktime(&aux);
+
+		std::cout << time << std::endl;
+
+		try{
+			std::cout << std::stof(str.substr(pos + 1, str.length())) << std::endl;
+		}
+		catch(std::invalid_argument &err){
+			std::cout << "kk" << std::endl;
+		}
+
+		storage.insert(std::make_pair(time, std::stof(str.substr(pos + 1, str.length()))));
+		//parseInsert(str, );
+  	}	
 	file.close();
 }
 

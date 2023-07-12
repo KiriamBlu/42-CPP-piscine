@@ -14,14 +14,12 @@ class	BitcoinExchange {
 		std::multimap<time_t, float> storage;
 
 
-			
-
 	public:
 		BitcoinExchange		( void );
 		BitcoinExchange		( std::string fileName );
 		~BitcoinExchange	( void );
 
-		void	loadStorage(std::string fileName);
+		void	loadStorage(std::string fileName, std::multimap<time_t, float> &storage, int limiter);
 		size_t 	size(void);
 		std::multimap<time_t, float>::iterator getIterator(void);
 		std::string	convertTimeToDate(time_t time);
