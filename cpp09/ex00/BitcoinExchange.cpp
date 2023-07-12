@@ -50,7 +50,7 @@ void BitcoinExchange::loadStorage(std::string fileName, std::multimap<time_t, fl
 		throw std::runtime_error("Error: File could not be opened");
 	}
 	while (file >> str) {
-		pos = str.find((char)limiter);
+		pos = str.find((char)limiter); //DETECTAR POSICION
 		
 		std::cout << "(" << str.substr(0, pos) << ")" << std::endl;
 		
@@ -59,14 +59,14 @@ void BitcoinExchange::loadStorage(std::string fileName, std::multimap<time_t, fl
 		std::cout << ss << std::endl;
 		
 		ss >> std::get_time(&aux, "%Y-%m-%d");
-		time = mktime(&aux);
+		time = mktime(&aux); //DETECTAR NEGATIVO
 
 		std::cout << time << std::endl;
 
 		try{
 			std::cout << std::stof(str.substr(pos + 1, str.length())) << std::endl;
 		}
-		catch(std::invalid_argument &err){
+		catch(std::invalid_argument &err){ //DETECTAR EXCEPCION
 			std::cout << "kk" << std::endl;
 		}
 
