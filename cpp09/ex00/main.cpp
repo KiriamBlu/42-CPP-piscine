@@ -16,6 +16,14 @@ int main(int argc, char **argv){
 		//std::cout << btc << std::endl;
 		std::cout<< std::endl << std::endl << std::endl;
 		btc.loadStorage(std::string(argv[1]), auxStorage, '|');
+
+
+		std::multimap<time_t, float>::const_iterator it = auxStorage.begin();
+		size_t total_length = auxStorage.size();
+
+		for (size_t i = 0; i < total_length; i++)
+			std::cout << it->first << " | " << it->second << std::endl;
+
 	}
 	catch(std::runtime_error &err){
 		std::cout << err.what() << std::endl; 

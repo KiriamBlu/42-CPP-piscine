@@ -8,10 +8,19 @@
 #include <sstream>
 #include <ctime>
 
+enum errorStatus{
+	BAD_FORMAT_DATE = -1,
+	BAD_NUMBER = -2
+};
+
 class	BitcoinExchange {
 
 	private:
 		std::multimap<time_t, float> storage;
+
+		int 	StringEraseAp(int start, int iteratorDir, std::string &aux, int character);
+		int		checkStrs(std::string *strings);
+		bool	 dateFormat(const std::string& input);
 
 
 	public:

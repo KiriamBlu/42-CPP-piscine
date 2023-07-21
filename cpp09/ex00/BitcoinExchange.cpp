@@ -10,7 +10,6 @@ BitcoinExchange::BitcoinExchange(std::string fileName) {
 }
 
 BitcoinExchange::~BitcoinExchange() {
-	std::cout << "Destructor called" << std::endl;
 }
 
 size_t BitcoinExchange::size() {
@@ -32,56 +31,126 @@ std::ostream& operator<<(std::ostream& out, BitcoinExchange& exchange) {
 	return out;
 }
 
-/*bool BitcoinExchange::parseInsert(std::string str){
+int BitcoinExchange::StringEraseAp(int start, int iteratorDir, std::string &aux, int character){
+	int limiter = aux.length();
+	int i = 0;
+	start += iteratorDir;
+	
+	while(aux[start] == character && start >= 0 && start <= limiter){
+		aux.erase(start, 1);
+		if(iteratorDir == -1)
+			start--;
+		i++;
+	}
+	return(i);
+}
+
+////////////////////////////////////////Filters////////////////////////////////////////////////////
 
 
-	storage.insert(std::make_pair(time, std::stof(str.substr(pos + 1, str.length()))));
-}*/
+bool BitcoinExchange::dateFormat(const std::string& input) {
+	if (input.length() != 10) {
+		return false;
+	}
 
-void BitcoinExchange::loadStorage(std::string fileName, std::multimap<time_t, float> &storage, int limiter) {
+	if (input[4] != '-' || input[7] != '-') {
+		return false;
+	}
+
+	for (int i = 0; i < 10; i++) {
+		if (i == 4 || i == 7) {
+			continue;
+		}
+		if (!isdigit(input[i])) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+int		BitcoinExchange::checkStrs(std::string *strings){
+	size_t i = 0;
+	if (dateFormat(strings[0]) == false){
+		std::cout << "kk1" << std::endl;
+		return(BAD_FORMAT_DATE);
+	}
+	try{
+		std::stoi(strings[1]);
+	}
+	catch(std::out_of_range &err){
+		std::cout << "kk2" << std::endl;
+		return(BAD_NUMBER);
+	}
+	while(isdigit(strings[1][i]) && strings[1][i])
+		i++;
+	if(i == strings[1].length() - 1){
+		std::cout << "kk3" << std::endl;
+		return(BAD_NUMBER);
+	}
+	return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void	BitcoinExchange::loadStorage(std::string fileName, std::multimap<time_t, float> &storage, int limiter) {
 	std::ifstream file(fileName);
 	std::string str;
+	int flag;
+	std::string help[2];
+	float var;
 	struct tm aux;
 	size_t pos;
 	time_t time;
 
-	std::memset(&aux, 0, sizeof(aux));
+	
+	std::memset(&aux, 0, sizeof(help[0]));
 	if (!file.is_open()) {
 		throw std::runtime_error("Error: File could not be opened");
 	}
-	while (file >> str) {
-		pos = str.find((char)limiter); //DETECTAR POSICION
-		
-		std::cout << "(" << str.substr(0, pos) << ")" << std::endl;
-		
-		std::istringstream ss(str.substr(0, pos));
+	while (std::getline(file, str)) {
+		pos = str.find((char)limiter);
 
-		std::cout << ss << std::endl;
-		
-		ss >> std::get_time(&aux, "%Y-%m-%d");
-		time = mktime(&aux); //DETECTAR NEGATIVO
 
-		std::cout << time << std::endl;
+		this->StringEraseAp(pos, 1, str, ' ');
+		pos -= this->StringEraseAp(pos, -1, str, ' ');
 
-		try{
-			std::cout << std::stof(str.substr(pos + 1, str.length())) << std::endl;
+		help[0] = str.substr(0, pos);
+		help[1] = str.substr(pos + 1, str.length());
+
+		flag = this->checkStrs(help);
+
+		if(flag == 0){
+			std::istringstream ss(help[0]);
+			ss >> std::get_time(&aux, "%Y-%m-%d");
+			time = mktime(&aux);
+			var = std::stof(help[1]);
 		}
-		catch(std::invalid_argument &err){ //DETECTAR EXCEPCION
-			std::cout << "kk" << std::endl;
+		else{
+			if(flag == -1){
+				time = flag;
+				var = help[0].length();
+			}
+			else{
+				time = flag;
+				var = 0;
+			}
 		}
 
-		storage.insert(std::make_pair(time, std::stof(str.substr(pos + 1, str.length()))));
+		
+		storage.insert(std::make_pair(time, var));
 		//parseInsert(str, );
-  	}	
+	}	
 	file.close();
 }
 
 std::string BitcoinExchange::convertTimeToDate(time_t time) {
-    char buffer[11];
-    struct tm* timeinfo;
+	char buffer[11];
+	struct tm* timeinfo;
 
-    timeinfo = std::localtime(&time);
-    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d", timeinfo);
+	timeinfo = std::localtime(&time);
+	std::strftime(buffer, sizeof(buffer), "%Y-%m-%d", timeinfo);
 
-    return std::string(buffer);
+	return std::string(buffer);
 }
+
