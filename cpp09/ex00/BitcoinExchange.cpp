@@ -71,6 +71,7 @@ bool BitcoinExchange::dateFormat(const std::string& input) {
 
 int		BitcoinExchange::checkStrs(std::string *strings){
 	size_t i = 0;
+
 	if (dateFormat(strings[0]) == false){
 		std::cout << "kk1" << std::endl;
 		return(BAD_FORMAT_DATE);
@@ -82,6 +83,7 @@ int		BitcoinExchange::checkStrs(std::string *strings){
 		std::cout << "kk2" << std::endl;
 		return(BAD_NUMBER);
 	}
+	std::cout << strings[1] << std::endl;
 	while(isdigit(strings[1][i]) && strings[1][i])
 		i++;
 	if(i == strings[1].length() - 1){
