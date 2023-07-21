@@ -86,7 +86,7 @@ int		BitcoinExchange::checkStrs(std::string *strings){
 	std::cout << strings[1] << std::endl;
 	while(isdigit(strings[1][i]) && strings[1][i])
 		i++;
-	if(i == strings[1].length() - 1){
+	if(i != strings[1].length()){
 		std::cout << "kk3" << std::endl;
 		return(BAD_NUMBER);
 	}
