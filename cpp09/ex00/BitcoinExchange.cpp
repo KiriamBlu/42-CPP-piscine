@@ -123,9 +123,9 @@ void BitcoinExchange::loadStorage(std::string fileName, std::vector<std::pair<st
 		pos = str.find((char)limiter);
 
 		if(str[pos] == ' ')
-					str.erase(pos - 1);
+					str.erase(pos - 1, 1);
   if(str[pos + 1] == ' ')
-					str.erase(pos + 2);
+					str.erase(pos + 2, 1);
 		help[0] = str.substr(0, pos);
 		help[1] = str.substr(pos + 1, str.length());
 		std::cout << help[1] << std::endl;
