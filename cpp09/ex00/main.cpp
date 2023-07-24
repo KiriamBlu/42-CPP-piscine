@@ -10,7 +10,7 @@ int main(int argc, char **argv){
 	}
 
 	try{
-		std::multimap<time_t, float>	auxStorage;
+		std::vector<std::pair<std::string, float> >	auxStorage;
 
 		BitcoinExchange btc("data.csv");
 		//std::cout << btc << std::endl;
@@ -18,11 +18,13 @@ int main(int argc, char **argv){
 		btc.loadStorage(std::string(argv[1]), auxStorage, '|');
 
 
-		std::multimap<time_t, float>::const_iterator it = auxStorage.begin();
+		std::vector<std::pair<std::string, float> >::const_iterator it = auxStorage.begin();
 		size_t total_length = auxStorage.size();
 
-		for (size_t i = 0; i < total_length; i++)
+		for (size_t i = 0; i < total_length; i++){
 			std::cout << it->first << " | " << it->second << std::endl;
+			it++;
+		}
 
 	}
 	catch(std::runtime_error &err){

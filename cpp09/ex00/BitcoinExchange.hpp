@@ -2,11 +2,16 @@
 #define BITCOINEXCHANGE_HPP
 #include <string>
 #include <iostream>
-#include <map>
+#include <vector>
 #include <fstream>
 #include <iomanip>
 #include <sstream>
 #include <ctime>
+
+enum identifyer{
+	LOCAL = 0,
+	REMOTE = 1
+};
 
 enum errorStatus{
 	BAD_FORMAT_DATE = -1,
@@ -16,22 +21,25 @@ enum errorStatus{
 class	BitcoinExchange {
 
 	private:
-		std::multimap<time_t, float> storage;
+		std::vector<std::pair<std::string, float> > storage;
 
-		int 	StringEraseAp(int start, int iteratorDir, std::string &aux, int character);
-		int		checkStrs(std::string *strings);
-		bool	 dateFormat(const std::string& input);
+		int 													StringEraseAp(int start, int iteratorDir, std::string &aux, int character);
+		void													checkStrs(std::string date, float value);
 
 
 	public:
-		BitcoinExchange		( void );
-		BitcoinExchange		( std::string fileName );
-		~BitcoinExchange	( void );
+		BitcoinExchange	( void );
+		BitcoinExchange	( std::string fileName );
+		~BitcoinExchange( void );
 
-		void	loadStorage(std::string fileName, std::multimap<time_t, float> &storage, int limiter);
-		size_t 	size(void);
-		std::multimap<time_t, float>::iterator getIterator(void);
-		std::string	convertTimeToDate(time_t time);
+		size_t 													size(void);
+		std::vector<std::pair<std::string, float> >::iterator 	getIterator(void);
+		time_t													convertTimeToDate(std::string time);
+
+		void													findAndCompare(std::vector<std::pair<std::string, float> > storage);
+		void 													loadStorage(std::string fileName, std::vector<std::pair<std::string, float> >& storage, int limiter);
+
+
 };
 std::ostream& operator<<(std::ostream& out, BitcoinExchange& exchange);
 

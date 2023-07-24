@@ -16,12 +16,12 @@ size_t BitcoinExchange::size() {
 	return this->storage.size();
 }
 
-std::multimap<time_t, float>::iterator BitcoinExchange::getIterator() {
+std::vector<std::pair<std::string, float> >::iterator BitcoinExchange::getIterator() {
 	return this->storage.begin();
 }
 
 std::ostream& operator<<(std::ostream& out, BitcoinExchange& exchange) {
-	std::multimap<time_t, float>::const_iterator it = exchange.getIterator();
+	std::vector<std::pair<std::string, float> >::const_iterator it = exchange.getIterator();
 	size_t total_length = exchange.size();
 
 	for (size_t i = 0; i < total_length; i++) {
@@ -47,8 +47,7 @@ int BitcoinExchange::StringEraseAp(int start, int iteratorDir, std::string &aux,
 
 ////////////////////////////////////////Filters////////////////////////////////////////////////////
 
-
-bool BitcoinExchange::dateFormat(const std::string& input) {
+inline bool dateFormat(const std::string& input) {
 	if (input.length() != 10) {
 		return false;
 	}
@@ -69,90 +68,87 @@ bool BitcoinExchange::dateFormat(const std::string& input) {
 	return true;
 }
 
-int		BitcoinExchange::checkStrs(std::string *strings){
-	size_t i = 0;
+void BitcoinExchange::checkStrs(std::string date, float value) {
 
-	if (dateFormat(strings[0]) == false){
-		std::cout << "kk1" << std::endl;
-		return(BAD_FORMAT_DATE);
-	}
-	try{
-		std::stoi(strings[1]);
-	}
-	catch(std::out_of_range &err){
-		std::cout << "kk2" << std::endl;
-		return(BAD_NUMBER);
-	}
-	std::cout << strings[1] << std::endl;
-	while(isdigit(strings[1][i]) && strings[1][i])
-		i++;
-	if(i != strings[1].length()){
-		std::cout << "kk3" << std::endl;
-		return(BAD_NUMBER);
-	}
-	return 0;
+	if (dateFormat(date) == false)
+		throw std::runtime_error("");;
+
+	
+	if(value == -1)
+		throw std::runtime_error("");
+
+	if(value == -2)
+		throw std::runtime_error("String out of index");
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void	BitcoinExchange::loadStorage(std::string fileName, std::multimap<time_t, float> &storage, int limiter) {
+void BitcoinExchange::findAndCompare(std::vector<std::pair<std::string, float> > storage){
+	std::vector<std::pair<std::string, float> >::iterator it[2];
+	std::string str_pair[2];
+	float float_pair[2];
+
+	(void)storage;
+
+	for (it[1] = storage.begin(); it[1] != storage.end(); it[1]++) {
+		str_pair[REMOTE] = it[1]->first;
+		float_pair[REMOTE] = it[1]->second;
+
+		try {
+			for (it[0] = this->getIterator(); it[0] != this->storage.end(); it[0]++) {
+				str_pair[LOCAL] = it[0]->first;
+				float_pair[LOCAL] = it[0]->second;
+			}
+		}
+		catch(std::runtime_error& err) {
+			std::cout << err.what() << std::endl;
+		}
+	}
+}
+
+void BitcoinExchange::loadStorage(std::string fileName, std::vector<std::pair<std::string, float> >& storage, int limiter) {
 	std::ifstream file(fileName);
 	std::string str;
-	int flag;
 	std::string help[2];
+
 	float var;
 	struct tm aux;
 	size_t pos;
-	time_t time;
 
-	
-	std::memset(&aux, 0, sizeof(help[0]));
+	std::memset(&aux, 0, sizeof(aux));
 	if (!file.is_open()) {
 		throw std::runtime_error("Error: File could not be opened");
 	}
 	while (std::getline(file, str)) {
 		pos = str.find((char)limiter);
 
+		help[0] = str.substr(0, pos - 1);
+		help[1] = str.substr(pos + 2, str.length());
+		std::cout << help[1] << std::endl;
 
-		this->StringEraseAp(pos, 1, str, ' ');
-		pos -= this->StringEraseAp(pos, -1, str, ' ');
-
-		help[0] = str.substr(0, pos);
-		help[1] = str.substr(pos + 1, str.length());
-
-		flag = this->checkStrs(help);
-
-		if(flag == 0){
-			std::istringstream ss(help[0]);
-			ss >> std::get_time(&aux, "%Y-%m-%d");
-			time = mktime(&aux);
-			var = std::stof(help[1]);
+		try {
+			var = stof(help[1]); //ADD TRY	
 		}
-		else{
-			if(flag == -1){
-				time = flag;
-				var = help[0].length();
-			}
-			else{
-				time = flag;
-				var = 0;
-			}
+		catch(...) {
+			var = -1;
 		}
-
-		
-		storage.insert(std::make_pair(time, var));
-		//parseInsert(str, );
+		if (str.length() < 14 && str.length() > 17)
+			var = -2;
+		if (var < 0 || var > 1000) {
+			var = -1;
+		}
+		storage.push_back(std::make_pair(help[0], var));
 	}	
 	file.close();
 }
 
-std::string BitcoinExchange::convertTimeToDate(time_t time) {
-	char buffer[11];
-	struct tm* timeinfo;
+time_t BitcoinExchange::convertTimeToDate(std::string help) {
+	struct tm timeinfo;
+	time_t time;
 
-	timeinfo = std::localtime(&time);
-	std::strftime(buffer, sizeof(buffer), "%Y-%m-%d", timeinfo);
+	std::istringstream ss(help);
+	ss >> std::get_time(&timeinfo, "%Y-%m-%d");
+	time = mktime(&timeinfo);
 
-	return std::string(buffer);
+	return time;
 }
-
