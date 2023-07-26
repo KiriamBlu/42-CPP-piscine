@@ -68,21 +68,38 @@ inline bool dateFormat(const std::string& input) {
 	return true;
 }
 
+inline std::string cleanValue(std::string var)
+{
+	size_t i, f;
+
+	i = 0;
+	f = var.length() - 1;
+	while((var[f] == '0' || var[f] == '.') && f > 0){
+		i++;
+		f--;
+	}
+	var.erase(var.length() - i, i);
+	return var;
+}
+
 void BitcoinExchange::crossValue(time_t date, float value){
 	std::vector<std::pair<std::string, float> >::iterator it;
 	time_t lastVal[2];
+	float	var;
 
 	memset(&lastVal, 0, sizeof(lastVal));
 	for (it = this->getIterator(); it != this->storage.end(); it++) {
 		lastVal[1] = convertDateToTime(it->first);
-		if(lastVal[0] == 0)
-			lastVal[0] = lastVal[1];
 		if(lastVal[1] > date){
-			std::cout << convertTimeToDate(lastVal[0]) << " "  << std::to_string(value) << " " << std::to_string((int)it->second * value) << std::endl;
+			if(abs(lastVal[0] - date) > abs(lastVal[1] - date))
+				std::cout << convertTimeToDate(lastVal[0]) << " => "  << cleanValue(std::to_string(var)) << " = " <<  cleanValue(std::to_string(var * value)) << std::endl;
+			else
+				std::cout << convertTimeToDate(lastVal[1]) << " => "  <<  cleanValue(std::to_string(value)) << " = " <<  cleanValue(std::to_string(it->second * value)) << std::endl;
 			return	;
 		}
 		else{
 			lastVal[0] = lastVal[1];
+			var = it->second;
 		}
 	}	
 } 
@@ -99,7 +116,7 @@ void BitcoinExchange::checkValues(std::string date, float value) {
 		throw std::runtime_error("Error: bad number");
 
 	if(value == OUT_RANGE_NEGATIVE)
-		throw std::runtime_error("Error: not a positive number.");
+		throw std::runtime_error("Error: not a positive number. ");
 
 	if(value == OUT_RANGE_1000)
 		throw std::runtime_error("Error: too large a number.");
@@ -133,7 +150,7 @@ inline float getNumber(std::string numStr){
 	bool flag = true;
 	unsigned long i = 0;
 
-	while((isdigit(numStr[i]) || (numStr[i] == '.' && flag == true)) && numStr[i]){
+	while((isdigit(numStr[i]) || (numStr[i] == '.' && flag == true) || numStr[i] == '-') && numStr[i]){
 		if (numStr[i] == '.')
 			flag = false;
 		i++;
