@@ -1,5 +1,7 @@
 #include "BitcoinExchange.hpp"
 
+
+///////////////////////////////////CLASS-STUFF////////////////////////////////////////
 BitcoinExchange::BitcoinExchange(std::string fileName) {
 	try {
 		this->loadStorage(fileName, this->storage, ',', 0);
@@ -10,14 +12,6 @@ BitcoinExchange::BitcoinExchange(std::string fileName) {
 }
 
 BitcoinExchange::~BitcoinExchange() {
-}
-
-size_t BitcoinExchange::size() {
-	return this->storage.size();
-}
-
-std::vector<std::pair<std::string, float> >::iterator BitcoinExchange::getIterator() {
-	return this->storage.begin();
 }
 
 std::ostream& operator<<(std::ostream& out, BitcoinExchange& exchange) {
@@ -47,25 +41,102 @@ int BitcoinExchange::StringEraseAp(int start, int iteratorDir, std::string &aux,
 
 ////////////////////////////////////////Filters////////////////////////////////////////////////////
 
+inline bool isLeapYear(int year) {
+    return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+}
+
+inline bool isValidDate(int day, int month, int year) {
+    int daysInMonth[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    if (year < 1 || month < 1 || month > 12 || day < 1) {
+        return false;
+    }
+
+    if (isLeapYear(year)) {
+        daysInMonth[2] = 29;
+    }
+
+    return day <= daysInMonth[month];
+}
+
 inline bool dateFormat(const std::string& input) {
-	if (input.length() != 10) {
-		return false;
-	}
+    if (input.length() != 10) {
+        return false;
+    }
 
-	if (input[4] != '-' || input[7] != '-') {
-		return false;
-	}
+    if (input[4] != '-' || input[7] != '-') {
+        return false;
+    }
 
-	for (int i = 0; i < 10; i++) {
-		if (i == 4 || i == 7) {
-			continue;
-		}
-		if (!isdigit(input[i])) {
-			return false;
-		}
+    for (int i = 0; i < 10; i++) {
+        if (i == 4 || i == 7) {
+            continue;
+        }
+        if (!isdigit(input[i])) {
+            return false;
+        }
+    }
+
+    int year = std::stoi(input.substr(0, 4));
+    int month = std::stoi(input.substr(5, 2));
+    int day = std::stoi(input.substr(8, 2));
+
+    return isValidDate(day, month, year);
+}
+
+
+inline float getNumber(std::string numStr){
+	float var;
+	bool flag = true;
+	unsigned long i = 0;
+
+	while((isdigit(numStr[i]) || (numStr[i] == '.' && flag == true) || numStr[i] == '-') && numStr[i]){
+		if (numStr[i] == '.')
+			flag = false;
+		i++;
 	}
-	//CHECK IF ITS POSIBLE
-	return true;
+	if(numStr.length() != i)
+		return BAD_NUMBER;
+
+	var = stof(numStr);
+	if (var > 1000) 
+		return OUT_RANGE_1000;
+	if (var < 0)
+		return OUT_RANGE_NEGATIVE;
+	return(var);
+}
+
+
+////////////////////////////////////////////AUXILIARS/////////////////////////////////////////////////
+
+size_t BitcoinExchange::size() {
+	return this->storage.size();
+}
+
+std::vector<std::pair<std::string, float> >::iterator BitcoinExchange::getIterator() {
+	return this->storage.begin();
+}
+
+time_t BitcoinExchange::convertDateToTime(std::string help) {
+	struct tm timeinfo;
+	std::istringstream ss(help);
+	time_t time;
+
+	memset(&timeinfo, 0, sizeof(timeinfo));
+	ss >> std::get_time(&timeinfo, "%Y-%m-%d");
+	time = mktime(&timeinfo);
+
+	return time;
+}
+
+std::string BitcoinExchange::convertTimeToDate(time_t time) {
+	char buffer[11];
+	struct tm* timeinfo;
+
+	timeinfo = std::localtime(&time);
+	std::strftime(buffer, sizeof(buffer), "%Y-%m-%d", timeinfo);
+
+	return std::string(buffer);
 }
 
 inline std::string cleanValue(std::string var)
@@ -82,6 +153,8 @@ inline std::string cleanValue(std::string var)
 	return var;
 }
 
+/////////////////////////////////////////////MAIN-FUNCTIONS/////////////////////////////////////////////////////
+
 void BitcoinExchange::crossValue(time_t date, float value){
 	std::vector<std::pair<std::string, float> >::iterator it;
 	time_t lastVal[2];
@@ -92,9 +165,9 @@ void BitcoinExchange::crossValue(time_t date, float value){
 		lastVal[1] = convertDateToTime(it->first);
 		if(lastVal[1] > date){
 			if(abs(lastVal[0] - date) > abs(lastVal[1] - date))
-				std::cout << convertTimeToDate(lastVal[0]) << " => "  << cleanValue(std::to_string(var)) << " = " <<  cleanValue(std::to_string(var * value)) << std::endl;
+				std::cout << convertTimeToDate(lastVal[1]) << " => "  << cleanValue(std::to_string(value)) << " = " <<  cleanValue(std::to_string(var * value)) << std::endl;
 			else
-				std::cout << convertTimeToDate(lastVal[1]) << " => "  <<  cleanValue(std::to_string(value)) << " = " <<  cleanValue(std::to_string(it->second * value)) << std::endl;
+				std::cout << convertTimeToDate(lastVal[0]) << " => "  <<  cleanValue(std::to_string(value)) << " = " <<  cleanValue(std::to_string(it->second * value)) << std::endl;
 			return	;
 		}
 		else{
@@ -124,7 +197,6 @@ void BitcoinExchange::checkValues(std::string date, float value) {
 	this->crossValue(convertDateToTime(date), value);
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void BitcoinExchange::findAndCompare(std::vector<std::pair<std::string, float> > storage){
 	std::vector<std::pair<std::string, float> >::iterator it;
@@ -137,7 +209,7 @@ void BitcoinExchange::findAndCompare(std::vector<std::pair<std::string, float> >
 		str = it->first;
 		floatVal = it->second;
 		try {
-			checkValues(str, floatVal);
+			this->checkValues(str, floatVal);
 		}
 		catch(std::runtime_error& err) {
 			std::cout << err.what() << std::endl;
@@ -145,26 +217,6 @@ void BitcoinExchange::findAndCompare(std::vector<std::pair<std::string, float> >
 	}
 }
 
-inline float getNumber(std::string numStr){
-	float var;
-	bool flag = true;
-	unsigned long i = 0;
-
-	while((isdigit(numStr[i]) || (numStr[i] == '.' && flag == true) || numStr[i] == '-') && numStr[i]){
-		if (numStr[i] == '.')
-			flag = false;
-		i++;
-	}
-	if(numStr.length() != i)
-		return BAD_NUMBER;
-
-	var = stof(numStr);
-	if (var > 1000) 
-		return OUT_RANGE_1000;
-	if (var < 0)
-		return OUT_RANGE_NEGATIVE;
-	return(var);
-}
 
 void BitcoinExchange::loadStorage(std::string fileName, std::vector<std::pair<std::string, float> >& storage, int limiter, bool flag = 0) {
 	std::ifstream file(fileName);
@@ -179,6 +231,8 @@ void BitcoinExchange::loadStorage(std::string fileName, std::vector<std::pair<st
 	if (!file.is_open()) {
 		throw std::runtime_error("Error: File could not be opened");
 	}
+	if(flag == 1)
+		std::getline(file, str);
 	while (std::getline(file, str)) {
 		pos = str.find((char)limiter);
 
@@ -201,24 +255,4 @@ void BitcoinExchange::loadStorage(std::string fileName, std::vector<std::pair<st
 	file.close();
 }
 
-time_t BitcoinExchange::convertDateToTime(std::string help) {
-	struct tm timeinfo;
-	std::istringstream ss(help);
-	time_t time;
 
-	memset(&timeinfo, 0, sizeof(timeinfo));
-	ss >> std::get_time(&timeinfo, "%Y-%m-%d");
-	time = mktime(&timeinfo);
-
-	return time;
-}
-
-std::string BitcoinExchange::convertTimeToDate(time_t time) {
-	char buffer[11];
-	struct tm* timeinfo;
-
-	timeinfo = std::localtime(&time);
-	std::strftime(buffer, sizeof(buffer), "%Y-%m-%d", timeinfo);
-
-	return std::string(buffer);
-}
