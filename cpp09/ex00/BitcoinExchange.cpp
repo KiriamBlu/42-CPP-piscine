@@ -41,11 +41,11 @@ int BitcoinExchange::StringEraseAp(int start, int iteratorDir, std::string &aux,
 
 ////////////////////////////////////////Filters////////////////////////////////////////////////////
 
-inline bool isLeapYear(int year) {
+static inline bool isLeapYear(int year) {
     return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
 }
 
-inline bool isValidDate(int day, int month, int year) {
+static inline bool isValidDate(int day, int month, int year) {
     int daysInMonth[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     if (year < 1 || month < 1 || month > 12 || day < 1) {
@@ -59,7 +59,7 @@ inline bool isValidDate(int day, int month, int year) {
     return day <= daysInMonth[month];
 }
 
-inline bool dateFormat(const std::string& input) {
+static inline bool dateFormat(const std::string& input) {
     if (input.length() != 10) {
         return false;
     }
@@ -85,7 +85,7 @@ inline bool dateFormat(const std::string& input) {
 }
 
 
-inline float getNumber(std::string numStr){
+static inline float getNumber(std::string numStr){
 	float var;
 	bool flag = true;
 	unsigned long i = 0;
@@ -139,7 +139,7 @@ std::string BitcoinExchange::convertTimeToDate(time_t time) {
 	return std::string(buffer);
 }
 
-inline std::string cleanValue(std::string var)
+static inline std::string cleanValue(std::string var)
 {
 	size_t i, f;
 
