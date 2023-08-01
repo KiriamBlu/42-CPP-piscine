@@ -2,17 +2,28 @@
 #define RPN_HPP
 #include <string>
 #include <iostream>
+#include <stack>
+
 
 class	RPN {
 
 	private:
+		std::stack<int> storage;
+		std::string str;
+
+		bool 			compareWithDict(int character, std::string dict);
+		int 			operateTwoValues(int value1, int value2, int op);
+		int 			popAndRet(void);
+		std::string		checkRPN(std::string str);
 
 	public:
 
-		RPN ( void );
 		RPN ( std::string str );
-		RPN ( const RPN & var );
-		RPN~ ( void );
+		~RPN ( void );
+
+
+		void    setNewStr(std::string newStr);
+		void    operate(void);
 };
 
 #endif
