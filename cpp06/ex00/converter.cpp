@@ -33,7 +33,8 @@ void Converter::print_Value(char type, const std::string& value, std::ostream& o
         setDouble(inputString);
         os << getValueDouble() << std::endl;
     }
-  } catch (const char* err){
+  } 
+  catch (const char* err){
    os  << err << std::endl;
   }
 }
@@ -47,19 +48,21 @@ std::ostream &operator<<(std::ostream& os,Converter &tmp) {
 } 
 
 void Converter::setChar(std::string &str){
-  if (!isprint(std::stoi(str)))
-    throw "Non displeyeable";
-  try{
-      valueChar = static_cast<char>(std::stoi(str));
+  try {
+    float intValue = std::stoi(str);
+    if (!isprint(intValue))
+      throw "Non displayable";
+    valueChar = static_cast<char>(intValue);
   }
   catch (...) {
     throw "Impossible";
   }
 }
 
+
 void Converter::setInt(std::string &str){
   try{
-    valueInt = static_cast<int>(std::stoi(str));;
+    valueInt = static_cast<int>(std::stoi(str));
   } 
   catch (...) {
     throw "Impossible";
@@ -84,7 +87,7 @@ void Converter::setFloat(std::string &str){
     
     try{
       valueFloat = static_cast<float>(std::stof(str));
-    } 
+    }
     catch (...) {
       throw "Impossible";
     }
@@ -109,7 +112,7 @@ void  Converter::setDouble(std::string &str){
     
     try{
       valueDouble = static_cast<double>(std::stod(str));
-    } 
+    }
     catch (...) {
       throw "Impossible";
     }

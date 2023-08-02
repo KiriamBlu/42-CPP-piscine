@@ -37,7 +37,6 @@ int main(){
         std::cout << doubleArray[i] << " ";
     std::cout << std::endl;
 
-    // Prueba con charArray y función printChar
     std::cout << "charArray: ";
     ::iter(charArray, charArrayLength, printItem<char>);
     std::cout << std::endl;

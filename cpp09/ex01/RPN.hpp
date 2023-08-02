@@ -12,7 +12,7 @@ class	RPN {
 		std::string str;
 
 		bool 			compareWithDict(int character, std::string dict);
-		int 			operateTwoValues(int value1, int value2, int op);
+		int 			operateTwoValues(int value2, int value1, int op);
 		int 			popAndRet(void);
 		std::string		checkRPN(std::string str);
 

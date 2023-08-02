@@ -33,7 +33,8 @@ int main() {
 		std::cout << "Element " << *iter << " found at index: " << std::distance(vec.begin(), iter) << std::endl;
 		
 	}
-	catch(std::exception &e){
+	catch(
+		){
 		std::cout << e.what() << std::endl;
 	}
 	return 0;
