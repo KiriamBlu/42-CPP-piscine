@@ -227,7 +227,7 @@ void BitcoinExchange::crossValue(time_t date, float value) {
         lastVal[1] = convertDateToTime(it->first);
         if (lastVal[1] > date) {
             if (std::abs(lastVal[0] - date) > std::abs(lastVal[1] - date)) {
-                char valueBuffer[32];
+                char valueBuffer[3];
                 sprintf(valueBuffer, "%f", value);
 
                 char productBuffer[32];
@@ -235,7 +235,7 @@ void BitcoinExchange::crossValue(time_t date, float value) {
 
                 std::cout << convertTimeToDate(lastVal[1]) << " => " << cleanValue(std::string(valueBuffer)) << " = " << cleanValue(std::string(productBuffer)) << std::endl;
             } else {
-                char valueBuffer[32];
+                char valueBuffer[3];
                 sprintf(valueBuffer, "%f", value);
 
                 char productBuffer[32];
