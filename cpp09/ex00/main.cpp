@@ -10,12 +10,9 @@ int main(int argc, char **argv){
 	}
 
 	try{
-		std::vector<std::pair<std::string, float> >	auxStorage;
-
 		BitcoinExchange btc("data.csv");
-		btc.loadStorage(std::string(argv[1]), auxStorage, '|', 1);
-
-		btc.findAndCompare(auxStorage);
+		std::cout << btc;
+		btc.findAndCompare(std::string(argv[1]));
 	}
 	catch(std::runtime_error &err){
 		std::cout << err.what() << std::endl; 
