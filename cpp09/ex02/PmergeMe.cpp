@@ -1,58 +1,62 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   PmergeMe.cpp                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/03 15:15:25 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/12/02 16:41:42 by jsanfeli         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "PmergeMe.hpp"
 
-PmergeMe::PmergeMe( void ) {
 
-  std::cout << "Default constructor called" << std::endl;
-  return ;
+//void beginShort(void);
+//size_t binarySearch(size_t start, size_t end, int value);
+
+/**************************************======CONSTRUCTOR======***************************************/
+
+MergeInsortMaker::MergeInsortMaker( container contenedor, 
+                                    int ( *getNumber )( size_t index ),
+                                    void ( *insertNumberInPos )( size_t index, int number, bool flag),
+                                    size_t ( *size )( void )):
+                                    _contenedor(contenedor),
+                                    getNumber(getNumber),
+                                    insertNumberInPos(insertNumberInPos),
+                                    size(size)
+                                    {
+
+                                    }
+
+/**************************************========METHODS========***************************************/
+
+bool    MergeInsortMaker::bigger(size_t position1, size_t position2, bool equal){
+  return(
+        equal == 1 ?
+        (getNumber(position1) >= getNumber(position2))
+         : 
+        (getNumber(position1) > getNumber(position2))
+        );
 }
 
-PmergeMe::PmergeMe( std::string str ) {
 
-  (void) str;
-  std::cout << "Parameter constructor called" << std::endl;
-  return ;
-  
+size_t  binarySearch(int value, size_t start, size_t end, MergeInsortMaker contenedor){
+  int comparativeValue;
+  size_t size;
+
+  comparativePos = floor((end / 2)) - 1;
+  comparativeValue = contenedor.getNumber(comparativePos);
+
+  if(mod(end - 1 - comparativePos) == 1 ){
+    if(comparativeValue > value)
+      return(comparativePos);
+    else
+      return(end);
+  }
+
+  if( comparativeValue > value ){
+    return( binarySearch(value, start, comparativePos, contenedor) );
+  } else{
+    return( binarySearch(value, comparativePos, end, contenedor) );
+  } 
+
 }
 
-PmergeMe::PmergeMe( const PmergeMe & var ) {
-  
-  std::cout << "Copy constructor called" << std::endl;
-  *this = var;
-  return ;
-  
-}
+/**************************************==LIST_IMPLEMENTATION==***************************************/
 
-PmergeMe::~PmergeMe( void ) {
-  
-  std::cout << "Destructor called" << std::endl;
-  return ;
+/**************************************=VECTOR_IMPLEMENTATION=***************************************/
 
-}
+/**************************************========================**************************************/
 
-PmergeMe & PmergeMe::operator=(const PmergeMe &tmp) {
-
-  (void) tmp;
-  std::cout << "Operator equalizer called" << std::endl;
-  return (*this);
-  
-}
-
-std::ostream &operator<<(std::ostream& os, const PmergeMe &tmp) {
-
-  (void) tmp;
-	os << std::endl << "Operator output called" << std::endl;
-	return (os);
-  
-}

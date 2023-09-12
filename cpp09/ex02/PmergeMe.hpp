@@ -1,36 +1,38 @@
+#ifndef MERGEINSORTMAKER_HPP
+#define MERGEINSORTMAKER_HPP
 
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   PmergeMe.hpp                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/03 15:15:25 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/03/03 15:58:16 by jsanfeli         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#ifndef PMERGEME_HPP
-#define PMERGEME_HPP
 #include <string>
 #include <iostream>
+#include <vector>
+#include <list>
 
-// Std list
-// Std vector
+#define IDLE -1
 
-class	PmergeMe {
+template <typename container>
+class MergeInsortMaker {
 
-	private:
+private:
+    container _contenedor;
 
-	public:
+    int (*getNumber)(size_t index);
+    void (*insertNumberInPos)(size_t index, int number, bool flag);
+    size_t (*size)(void);
 
-		PmergeMe 			( void );
-		PmergeMe 			( std::string str );
-		PmergeMe 			( const PmergeMe & var );
-		~PmergeMe			( void );
-		PmergeMe &operator=	(const PmergeMe &tmp);
+
+public:
+
+    MergeInsortMaker(container contenedor,
+                     int (*getNumber)(size_t index),
+                     void (*insertNumberInPos)(size_t index, int number),
+                     size_t (*size)(void));
+
+    bool bigger(size_t position1, size_t position2, bool equal);
+
+
+    ~MergeInsortMaker(void);
+    int& operator[](size_t index);
 };
-std::ostream &operator<<(std::ostream& os, const PmergeMe &tmp);
+
+std::ostream &operator<<(std::ostream &os, const MergeInsortMaker &tmp);
 
 #endif
