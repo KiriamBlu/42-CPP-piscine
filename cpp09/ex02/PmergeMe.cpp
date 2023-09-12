@@ -33,11 +33,8 @@ bool    MergeInsortMaker::bigger(size_t position1, size_t position2, bool equal)
 
 
 size_t  binarySearch(int value, size_t start, size_t end, MergeInsortMaker contenedor){
-  int comparativeValue;
-  size_t size;
-
-  comparativePos = floor((end / 2)) - 1;
-  comparativeValue = contenedor.getNumber(comparativePos);
+  size_t comparativePos = floor((end / 2)) - 1;
+  int comparativeValue = contenedor.getNumber(comparativePos);
 
   if(mod(end - 1 - comparativePos) == 1 ){
     if(comparativeValue > value)
