@@ -93,20 +93,3 @@ public:
 
 };
 
-template <typename container>
-typename container::iterator binarySearch(int value, typename container::iterator start, typename container::iterator end) {
-    while (start != end) {
-        typename container::iterator mid = start;
-        std::advance(mid, std::distance(start, end) / 2);
-
-        if (*mid == value)
-            return mid;
-
-        if (*mid > value)
-            end = mid;
-        else
-            start = ++mid;
-    }
-
-    return end;
-}

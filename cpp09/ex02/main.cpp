@@ -1,4 +1,24 @@
 
+#include "PmergeMe.hpp"
+
+template <typename container>
+typename container::iterator binarySearch(int value, typename container::iterator start, typename container::iterator end) {
+    while (start != end) {
+        typename container::iterator mid = start;
+        std::advance(mid, std::distance(start, end) / 2);
+
+        if (*mid == value)
+            return mid;
+
+        if (*mid > value)
+            end = mid;
+        else
+            start = ++mid;
+    }
+
+    return end;
+}
+
 int main() {
     std::vector<int> vec;
     vec.push_back(5);
@@ -9,7 +29,6 @@ int main() {
 
     MergeInsortMaker<std::vector<int> > maker(vec, getNumberVector, insertNumberInPosVector, sizeVector);
 
-    // Usar la clase MergeInsortMaker con un vector
 
     std::list<int> lst;
     lst.push_back(5);
@@ -20,37 +39,36 @@ int main() {
 
     MergeInsortMaker<std::list<int> > maker2(lst, getNumberList, insertNumberInPosList, sizeList);
 
-    // Usar la clase MergeInsortMaker con una lista
 
     return 0;
 }
 
-// Funciones para obtener un número de un iterador en un vector
+
+
 int getNumberVector(typename std::vector<int>::iterator it) {
     return *it;
 }
 
 void insertNumberInPosVector(typename std::vector<int>::iterator it, bool flag , int num = 0 ) {
     if (flag == INSERT)
-        it = _contenedor.insert(it, num); // Corrección: Utilizar _contenedor en lugar de vec
+        it = _contenedor.insert(it, num);
     else
-        it = _contenedor.emplace(it, num); // Corrección: Utilizar emplace en lugar de insert
+        it = _contenedor.emplace(it, num);
 }
 
 size_t sizeVector(const std::vector<int>& v) {
     return v.size();
 }
 
-// Funciones para obtener un número de un iterador en una lista
 int getNumberList(typename std::list<int>::iterator it) {
     return *it;
 }
 
 void insertNumberInPosList(typename std::list<int>::iterator it, bool flag ,int num = 0) {
     if (flag == INSERT)
-        it = _contenedor.insert(it, num); // Corrección: Utilizar _contenedor en lugar de lst
+        it = _contenedor.insert(it, num);
     else
-        it = _contenedor.emplace(it, num); // Corrección: Utilizar emplace en lugar de insert
+        it = _contenedor.emplace(it, num);
 }
 
 size_t sizeList(const std::list<int>& l) {
