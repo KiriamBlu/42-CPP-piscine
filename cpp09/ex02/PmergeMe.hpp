@@ -15,36 +15,57 @@ private:
     size_t _itPos;
 
 public:
-    int (*getNumber)(typename container::iterator);
-    void (*insertNumberInPos)(typename container::iterator, bool, int);
-    size_t (*size)(const container&);
-
     MergeInsortMaker(container contenedor) : _contenedor(contenedor) {
         begin();
     }
 
-    MergeInsortMaker( container contenedor, 
-                      int (*getNumberFunc)(typename container::iterator),
-                      void (*insertNumberInPosFunc)(typename container::iterator, bool, int),
-                      size_t (*sizeFunc)(const container&)): 
-                      _contenedor(contenedor), 
-                      getNumber(getNumberFunc),
-                      insertNumberInPos(insertNumberInPosFunc), 
-                      size(sizeFunc) 
-    {
-        begin();
+    typename container::iterator binarySearch(int value, typename container::iterator start, typename container::iterator end) {
+	    int comparativeValue;
+	    typename container::iterator comparativePos;
+
+	    comparativePos = start;
+	    comparativeValue = getNumber(comparativePos, floor(end - start) / 2);
+
+	    if (start == end) {
+	        return comparativePos;
+	    }
+
+	    if (comparativeValue == value) {
+	        return comparativePos;
+	    }
+
+	    if (bigger(comparativePos, start, true)) { 
+	        return binarySearch(value, start, comparativePos);
+	    } else {
+	        return binarySearch(value, ++comparativePos, end);
+	    }
+	}
+
+
+    int getNumber(size_t position) {
+        int direction = position - _itPos;
+
+        while (position != _itPos)
+            next(direction < 0 ? PREV : NEXT);
+
+        return *_current;
     }
 
-    void copyFunctions(const MergeInsortMaker<container> &second) {
-        this->getNumber = second.getNumber;
-        this->insertNumberInPos = second.insertNumberInPos;
-        this->size = second.size;
+    void insertNumberInPos(bool flag, int num = INSERT) { // Cambio aquí
+        if (flag != DELETE)
+            _current = _contenedor.insert(_current, num);
+        else
+            _current = _contenedor.erase(_current);
+    }
+
+    size_t size() const { // Cambio aquí
+        return _contenedor.size();
     }
 
     bool bigger(typename container::iterator position1, typename container::iterator position2, bool equal) const {
         return (equal ? 
-            getNumber(position1) >= getNumber(position2) : 
-            getNumber(position1) > getNumber(position2));
+            *position1 >= *position2 : 
+            *position1 > *position2);
     }
 
     void begin() {
@@ -61,21 +82,22 @@ public:
         _current += flag;
         _itPos += flag;
 
-        if(_itPos < 0)
+        if (_itPos < 0)
             begin();
-        if(_itPos >= size())
+        if (_itPos >= size())
             end();
     }
+
 
     bool isEnd() const {
         return _current == _contenedor.end();
     }
 
     void insert(bool flag, int num = INSERT) {
-        if(flag != DELETE)
-            insertNumberInPos(_contenedor.begin(), flag, num);
+        if (flag != DELETE)
+            _current = _contenedor.insert(_current, num);
         else
-            insertNumberInPos(_contenedor.begin(), flag);
+            _current = _contenedor.erase(_current);
     }
 
     int& operator*() {
@@ -83,24 +105,26 @@ public:
     }
 
     int& operator[](size_t index) {
-        size_t capacity = size();
-        int direction = static_cast<int>(index) - static_cast<int>(_itPos);
+		int direction = index - _itPos;
 
-        while(index != _itPos) {
-            next(direction < 0 ? PREV : NEXT );
-        }
-        return *_current;
+		while (index != _itPos)
+			next(direction < 0 ? PREV : NEXT);
+
+		return *_current;
     }
-	
-	std::ostream& print(std::ostream& os) const {
+
+    std::ostream& print(std::ostream& os) const {
         os << "MergeInsortMaker Content: ";
-        for (typename container::iterator it = _contenedor.begin(); it != _contenedor.end(); ++it) {
-            os << *it << " ";
+        for (begin(); isEnd(); next()) {
+            os << *_current << " ";
         }
         return os;
     }
 };
 
+template <typename container>
+std::ostream& operator<<(std::ostream& os, const MergeInsortMaker<container>& maker) {
+    return maker.print(os);
+}
 
-std::ostream& operator<<(std::ostream& os, const MergeInsortMaker<container>& maker);
 

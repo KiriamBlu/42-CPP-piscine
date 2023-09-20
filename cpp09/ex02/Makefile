@@ -4,7 +4,7 @@ VERSION = --std=c++98
 
 CXXFLAGS = -Wall -Werror -Wextra $(VERSION) -Wshadow  -Wno-shadow
 
-SRCS = PmergeMe.cpp PmergeMe.hpp
+SRCS = main.cpp PmergeMe.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
