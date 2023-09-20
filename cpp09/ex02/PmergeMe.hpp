@@ -7,7 +7,6 @@
 #define NEXT 1
 #define PREV -1
 
-
 template <typename container>
 class MergeInsortMaker {
 private:
@@ -15,34 +14,32 @@ private:
     typename container::iterator _current;
     size_t _itPos;
 
-
 public:
     int (*getNumber)(typename container::iterator);
     void (*insertNumberInPos)(typename container::iterator, bool, int);
     size_t (*size)(const container&);
 
     MergeInsortMaker(container contenedor) : _contenedor(contenedor) {
-    	begin();
+        begin();
     }
 
     MergeInsortMaker( container contenedor, 
                       int (*getNumberFunc)(typename container::iterator),
                       void (*insertNumberInPosFunc)(typename container::iterator, bool, int),
                       size_t (*sizeFunc)(const container&)): 
-    				  _contenedor(contenedor), 
-    				  getNumber(getNumberFunc),
-        			  insertNumberInPos(insertNumberInPosFunc), 
-        			  size(sizeFunc) 
-        			  {
-        			  	begin();
-        			  }
+                      _contenedor(contenedor), 
+                      getNumber(getNumberFunc),
+                      insertNumberInPos(insertNumberInPosFunc), 
+                      size(sizeFunc) 
+    {
+        begin();
+    }
 
-   	MergeInsortMaker<container> copyFunctions( MergeInsortMaker<container> &second ){
-   		this->getNumber = second.getNumber;
-	    this->insertNumberInPos = second.insertNumberInPos;
-	    this->size = second.size;
-
-   	}
+    void copyFunctions(const MergeInsortMaker<container> &second) {
+        this->getNumber = second.getNumber;
+        this->insertNumberInPos = second.insertNumberInPos;
+        this->size = second.size;
+    }
 
     bool bigger(typename container::iterator position1, typename container::iterator position2, bool equal) const {
         return (equal ? 
@@ -55,15 +52,19 @@ public:
         _itPos = 0;
     }
 
+    void end() {
+        _current = _contenedor.end();
+        _itPos = size();
+    }
+
     void next(bool flag = NEXT) {
-    	if(flag != PREV){
-	        ++_current;
-	        ++_itPos;
-    	}
-    	else{
-    		--_current;
-	        --_itPos;
-    	}
+        _current += flag;
+        _itPos += flag;
+
+        if(_itPos < 0)
+            begin();
+        if(_itPos >= size())
+            end();
     }
 
     bool isEnd() const {
@@ -71,10 +72,10 @@ public:
     }
 
     void insert(bool flag, int num = INSERT) {
-    	if(flag != DELETE)
-        	insertNumberInPos(_contenedor.begin(), flag, num);
+        if(flag != DELETE)
+            insertNumberInPos(_contenedor.begin(), flag, num);
         else
-        	insertNumberInPos(_contenedor.begin(), flag);
+            insertNumberInPos(_contenedor.begin(), flag);
     }
 
     int& operator*() {
@@ -82,14 +83,24 @@ public:
     }
 
     int& operator[](size_t index) {
-        if (index < size(_contenedor)) {
-            typename container::iterator it = _contenedor.begin();
-            std::advance(it, index);
-            return *it;
-        } else {
-            throw std::out_of_range("Index out of range");
-        }
-    }
+        size_t capacity = size();
+        int direction = static_cast<int>(index) - static_cast<int>(_itPos);
 
+        while(index != _itPos) {
+            next(direction < 0 ? PREV : NEXT );
+        }
+        return *_current;
+    }
+	
+	std::ostream& print(std::ostream& os) const {
+        os << "MergeInsortMaker Content: ";
+        for (typename container::iterator it = _contenedor.begin(); it != _contenedor.end(); ++it) {
+            os << *it << " ";
+        }
+        return os;
+    }
 };
+
+
+std::ostream& operator<<(std::ostream& os, const MergeInsortMaker<container>& maker);
 

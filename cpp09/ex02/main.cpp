@@ -29,6 +29,7 @@ int main() {
 
     MergeInsortMaker<std::vector<int> > maker(vec, getNumberVector, insertNumberInPosVector, sizeVector);
 
+    std::cout << "1 Before: " << maker << std::endl; 
 
     std::list<int> lst;
     lst.push_back(5);
@@ -39,6 +40,7 @@ int main() {
 
     MergeInsortMaker<std::list<int> > maker2(lst, getNumberList, insertNumberInPosList, sizeList);
 
+    std::cout << "2 Before: " << maker << std::endl; 
 
     return 0;
 }
