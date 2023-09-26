@@ -20,32 +20,81 @@ public:
     }
 
     void mergeInShort(void){
-    	container _contenedor;
+    	container contenedor;
+    	size_t lenght;
 
-    	merge(contenedor, floor(size() / 2));
+    	lenght =  size();
+    	merge(contenedor, lenght % 2 == 0 ? lenght : lenght - 1 );
+    	//merge(contenedor);
+    	printCont(contenedor);
+    	//insert(contenedor);
     }
 
-    void merge(container &contenedor, size_t threshold,size_t lap = 0){
-    	size_t currentSize = size();
+    void merge(container &contenedor, size_t threshold, size_t lap = 0){
+    	
 
-    	if(currentSize < threshold)
-    		merge(contenedor, threshold, ++lap);
+    	if(lap < threshold - 1)
+    		merge(contenedor, threshold, lap + 2);
+    	else
+    		return;
 
-    	if(getNumber(lap + 1) > getNumber(lap + 2)){
-    		int biggest = package[0];
-    		int pos = lap + 1;
-    	} else{
-    		int biggest = package[1];
-    		int pos = lap + 2;
+    	int package[2] = {getNumber(lap), getNumber(lap + 1)};
+    	int pos;
+
+    	//std::cout << lap << std::endl;
+
+    	if(package[0] > package[1])
+    		pos = lap;
+    	else 
+    		pos = lap + 1;
+
+    	int number = getNumber(pos);
+    	typename container::iterator it = contenedor.begin();
+    	typename container::iterator end = contenedor.end();
+    	
+    	if(it == end)
+    		return(contenedor.push_back(number));
+		
+		while(*it > number && it != end)
+			it++;
+
+    	contenedor.insert(--it, number);
+    	//std::cout << pos << std::endl;
+    	insertNumberInPos(pos, 0, DELETE);
+    	return;
+    }
+    /*
+    void merge(container &contenedor){
+    	size_t i[2] = {0, 1};
+    	size_t threshold = (size_t)(size() / 2);
+    	size_t pos;
+
+    	for(size_t x = 0; x < threshold; x++){
+    		//std::cout << x << std::endl;
+    		if(getNumber(i[0]) > getNumber(i[1]))
+    			pos = i[0];
+    		else
+    			pos = i[1];
+
+    		std::cout << pos << std::endl;
+	    	int number = getNumber(pos);
+	    	std::cout << pos << std::endl;
+    		
+    		if(x == 0)
+	    		contenedor.push_back(number);
+	    	else{
+	    		typename container::iterator it = contenedor.begin();
+    			typename container::iterator end = contenedor.end();
+				while(*it < number && it != end)
+					it++;
+
+		    	contenedor.insert(--it, number);
+		    	insertNumberInPos(pos, 0, DELETE);
+	    	}
+	    	i[0] += 2;
+	    	i[1] += 2;
     	}
-
-    	int i = 0;
-    	container::iterator end = contenedor.end();
-    	for(container::iterator it = begin.begin(); *it > biggest && it != end ; i++);
-
-    	_contenedor.insert(biggest, i);
-    	insertNumberInPos(pos, DELETE);
-    }
+    }*/
 
     typename container::iterator binarySearch(int value, typename container::iterator start, typename container::iterator end) {
         int comparativeValue;
@@ -76,11 +125,15 @@ public:
         return *_current;
     }
 
-    void insertNumberInPos(size_t num, bool flag = INSERT) { // Cambio aquí
+    void insertNumberInPos(size_t pos, int num, int flag = INSERT) { // Cambio aquí
+    	int direction = pos - _itPos;
+
+        while (pos != _itPos)
+            next(direction < 0 ? PREV : NEXT);
         if (flag != DELETE)
-            _current = _contenedor.insert(_current, num);
+            _contenedor.insert(_current, num);
         else
-            _current = _contenedor.erase(_current);
+            _contenedor.erase(_current);
     }
 
     size_t size() const {
@@ -118,11 +171,11 @@ public:
         return _current == _contenedor.end();
     }
 
-    void insert(bool flag, int num = INSERT) {
+    void insert( int num, int flag = INSERT) {
         if (flag != DELETE)
-            _current = _contenedor.insert(_current, num);
+        	_contenedor.insert(_current, num);
         else
-            _current = _contenedor.erase(_current);
+            _contenedor.erase(_current);
     }
 
     int& operator*() {
@@ -136,6 +189,13 @@ public:
 			next(direction < 0 ? PREV : NEXT);
 
 		return *_current;
+    }
+
+    void printCont(container contenedor) {
+        for (typename container::iterator it = contenedor.begin(); it != contenedor.end(); ++it) {
+            std::cout << *it << " ";
+        }
+        std::cout << std::endl;
     }
 
     std::ostream& print(std::ostream& os) {
