@@ -30,55 +30,50 @@ public:
     	//insert(contenedor);
     }
 
-    void merge(container &contenedor, size_t threshold, size_t lap = 0){
-    	
+     void merge(container &contenedor, size_t threshold, size_t lap = 0) {
+        if (lap >= threshold - 1)
+            return; // Condición de parada
 
-    	if(lap < threshold - 1)
-    		merge(contenedor, threshold, lap + 2);
-    	else
-    		return;
+        // Llamada recursiva
+        merge(contenedor, threshold, lap + 2);
+        int package[2] = {getNumber(lap), getNumber(lap + 1)};
+        int pos = (package[0] > package[1]) ? lap : lap + 1;
+        int number = getNumber(pos);
 
-    	int package[2] = {getNumber(lap), getNumber(lap + 1)};
-    	int pos;
+        // Verificar si el contenedor está vacío
+        if (contenedor.empty()) {
+            contenedor.push_back(number);
+            insertNumberInPos(pos, 0, DELETE);
+            return;
+        }
 
-    	//std::cout << lap << std::endl;
+        typename container::iterator it = contenedor.begin();
+        typename container::iterator end = contenedor.end();
 
-    	if(package[0] > package[1])
-    		pos = lap;
-    	else 
-    		pos = lap + 1;
+        while (it != end && *it < number)
+            it++;
 
-    	int number = getNumber(pos);
-    	typename container::iterator it = contenedor.begin();
-    	typename container::iterator end = contenedor.end();
-    	
-    	if(it == end)
-    		return(contenedor.push_back(number));
-		
-		while(*it > number && it != end)
-			it++;
+        if (it != end) {
+            contenedor.insert(it, number);
+        } else {
+            contenedor.push_back(number);
+        }
 
-    	contenedor.insert(--it, number);
-    	//std::cout << pos << std::endl;
-    	insertNumberInPos(pos, 0, DELETE);
-    	return;
+        insertNumberInPos(pos, 0, DELETE);
     }
-    /*
-    void merge(container &contenedor){
+    
+    /*void merge(container &contenedor){
     	size_t i[2] = {0, 1};
     	size_t threshold = (size_t)(size() / 2);
     	size_t pos;
 
     	for(size_t x = 0; x < threshold; x++){
-    		//std::cout << x << std::endl;
     		if(getNumber(i[0]) > getNumber(i[1]))
     			pos = i[0];
     		else
     			pos = i[1];
 
-    		std::cout << pos << std::endl;
 	    	int number = getNumber(pos);
-	    	std::cout << pos << std::endl;
     		
     		if(x == 0)
 	    		contenedor.push_back(number);
@@ -89,6 +84,9 @@ public:
 					it++;
 
 		    	contenedor.insert(--it, number);
+				std::cout << x << std::endl; 
+				if(x == 100)
+					std::cout << getNumber(201) << std::endl;  		
 		    	insertNumberInPos(pos, 0, DELETE);
 	    	}
 	    	i[0] += 2;
@@ -119,8 +117,10 @@ public:
     int getNumber(size_t position) {
         int direction = position - _itPos;
 
-        while (position != _itPos)
+        while (position != _itPos){
+        	std::cout << position << std::endl;
             next(direction < 0 ? PREV : NEXT);
+        }
 
         return *_current;
     }
@@ -157,13 +157,15 @@ public:
     }
 
     void next(int flag = NEXT) {
-        std::advance(_current, flag);
+    	std::cout <<   flag << std::endl;
         _itPos += flag;
 
         if (_itPos < 0)
             begin();
-        if (_itPos >= size())
+        else if (_itPos >= size())
             end();
+        else
+        	std::advance(_current, flag);
     }
 
 
