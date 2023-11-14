@@ -3,7 +3,7 @@
 #include <vector>
 #include <random>
 
-#define ARRNUM 40
+#define ARRNUM 1000
 int main() {
 
 	int x;
@@ -30,12 +30,11 @@ int main() {
 		std::vector<int>::iterator iter = easyfind(vec, value);
 		std::cout << "Found number: (" << *iter << ")" << std::endl;
 		
-		std::cout << "Element " << *iter << " found at index: " << std::distance(vec.begin(), iter) << std::endl;
+		std::cout << "Number " << *iter << " found at index: " << std::distance(vec.begin(), iter) << std::endl;
 		
 	}
-	catch(
-		){
-		std::cout << e.what() << std::endl;
+	catch (const std::exception& ex) {
+	    std::cout << ex.what() << std::endl;
 	}
 	return 0;
 }

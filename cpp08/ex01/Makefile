@@ -2,7 +2,7 @@ NAME = Span
 
 VERSION = --std=c++98
 
-CXXFLAGS = -Wall -Werror -Wextra $(VERSION) -Wshadow  -Wno-shadow
+CXXFLAGS = -Wall -Werror -Wextra $(VERSION) -Wshadow  -Wno-shadow -fsanitize=address
 
 SRCS = main.cpp Span.cpp
 
@@ -13,7 +13,7 @@ CXX = c++
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CXX) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
 
 exe: $(NAME)
 	time ./$(NAME)

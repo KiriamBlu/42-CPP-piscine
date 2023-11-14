@@ -3,10 +3,10 @@
 
 /*------------------------------------------------------------------------*/
 
-Span::Span( void ): N( 0 ) {
+Span::Span( void ): _N( 0 ) {
 }
 
-Span::Span( unsigned int N ): N( N ) {  
+Span::Span( unsigned int N ): _N( N ) {  
 }
 
 Span::Span( const Span & var ) {
@@ -23,31 +23,31 @@ Span &Span::operator=(const Span &tmp) {
   if (this == &tmp)
     return (*this);
 
-  this->N = tmp.N;
-  this->filled = tmp.filled;
+  _N = tmp.getN();
+  _filled = tmp.getFilled();
 
-  this->storage.clear();
-  for ( unsigned int x = 0; x < tmp.filled; x++ )
-    this->storage.push_back( tmp.storage[x] );
+  _storage.clear();
+  for ( unsigned int x = 0; x < tmp.getFilled(); x++ )
+    _storage.push_back( tmp.getNumberIndex(x) );
 
   return (*this);
 }
 
 
 int  &Span::operator[]( unsigned int iter ){
-  if( iter > this->N || !iter)
+  if(iter > _N)
     throw vectorIndexOutLimits();
-  return this->storage[iter];
+  return _storage[iter];
 }
 
 /*------------------------------------------------------------------------*/
 
 void Span::addNumber( int number ) {
-  if( this->filled == this->N )
+  if( _filled == _N )
     throw noSpaceLeft();
 
-  storage.push_back(number);
-  this->filled++;
+  _storage.push_back(number);
+  _filled++;
 }
 
 void     Span::addRange( int start, int end ){
@@ -56,12 +56,12 @@ void     Span::addRange( int start, int end ){
 
   if( length <= 0 )
     throw invalidRange();
-  if( this->filled + length > this->N )
+  if( _filled + length > _N )
     throw noSpaceLeft();
 
   for( int x = start; x <= end ; x++ )
-    this->storage.push_back( x );
-  this->filled += length;
+    _storage.push_back( x );
+  _filled += length;
 }
 
 void Span::addArrVector( std::vector<int>& vector ) {
@@ -70,29 +70,28 @@ void Span::addArrVector( std::vector<int>& vector ) {
 
   if( vector.empty() )
     throw emptyVector();
-  if( this->filled + length > this->N ) 
+  if( _filled + length > _N ) 
     throw noSpaceLeft();
 
-  for( unsigned int x = 0; x < length; x++ )
-    storage.push_back( vector[x] );
+  _storage.insert( _storage.begin(), vector.begin(), vector.end() );
   
-  this->filled += length;
+  _filled += vector.size();
 }
 
 /*------------------------------------------------------------------------*/
 
 int  Span::shortestSpan( void ){
-  if(this->filled <= 1)
+  if(_filled <= 1)
     throw notEnoughNumbers();
 
-  int maxElement = *std::max_element( this->storage.begin(), this->storage.end() );
+  int maxElement = *std::max_element( _storage.begin(), _storage.end() );
 
-  for( std::vector<int>::iterator it1 = this->storage.begin(); it1 != this->storage.end(); it1++ ){
-    for( std::vector<int>::iterator it2 = std::next(it1); it2 != this->storage.end(); it2++ ){
+  for( std::vector<int>::iterator it1 = _storage.begin(); it1 != _storage.end(); it1++ ){
+    for( std::vector<int>::iterator it2 = std::next(it1); it2 != _storage.end(); it2++ ){
       int shotestDifference = abs( *it2 - *it1 );
       if ( maxElement > shotestDifference ){
-        this->numbers[0] = *it2;
-        this->numbers[1] = *it1;
+        _numbers[0] = *it2;
+        _numbers[1] = *it1;
         maxElement = shotestDifference;
       }  
     }    
@@ -101,42 +100,51 @@ int  Span::shortestSpan( void ){
 }
 
 int  Span::longestSpan( void ){
-  if(this->filled <= 1)
+  if(_filled <= 1)
     throw notEnoughNumbers();
 
-  int minElement = *std::min_element( this->storage.begin(), this->storage.end() );
+  int minElement = *std::min_element( _storage.begin(), _storage.end() );
 
-  for( std::vector<int>::iterator it1 = this->storage.begin(); it1 != this->storage.end(); it1++ ){
-    for( std::vector<int>::iterator it2 = std::next(it1); it2 != this->storage.end(); it2++ ){
+  for( std::vector<int>::iterator it1 = _storage.begin(); it1 != _storage.end(); it1++ ){
+    for( std::vector<int>::iterator it2 = std::next(it1); it2 != _storage.end(); it2++ ){
       int longestSpan = abs( *it2 - *it1 );
       if ( minElement < longestSpan ){
-        this->numbers[0] = *it2;
-        this->numbers[1] = *it1;
+        _numbers[0] = *it2;
+        _numbers[1] = *it1;
         minElement = longestSpan;
       }
     }    
   }
+  
   return(minElement);
 }
 
 /*------------------------------------------------------------------------*/
 
 unsigned int Span::getFilled(void) const{
-  return this->filled;
+  return _filled;
+}
+
+int     Span::getN(void) const{
+  return _N;
+}
+
+int   Span::getNumberIndex( unsigned int index ) const{
+  return _storage[index];
 }
 
 int       *Span::getNumbers(void){
-  return this->numbers;
+  return _numbers;
 }
 
 void Span::printValues( void ) const {
   std::cout << "Values in Span container: ";
 
-  if (this->storage.empty())
+  if (_storage.empty())
       std::cout << "Empty";
   else 
-      for ( unsigned int x = 0; x < this->filled ; x++) 
-          std::cout << this->storage[x] << " ";
+      for ( unsigned int x = 0; x < _filled ; x++) 
+          std::cout << _storage[x] << " ";
   
   std::cout << std::endl;
 } 

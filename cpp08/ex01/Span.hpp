@@ -5,14 +5,15 @@
 #include <iostream>
 #include <vector>
 #include <exception>
+#include <algorithm>
 
 class	Span {
 
 	private:
-		unsigned int		N;
-		unsigned int		filled;
-		std::vector<int>	storage;
-		int 				numbers[2];
+		unsigned int		_N;
+		unsigned int		_filled;
+		std::vector<int>	_storage;
+		int 				_numbers[2];
 	public:
 
 		Span 			( void );
@@ -24,8 +25,9 @@ class	Span {
 		int  &operator[]( unsigned int iter );
 
 		unsigned int 	getFilled(void) const ;
-
+		int       		getN(void) const;
 		int				*getNumbers(void);
+		int   			getNumberIndex( unsigned int index ) const;
 
 		void			addNumber( int number );
 		void			addRange( int start, int end );

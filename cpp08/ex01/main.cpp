@@ -37,7 +37,7 @@ int main()
 		values = (sp.getNumbers()); 
 		std::cout << " numbers: n1=(" << values[0] << ") n2=(" << values[1] << ")"  <<std::endl;
 
-		sp.addRange(8, 14);//10
+		sp.addRange(8, 14);
 
 		std::cout << "Filled:" << sp.getFilled() << " - To fill:" << TESTNUM - sp.getFilled() << std::endl;
 		std::cout << "Shortest span: " << sp.shortestSpan();
@@ -81,6 +81,7 @@ int main()
 		std::cout << "Longest span: " << sp.longestSpan();
 		values = (sp.getNumbers()); 
 		std::cout << " numbers: n1=(" << values[0] << ") n2=(" << values[1] << ")"  <<std::endl;
+		
 	}
     catch (const Span::vectorIndexOutLimits &ex) {
 		std::cout << "Exception caught: " << ex.throwException() << std::endl;

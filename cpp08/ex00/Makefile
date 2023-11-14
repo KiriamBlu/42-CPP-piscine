@@ -1,8 +1,8 @@
 NAME = easyfind
 
-CXXFLAGS = -Wall -Werror -Wextra
+CXXFLAGS = -Wall -Werror -Wextra # -fsanitize=address
 
-SRCS = main.cpp
+SRCS = main.cpp 
 
 OBJS = $(SRCS:.cpp=.o)
 
@@ -11,14 +11,14 @@ CXX = c++
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CXX) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
 
 clean:
 	rm -f $(OBJS)
 
-fclean:	clean
+fclean: clean
 	rm -f $(NAME)
 
-re:	fclean all
+re: fclean all
 
 .PHONY: all clean fclean re
