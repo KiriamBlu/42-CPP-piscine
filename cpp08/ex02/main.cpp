@@ -1,7 +1,7 @@
 #include "MutantStack.hpp"
 #include <iostream>
 #include <list>
-/*
+
 int main()
 {
     MutantStack<int> mstack;
@@ -74,8 +74,8 @@ int main()
 
     return 0;
 }
-*/
 
+/*
 
 int main()
 {
@@ -150,4 +150,4 @@ int main()
     return 0;
 }
 
-
+*/
