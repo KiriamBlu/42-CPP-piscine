@@ -3,12 +3,7 @@
 
 ///////////////////////////////////CLASS-STUFF////////////////////////////////////////
 BitcoinExchange::BitcoinExchange(std::string fileName) {
-	try {
-		this->loadStorage(fileName, this->storage);
-	}
-	catch (std::runtime_error& err) {
-		std::cout << err.what() << std::endl;
-	}
+	loadStorage(fileName, storage);
 }
 
 
@@ -111,7 +106,7 @@ static inline float getNumber(std::string numStr){
 ////////////////////////////////////////////AUXILIARS/////////////////////////////////////////////////
 
 size_t BitcoinExchange::size() {
-	return this->storage.size();
+	return storage.size();
 }
 
 
@@ -152,9 +147,9 @@ static inline std::string cleanValue(std::string var){
 
 std::map<std::string, float>::iterator BitcoinExchange::getIterator(bool flag = false) {
 	if(flag == false)
-		return this->storage.begin();
+		return storage.begin();
 	else
-		return this->storage.end();
+		return storage.end();
 }
 
 
@@ -167,6 +162,10 @@ void BitcoinExchange::findAndCompare(std::string fileName){
 	float floatVal;
 	int pos;
 	std::string str;
+
+	if (!file.is_open()) {
+        throw std::runtime_error("Error: File could not be opened");
+    }
 
 	std::getline(file, str);
 	while (std::getline(file, str)) {
@@ -181,12 +180,14 @@ void BitcoinExchange::findAndCompare(std::string fileName){
 
 			floatVal = getNumber(help[1]);
 		}
-		else
+		else{
 			floatVal = BAD_INDEX;
-		if (str.length() < 14 || str.length() > 17)
+		}
+		if ((str.length() < 14 || str.length() > 17) && floatVal > 0){
 			floatVal = BAD_INDEX;
+		}
 		try {
-			this->checkValues(help[0], floatVal);
+			checkValues(help[0], floatVal, str);
 		}
 		catch(std::runtime_error& err) {
 			std::cout << err.what() << std::endl;
@@ -196,13 +197,13 @@ void BitcoinExchange::findAndCompare(std::string fileName){
 }
  
 
-void BitcoinExchange::checkValues(std::string date, float value) {
+void BitcoinExchange::checkValues(std::string date, float value, std::string str) {
 
-	if (dateFormat(date) == BAD_FORMAT_DATE)
+	if (dateFormat(date) == BAD_FORMAT_DATE && value > 0)
 		throw std::runtime_error("Error: bad date => " + date );;
 
 	if(value == BAD_INDEX)
-		throw std::runtime_error("Error: bad input => " + date );
+		throw std::runtime_error("Error: bad input => " +  str);
 
 	if(value == BAD_NUMBER)
 		throw std::runtime_error("Error: bad number");
@@ -213,7 +214,7 @@ void BitcoinExchange::checkValues(std::string date, float value) {
 	if(value == OUT_RANGE_1000)
 		throw std::runtime_error("Error: too large a number.");
 
-	this->crossValue(convertDateToTime(date), value);
+	crossValue(convertDateToTime(date), value);
 }
 
 
@@ -227,21 +228,9 @@ void BitcoinExchange::crossValue(time_t date, float value) {
         lastVal[1] = convertDateToTime(it->first);
         if (lastVal[1] > date) {
             if (std::abs(lastVal[0] - date) > std::abs(lastVal[1] - date)) {
-                char valueBuffer[3];
-                sprintf(valueBuffer, "%f", value);
-
-                char productBuffer[32];
-                sprintf(productBuffer, "%f", var * value);
-
-                std::cout << convertTimeToDate(lastVal[1]) << " => " << cleanValue(std::string(valueBuffer)) << " = " << cleanValue(std::string(productBuffer)) << std::endl;
+                std::cout << convertTimeToDate(lastVal[1]) << " => " << cleanValue(std::to_string(value)) << " = " << cleanValue(std::to_string(var * value)) << std::endl;
             } else {
-                char valueBuffer[3];
-                sprintf(valueBuffer, "%f", value);
-
-                char productBuffer[32];
-                sprintf(productBuffer, "%f", it->second * value);
-
-                std::cout << convertTimeToDate(lastVal[0]) << " => " << cleanValue(std::string(valueBuffer)) << " = " << cleanValue(productBuffer) << std::endl;
+                std::cout << convertTimeToDate(lastVal[0]) << " => " << cleanValue(std::to_string(value)) << " = " << cleanValue(std::to_string(it->second * value)) << std::endl;
             }
             return;
         } else {
@@ -250,6 +239,7 @@ void BitcoinExchange::crossValue(time_t date, float value) {
         }
     }
 }
+
 
 void BitcoinExchange::loadStorage(std::string fileName, std::map<std::string, float>& storage) {
     std::ifstream file(fileName);

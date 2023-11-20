@@ -12,7 +12,7 @@
 
 enum identifyer{
 	LOCAL = 0,
-	REMOTE = 1
+	REMOTE
 };
 
 enum errorStatus{
@@ -29,7 +29,7 @@ private:
 	std::map<std::string, float> storage;
 
 	int StringEraseAp(int start, int iteratorDir, std::string &aux, int character);
-	void checkValues(std::string date, float value);
+	void checkValues(std::string date, float value, std::string str);
 	void crossValue(time_t date, float value);
 
 public:
@@ -38,7 +38,7 @@ public:
 	~BitcoinExchange( void );
 
 	size_t size(void);
-	 std::map<std::string, float>::iterator getIterator(bool flag);
+	std::map<std::string, float>::iterator getIterator(bool flag);
 	time_t convertDateToTime(std::string time);
 	std::string convertTimeToDate(time_t time);
 

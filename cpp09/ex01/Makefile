@@ -1,17 +1,19 @@
 NAME = RPN
 
-CXXFLAGS = -Wall -Werror -Wextra
+VERSION = --std=c++98
+
+CXXFLAGS =  -Wall -Werror -Wextra $(VERSION) -Wshadow  -Wno-shadow -fsanitize=address -g3
 
 SRCS = main.cpp RPN.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
-CXX = clang++
+CXX = c++
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CXX) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
 
 clean:
 	rm -f $(OBJS)

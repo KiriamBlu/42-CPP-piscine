@@ -1,6 +1,8 @@
 
 #include "BitcoinExchange.hpp"
 
+#define FILE "NOT_INCLUDE_ON_PUSH/data.csv"
+
 int main(int argc, char **argv){
 	(void)argv;
 
@@ -10,8 +12,8 @@ int main(int argc, char **argv){
 	}
 
 	try{
-		BitcoinExchange btc("data.csv");
-		std::cout << btc;
+		BitcoinExchange btc(FILE);
+		//std::cout << btc;
 		btc.findAndCompare(std::string(argv[1]));
 	}
 	catch(std::runtime_error &err){
