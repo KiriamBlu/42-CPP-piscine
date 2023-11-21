@@ -23,7 +23,7 @@ class	RPN {
 
 
 		void    setNewStr(std::string newStr);
-		void    operate(void);
+		int    operate(void);
 };
 
 #endif

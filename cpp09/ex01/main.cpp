@@ -8,7 +8,7 @@ int main(int argc, char **argv){
 	else{
 		RPN aux(var);
 		try{
-			aux.operate();
+			std::cout << aux.operate() << std::endl;
 		}
 		catch(std::runtime_error &err){
 			std::cout << err.what() << std::endl;

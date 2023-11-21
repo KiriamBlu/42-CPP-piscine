@@ -1,5 +1,7 @@
 #include "RPN.hpp"
 
+#define DEBUG 1
+
 std::string  RPN::checkRPN(std::string str){
   size_t lenght = str.length();
   int j = 0;
@@ -17,7 +19,7 @@ std::string  RPN::checkRPN(std::string str){
   }
   if(i != (int)lenght){
     std::cout << i << std::endl;
-    return "ERROR: Not allowed char [" + std::string(1, str[i]) + "] on pos " + std::string(1, i);
+    return "ERROR: Not allowed char [" + std::string(1, str[i]) + "]";
   }
   if(j > 10)
     return "ERROR: Bad reverse polish notation";
@@ -43,7 +45,9 @@ int RPN::popAndRet(void){
 }
 
 int RPN::operateTwoValues(int value2, int value1, int op){
-  std::cout << std::endl << "value2:(" << value2 << ") op: (" << char(op) << ") value1:(" << value1 << ")" << std::endl << std::endl;
+  #ifdef DEBUG 
+    std::cout << std::endl << "value1:(" << value1 << ") "  << "op: (" << char(op) << ") " << "value2:(" << value2 << ")" << std::endl << std::endl;
+  #endif
   switch(op){
     case '*':
       return value1 * value2;
@@ -65,7 +69,7 @@ bool RPN::compareWithDict(int character, std::string dict)
   return 0;
 }
 
-void    RPN::operate(void){
+int    RPN::operate(void){
   int    i = 0; 
   int    j;
 
@@ -74,8 +78,14 @@ void    RPN::operate(void){
       while(!isdigit(str[i]) && str[i]){
         if(this->compareWithDict(str[i], "*+-/"))
         {
-          this->storage.push(operateTwoValues(this->popAndRet(), this->popAndRet(), str[i]));
-          std::cout << "RESULT AFTER: " << this->storage.top() << " lenght storage:" << this->storage.size() << std::endl;
+          if(this->storage.size() >= 2)
+            this->storage.push(operateTwoValues(this->popAndRet(), this->popAndRet(), str[i]));
+          else
+            throw (std::runtime_error("Error: Not posible computing"));
+
+          #ifdef DEBUG 
+            std::cout << "RESULT AFTER: " << this->storage.top() << " lenght storage:" << this->storage.size() << std::endl;
+          #endif
         }
         i++;
       }
@@ -91,12 +101,15 @@ void    RPN::operate(void){
     if(j != i)
       this->storage.push(atoi(str.substr(i,  j - i).c_str()));
     i = j;
-    std::cout << "Lenght storage:" << this->storage.size() << std::endl;
+    #ifdef DEBUG 
+      std::cout << "Lenght storage:" << this->storage.size() << std::endl;
+    #endif
   } 
   if(this->str[0] == 'E')
     throw(std::runtime_error(this->str));
   if(this->storage.size() != 1)
-    std::cout << "Error: Not posible computing" << std::endl;
+    throw(std::runtime_error("Error: Not posible computing"));
   else
-    std::cout << this->storage.top() << std::endl; 
+    return(this->storage.top());
+  return 0;
 }
