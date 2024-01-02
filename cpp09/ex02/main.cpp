@@ -1,65 +1,117 @@
-
 #include "PmergeMe.hpp"
 #include <iostream>
 #include <vector>
 #include <list>
-#include <chrono> 
+#include <deque>
+#include <chrono>
+#include <sstream>
+#include <algorithm>
 
 
-int main() {
+
+int strToInt(const std::string& str) {
+    int result = 0;
+    int sign = 1;
+    size_t i = 0;
+
+    // Manejar el signo
+    if (str[i] == '-') {
+        sign = -1;
+        ++i;
+    } else if (str[i] == '+') {
+        ++i;
+    }
+
+    for (; i < str.size(); ++i) {
+        if (str[i] >= '0' && str[i] <= '9') {
+            result = result * 10 + (str[i] - '0');
+        } else {
+            std::cerr << "Error: Carácter no válido en la cadena" << std::endl;
+            exit(1);
+        }
+    }
+
+    return result * sign;
+}
+
+int main(int argc, char* argv[]) {
+    if (argc != 2) {
+        std::cerr << "Usage: " << argv[0] << " <numbers_string>" << std::endl;
+        return 1;
+    }
+
     std::chrono::high_resolution_clock::time_point start;
     std::chrono::high_resolution_clock::time_point end;
     std::chrono::milliseconds duration;
+
+    std::string numbersString(argv[1]);
+    std::istringstream iss(numbersString);
+
     std::vector<int> vec;
     std::list<int> lst;
-    for (int i = 0; i < 3000; ++i) {
-        int number = rand() % 10000;
+    std::deque<int> deq;
+
+    std::string numberStr;
+    while (iss >> numberStr) {
+        int number = strToInt(numberStr);
         vec.push_back(number);
         lst.push_back(number);
+        deq.push_back(number);
+        if (iss.peek() == ' ') {
+            iss.ignore();
+        }
     }
-    MergeInsortMaker<std::vector<int> > maker(vec);
 
-    std::cout << "VEC----------------------------------------------------------------------" << std::endl;
-    
-    //std::cout << "Before: " << maker << std::endl;
+    std::cout << "VEC------------------------------------------------------------------------" << std::endl;
+    std::cout << "Before: ";
+    for (size_t i = 0; i < vec.size(); ++i) {
+        std::cout << vec[i] << " ";
+    }
+    std::cout << std::endl;
 
+    MergeInsortMaker<std::vector<int> > makerVec(vec);
     start = std::chrono::high_resolution_clock::now();
-    maker.mergeInShort();
+    makerVec.mergeInShort();
     end = std::chrono::high_resolution_clock::now();
-
-    std::cout << "---------------------------------------------------------------------------" << std::endl;
- 
-    std::cout << "After: " << maker << std::endl;
-
-    // Calcular el tiempo transcurrido en milisegundos
     duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "After: " << makerVec << std::endl;
     std::cout << "Tiempo transcurrido (ms): " << duration.count() << std::endl;
+    std::cout << std::endl;
 
+    std::cout << "LIST------------------------------------------------------------------------" << std::endl;
+    std::cout << "Before: ";
+    for (std::list<int>::iterator it = lst.begin(); it != lst.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+
+    MergeInsortMaker<std::list<int> > makerList(lst);
+    start = std::chrono::high_resolution_clock::now();
+    makerList.mergeInShort();
+    end = std::chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "After: " << makerList << std::endl;
+    std::cout << "Tiempo transcurrido (ms): " << duration.count() << std::endl;
     std::cout << std::endl;
 
 
-    MergeInsortMaker<std::list<int> > maker2(lst);
+    std::cout << "DEQ------------------------------------------------------------------------" << std::endl;
+    std::cout << "Before: ";
+    for (size_t i = 0; i < deq.size(); ++i) {
+        std::cout << deq[i] << " ";
+    }
+    std::cout << std::endl;
 
-    std::cout << "LIST---------------------------------------------------------------------" << std::endl;
-
-    //std::cout << "Before: " << maker2 << std::endl;
-
-    std::cout << "---------------------------------------------------------------------------" << std::endl;
-
-    start = std::chrono::high_resolution_clock::now(); // Registrar el tiempo de inicio
-    maker2.mergeInShort();
-    end = std::chrono::high_resolution_clock::now(); // Registrar el tiempo de finalización
-
-    std::cout << "---------------------------------------------------------------------------" << std::endl;
-
-
-    std::cout << "After: " << maker2 << std::endl;
-
-    // Calcular el tiempo transcurrido en milisegundos
+    MergeInsortMaker<std::deque<int> > makerDeq(deq);
+    start = std::chrono::high_resolution_clock::now();
+    makerDeq.mergeInShort();
+    end = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "After: " << makerDeq << std::endl;
     std::cout << "Tiempo transcurrido (ms): " << duration.count() << std::endl;
+    std::cout << std::endl;
+
 
     return 0;
 }
-
 
