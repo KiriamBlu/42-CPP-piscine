@@ -2,9 +2,9 @@ NAME = PmergeMe
 
 VERSION = --std=c++98
 
-CXXFLAGS =  -Wall -Werror -Wextra $(VERSION) -Wshadow  -Wno-shadow #-fsanitize=address -g3
+CXXFLAGS =  -Wall -Werror -Wextra $(VERSION) -Wshadow  -Wno-shadow -fsanitize=address -g3
 
-SRCS = main.cpp PmergeMe.cpp
+SRCS = PmergeMe.cpp main.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
@@ -13,7 +13,7 @@ CXX = c++
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CXX) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
 
 exe: $(NAME)
 	time ./$(NAME)

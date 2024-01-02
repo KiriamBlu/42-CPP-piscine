@@ -3,31 +3,29 @@
 #include <iostream>
 #include <vector>
 #include <list>
-#include <chrono> // Para medir el tiempo
+#include <chrono> 
 
-// ... (tu código MergeInsortMaker)
 
 int main() {
     std::chrono::high_resolution_clock::time_point start;
     std::chrono::high_resolution_clock::time_point end;
     std::chrono::milliseconds duration;
-    // Crear un vector con elementos aleatorios
     std::vector<int> vec;
     std::list<int> lst;
-    for (int i = 0; i < 100000; ++i) {
+    for (int i = 0; i < 3000; ++i) {
         int number = rand() % 10000;
         vec.push_back(number);
         lst.push_back(number);
     }
     MergeInsortMaker<std::vector<int> > maker(vec);
 
+    std::cout << "VEC----------------------------------------------------------------------" << std::endl;
+    
     //std::cout << "Before: " << maker << std::endl;
 
-    std::cout << "VEC----------------------------------------------------------------------" << std::endl;
-
-    start = std::chrono::high_resolution_clock::now(); // Registrar el tiempo de inicio
+    start = std::chrono::high_resolution_clock::now();
     maker.mergeInShort();
-    end = std::chrono::high_resolution_clock::now(); // Registrar el tiempo de finalización
+    end = std::chrono::high_resolution_clock::now();
 
     std::cout << "---------------------------------------------------------------------------" << std::endl;
  
