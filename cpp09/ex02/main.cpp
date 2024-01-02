@@ -7,33 +7,6 @@
 #include <sstream>
 #include <algorithm>
 
-
-
-int strToInt(const std::string& str) {
-    int result = 0;
-    int sign = 1;
-    size_t i = 0;
-
-    // Manejar el signo
-    if (str[i] == '-') {
-        sign = -1;
-        ++i;
-    } else if (str[i] == '+') {
-        ++i;
-    }
-
-    for (; i < str.size(); ++i) {
-        if (str[i] >= '0' && str[i] <= '9') {
-            result = result * 10 + (str[i] - '0');
-        } else {
-            std::cerr << "Error: Carácter no válido en la cadena" << std::endl;
-            exit(1);
-        }
-    }
-
-    return result * sign;
-}
-
 int main(int argc, char* argv[]) {
     if (argc != 2) {
         std::cerr << "Usage: " << argv[0] << " <numbers_string>" << std::endl;
@@ -51,9 +24,8 @@ int main(int argc, char* argv[]) {
     std::list<int> lst;
     std::deque<int> deq;
 
-    std::string numberStr;
-    while (iss >> numberStr) {
-        int number = strToInt(numberStr);
+    int number;
+    while (iss >> number) {
         vec.push_back(number);
         lst.push_back(number);
         deq.push_back(number);
@@ -73,8 +45,8 @@ int main(int argc, char* argv[]) {
     start = std::chrono::high_resolution_clock::now();
     makerVec.mergeInShort();
     end = std::chrono::high_resolution_clock::now();
-    duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     std::cout << "After: " << makerVec << std::endl;
+    duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     std::cout << "Tiempo transcurrido (ms): " << duration.count() << std::endl;
     std::cout << std::endl;
 
@@ -89,11 +61,10 @@ int main(int argc, char* argv[]) {
     start = std::chrono::high_resolution_clock::now();
     makerList.mergeInShort();
     end = std::chrono::high_resolution_clock::now();
-    duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     std::cout << "After: " << makerList << std::endl;
+    duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     std::cout << "Tiempo transcurrido (ms): " << duration.count() << std::endl;
     std::cout << std::endl;
-
 
     std::cout << "DEQ------------------------------------------------------------------------" << std::endl;
     std::cout << "Before: ";
@@ -106,12 +77,10 @@ int main(int argc, char* argv[]) {
     start = std::chrono::high_resolution_clock::now();
     makerDeq.mergeInShort();
     end = std::chrono::high_resolution_clock::now();
-    duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     std::cout << "After: " << makerDeq << std::endl;
+    duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     std::cout << "Tiempo transcurrido (ms): " << duration.count() << std::endl;
     std::cout << std::endl;
 
-
     return 0;
 }
-
