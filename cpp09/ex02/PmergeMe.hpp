@@ -26,20 +26,12 @@ public:
         size_t length = size();
 
         merge(contenedor, (length % 2 == 0) ? length : length - 1);
+        
 
-        //printContainer(contenedor);
+        printContainer(contenedor);
 
-        while (!_contenedor.empty()) {
-            typename container::iterator it = _contenedor.begin();
-
-            typename container::iterator insertPosition = std::lower_bound(contenedor.begin(), contenedor.end(), *it);
-
-            contenedor.insert(insertPosition, *it);
-
-            _contenedor.erase(it);
-        }
         _contenedor.clear();
-        _contenedor = contenedor;
+        //_contenedor = contenedor;
     }
 
     void merge(container &contenedor, size_t threshold, size_t lap = 0) {
@@ -68,6 +60,25 @@ public:
         insertNumberInPos(pos, 0, DELETE);
     }
 
+    typename container::iterator binarySearch(int value, typename container::iterator start, typename container::iterator end) {
+        int comparativeValue;
+        typename container::iterator comparativePos;
+
+        comparativePos = start;
+        std::advance(comparativePos, std::distance(start, end) / 2);
+        comparativeValue = getNumber(comparativePos);
+
+        if (start == end)
+            return comparativePos;
+
+        if (comparativeValue == value)
+            return comparativePos;
+
+        if (bigger(comparativePos, start, true))
+            return binarySearch(value, start, comparativePos);
+        else
+            return binarySearch(value, ++comparativePos, end);
+    }
 
     int getNumber(size_t position) {
         int direction = position - _itPos;
