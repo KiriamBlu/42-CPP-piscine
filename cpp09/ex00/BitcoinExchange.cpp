@@ -81,27 +81,27 @@ static inline bool dateFormat(const std::string& input) {
 }
 
 
-static inline float getNumber(std::string numStr){
-	float var;
-	bool flag = true;
-	unsigned long i = 0;
+static inline float getNumber(std::string numStr) {
+    float var;
+    bool flag = true;
+    size_t i = 0;
 
-	while((isdigit(numStr[i]) || (numStr[i] == '.' && flag == true) || numStr[i] == '-') && numStr[i]){
-		if (numStr[i] == '.')
-			flag = false;
-		i++;
-	}
-	if(numStr.length() != i)
-		return BAD_NUMBER;
+    while ((isdigit(numStr[i]) || (numStr[i] == '.' && flag == true) || numStr[i] == '-') && numStr[i]) {
+        if (numStr[i] == '.')
+            flag = false;
+        i++;
+    }
+    if (numStr.length() != i)
+        return BAD_NUMBER;
 
-	var = stof(numStr);
-	if (var > 1000) 
-		return OUT_RANGE_1000;
-	if (var < 0)
-		return OUT_RANGE_NEGATIVE;
-	return(var);
+    var = static_cast<float>(atof(numStr.c_str()));
+    if (var > 1000)
+        return OUT_RANGE_1000;
+    if (var < 0)
+        return OUT_RANGE_NEGATIVE;
+
+    return var;
 }
-
 
 ////////////////////////////////////////////AUXILIARS/////////////////////////////////////////////////
 
@@ -109,27 +109,35 @@ size_t BitcoinExchange::size() {
 	return storage.size();
 }
 
-
 time_t BitcoinExchange::convertDateToTime(std::string help) {
-	struct tm timeinfo;
-	std::istringstream ss(help);
-	time_t time;
+    struct tm timeinfo;
+    std::istringstream ss(help);
+    time_t time;
 
-	memset(&timeinfo, 0, sizeof(timeinfo));
-	ss >> std::get_time(&timeinfo, "%Y-%m-%d");
-	time = mktime(&timeinfo);
+    memset(&timeinfo, 0, sizeof(timeinfo));
+    ss >> timeinfo.tm_year;
+    ss.ignore();
+    ss >> timeinfo.tm_mon;
+    ss.ignore();
+    ss >> timeinfo.tm_mday;
 
-	return time;
+    timeinfo.tm_year -= 1900;
+    timeinfo.tm_mon--;
+
+    time = mktime(&timeinfo);
+
+    return time;
 }
 
 std::string BitcoinExchange::convertTimeToDate(time_t time) {
-	char buffer[11];
-	struct tm* timeinfo;
+    char buffer[11];
+    struct tm* timeinfo;
 
-	timeinfo = std::localtime(&time);
-	std::strftime(buffer, sizeof(buffer), "%Y-%m-%d", timeinfo);
+    timeinfo = localtime(&time);
+    
+    sprintf(buffer, "%04d-%02d-%02d", timeinfo->tm_year + 1900, timeinfo->tm_mon + 1, timeinfo->tm_mday);
 
-	return std::string(buffer);
+    return std::string(buffer);
 }
 
 static inline std::string cleanValue(std::string var){
@@ -220,12 +228,12 @@ void BitcoinExchange::checkValues(std::string date, float value, std::string str
 
 void BitcoinExchange::crossValue(time_t date, float value) {
     std::map<std::string, float>::iterator it;
-    time_t lastVal[2];
-    float var;
+    time_t lastVal[2] = {0, 0};
+    float var = 0.0;
 
-    memset(&lastVal, 0, sizeof(lastVal));
     for (it = this->getIterator(); it != this->storage.end(); ++it) {
         lastVal[1] = convertDateToTime(it->first);
+
         if (lastVal[1] > date) {
             if (std::abs(lastVal[0] - date) > std::abs(lastVal[1] - date)) {
                 std::cout << convertTimeToDate(lastVal[1]) << " => " << cleanValue(std::to_string(value)) << " = " << cleanValue(std::to_string(var * value)) << std::endl;
@@ -233,12 +241,14 @@ void BitcoinExchange::crossValue(time_t date, float value) {
                 std::cout << convertTimeToDate(lastVal[0]) << " => " << cleanValue(std::to_string(value)) << " = " << cleanValue(std::to_string(it->second * value)) << std::endl;
             }
             return;
-        } else {
+        } else if (lastVal[1] > lastVal[0]) {
             lastVal[0] = lastVal[1];
             var = it->second;
         }
     }
+    std::cout << convertTimeToDate(lastVal[0]) << " => " << cleanValue(std::to_string(value)) << " = " << cleanValue(std::to_string(var * value)) << std::endl;
 }
+
 
 
 void BitcoinExchange::loadStorage(std::string fileName, std::map<std::string, float>& storage) {
