@@ -6,29 +6,30 @@ MergeInsortMakerVec::MergeInsortMakerVec(std::vector<int> contenedor) : _contene
 }
 
 void MergeInsortMakerVec::mergeInShort() {
-    size_t length = size(ONE) + size(TWO);
+    size_t length = size(ONE);
 
     merge((length % 2 == 0) ? length : length - 1, ONE);
     // insert();
 }
 
 void MergeInsortMakerVec::merge(size_t threshold, int container, size_t lap) {
-    std::vector<int>& auxContainer = getContainer(container);
+    std::vector<int>& auxContainer = getContainer(OTHER(container));
 
     if (lap >= threshold)
         return;
 
     merge(threshold, container, lap + 2);
-
     int package[2] = {getNumber(lap + 1, container), getNumber(lap, container)};
     int pos = (package[0] < package[1]) ? lap : lap + 1;
-    int number = getNumber(pos, container);
+    int number = (package[0] > package[1]) ? package[1] : package[0];
+    package[0] = (package[0] < package[1]) ? package[0] : package[1];
+    package[1] =  number; 
 
     if (auxContainer.empty()) {
-        auxContainer.push_back(number);
-        auxContainer.push_back(number);
-        insertNumberInPos(pos, 0, OTHER(container), DELETE);
-        insertNumberInPos(pos, 1, OTHER(container), DELETE);
+        auxContainer.push_back(package[0]);
+        auxContainer.push_back(package[1]);
+        insertNumberInPos(pos, 0, container, DELETE);
+        insertNumberInPos(pos, 0, container, DELETE);
         return;
     }
 
@@ -90,6 +91,7 @@ void MergeInsortMakerVec::insertNumberInPos(size_t pos, int num, int container, 
 }
 
 void MergeInsortMakerVec::insert(int num, int container, int flag) {
+    std::vector<int>& auxContainer = getContainer(container);
     std::vector<int>::iterator auxIterator;
     size_t* auxNumPos;
 
@@ -102,17 +104,18 @@ void MergeInsortMakerVec::insert(int num, int container, int flag) {
     }
 
     if (flag != DELETE) {
-        auxIterator = getContainer(container).insert(auxIterator, num);
+        auxIterator = auxContainer.insert(auxIterator, num);
         ++(*auxNumPos);
     } else {
         if (auxIterator != getBegin(container)) {
             std::vector<int>::iterator temp = auxIterator;
             next(NEXT, container);
-            getContainer(container).erase(temp);
+            auxContainer.erase(temp); // Corregir aquí
             --(*auxNumPos);
         }
     }
 }
+
 
 void MergeInsortMakerVec::begin(int container) {
     getCurrent(container) = (container == ONE) ? _contenedor.begin() : _contenedor2.begin();

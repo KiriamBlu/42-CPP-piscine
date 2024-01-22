@@ -14,6 +14,9 @@
 
 #define OTHER(container) container == ONE ? TWO : ONE
 
+
+void printContainer(const std::vector<int>& cont);
+
 class MergeInsortMakerVec {
 private:
     std::vector<int> _contenedor;
@@ -43,7 +46,5 @@ public:
     void printContent(std::ostream& os, int container) ;
 };
 
-
-void printContainer(std::vector<int>& cont);
 
 #endif // PMERGE_ME_HPP
