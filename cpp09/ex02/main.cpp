@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
     start = std::chrono::high_resolution_clock::now();
     makerVec.mergeInShort();
     end = std::chrono::high_resolution_clock::now();
-    printContainer(makerVec.getContainer(ONE)); 
+    //printContainer(makerVec.getContainer(ONE)); 
     duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     std::cout << "Tiempo transcurrido (ms): " << duration.count() << std::endl;
     std::cout << std::endl;
