@@ -1,5 +1,7 @@
 #include "PmergeMe.hpp"
 
+//------------------------------------------------------------VECTOR---------------------------------------------------------------//
+
 MergeInsortMakerVec::MergeInsortMakerVec(std::vector<int> contenedor) : _contenedor(contenedor) {
     begin(ONE);
     begin(TWO);
@@ -8,11 +10,17 @@ MergeInsortMakerVec::MergeInsortMakerVec(std::vector<int> contenedor) : _contene
 void MergeInsortMakerVec::mergeInShort() {
     size_t length = size(ONE);
 
-    merge(length, ONE);
+    merge((length % 2) == 0 ? length : length - 1, ONE);
     
     insert(ONE);
 
-    std::cout << "Sali\n";
+    _contenedor = _contenedor2;
+    _contenedor2.clear();
+
+    std::cout << "1:\n";
+    printContainerVEC(getContainer(ONE));
+    std::cout << "2:\n";
+    printContainerVEC(getContainer(TWO));
 }
 
 void MergeInsortMakerVec::insert(int container){
@@ -23,8 +31,8 @@ void MergeInsortMakerVec::insert(int container){
 
     while(auxContainer.size()){
         value = getNumber(0, container); 
-        auxContainer.pop_back();
-        aux = binarySearch(value, getBegin(OTHER(container)), getEnd(OTHER(container)), OTHER(container));
+        insertNumberInPos(0, 0, container, DELETE);
+        aux = binarySearch(value, getBegin(OTHER(container)), getEnd(OTHER(container)));
         auxContainer2.insert(aux, value);
     }
 }
@@ -47,10 +55,6 @@ void MergeInsortMakerVec::merge(size_t threshold, int container, size_t lap) {
         auxContainer.push_back(package[0]);
         insertNumberInPos(lap, 0, container, DELETE);
         insertNumberInPos(lap, 0, container, DELETE);
-        std::cout << "1:\n";
-        printContainer(getContainer(ONE));
-        std::cout << "2:\n";
-        printContainer(getContainer(TWO));
         return;
     }
 
@@ -68,52 +72,30 @@ void MergeInsortMakerVec::merge(size_t threshold, int container, size_t lap) {
     }
 
     insertNumberInPos(pos, 0, container, DELETE);
-    std::cout << "1:\n";
-    printContainer(getContainer(ONE));
-    std::cout << "2:\n";
-    printContainer(getContainer(TWO));
 
 }
 
-std::vector<int>::iterator MergeInsortMakerVec::binarySearch(int value, std::vector<int>::iterator start, std::vector<int>::iterator end, int container) {
-    int comparativeValue;
-    std::vector<int>::iterator comparativePos;
-    size_t var;
-    size_t threshold;
+std::vector<int>::iterator MergeInsortMakerVec::binarySearch(int value, std::vector<int>::iterator start, std::vector<int>::iterator end) {
 
-    comparativePos = start;
-    var = std::distance(getBegin(container), start);
-    std::cout << *comparativePos << std::endl;
-    std::cout << var << std::endl;
-    threshold = (size_t)std::distance(start, end) / 2;
-    for (size_t i = 0; i < threshold; ++i) {
-        ++comparativePos;
-        ++var;
+    while (start != end) {
+
+        if (*start == value) {
+            return start;
+        }
+
+        if (*start > value) {
+            end = start;
+        } else {
+            start++;
+        }
     }
-    std::cout << var << std::endl;
-    comparativeValue = getNumber(var, container);
 
-        std::cout << "vueltas" << std::endl;
-    if (start == end)
-        return comparativePos;
-
-    if (comparativeValue == value)
-        return comparativePos;
-
-    if (comparativeValue > value)
-        return binarySearch(value, start, comparativePos, container);
-    else
-        return binarySearch(value, ++comparativePos, end, container);
+    return start;
 }
 
 int MergeInsortMakerVec::getNumber(size_t position, int container) {
 
-    std::cout << getItPos(container) << std::endl;
-    std::cout << "2Pos: " << position << std::endl;
-
-    std::cout << "Values on rotation:" << *getCurrent(container) << std::endl;
     while (position != getItPos(container)) {
-        std::cout << "Values on rotation2:" << *getCurrent(container) << std::endl;
         next((position < getItPos(container)) ? PREV : NEXT, container);
     }
     return *getCurrent(container);
@@ -204,10 +186,194 @@ void MergeInsortMakerVec::printContent(std::ostream& os, int container)  {
     }
 }
 
-void printContainer(const std::vector<int>& cont) {
+void printContainerVEC(const std::vector<int>& cont) {
     std::cout << "Container: ";
     for (size_t i = 0; i < cont.size(); ++i) {
         std::cout << cont[i] << " ";
     }
     std::cout << "\n";
 }
+
+
+//------------------------------------------------------------LIST-----------------------------------------------------------------//
+
+MergeInsortMakerList::MergeInsortMakerList(std::list<int> contenedor) : _contenedor(contenedor) {
+    begin(ONE);
+    begin(TWO);
+}
+
+void MergeInsortMakerList::mergeInShort() {
+    size_t length = size(ONE);
+
+    merge((length % 2) == 0 ? length : length - 1, ONE);
+
+    insert(ONE);
+
+    _contenedor = _contenedor2;
+    _contenedor2.clear();
+
+    std::cout << "1:\n";
+    printContainerLIST(getContainer(ONE));
+    std::cout << "2:\n";
+    printContainerLIST(getContainer(TWO));
+}
+
+void MergeInsortMakerList::insert(int container) {
+    std::list<int>& auxContainer = getContainer(container);
+    std::list<int>& auxContainer2 = getContainer(OTHER(container));
+    std::list<int>::iterator aux;
+    int value;
+
+    while (!auxContainer.empty()) {
+        value = getNumber(0, container);
+        insertNumberInPos(0, 0, container, DELETE);
+        aux = binarySearch(value, getBegin(OTHER(container)), getEnd(OTHER(container)));
+        auxContainer2.insert(aux, value);
+    }
+}
+
+void MergeInsortMakerList::merge(size_t threshold, int container, size_t lap) {
+    std::list<int>& auxContainer = getContainer(OTHER(container));
+
+    if (lap >= threshold)
+        return;
+
+    int package[2] = {getNumber(lap + 1, container), getNumber(lap, container)};
+    merge(threshold, container, lap + 2);
+    int pos = (package[0] < package[1]) ? lap + 1 : lap;
+    int number = (package[0] > package[1]) ? package[1] : package[0];
+    package[0] = (package[0] > package[1]) ? package[0] : package[1];
+    package[1] = number;
+
+    if (auxContainer.empty()) {
+        auxContainer.push_back(package[1]);
+        auxContainer.push_back(package[0]);
+        insertNumberInPos(lap, 0, container, DELETE);
+        insertNumberInPos(lap, 0, container, DELETE);
+        return;
+    }
+
+    std::list<int>::iterator it = auxContainer.begin();
+    while (*it < number) {
+        ++it;
+        if (it == auxContainer.end())
+            break;
+    }
+
+    auxContainer.insert(it, number);
+    insertNumberInPos(pos, 0, container, DELETE);
+}
+
+std::list<int>::iterator MergeInsortMakerList::binarySearch(int value, std::list<int>::iterator start, std::list<int>::iterator end) {
+    while (start != end) {
+
+        if (*start == value) {
+            return start;
+        }
+
+        if (*start > value) {
+            end = start;
+        } else {
+            ++start;
+        }
+    }
+    return start;
+}
+
+int MergeInsortMakerList::getNumber(size_t position, int container) {
+
+    while (position != getItPos(container)) {
+        next((position < getItPos(container)) ? PREV : NEXT, container);
+    }
+    return *getCurrent(container);
+}
+
+void MergeInsortMakerList::insertNumberInPos(size_t pos, int num, int container, int flag) {
+    int direction = static_cast<int>(pos) - static_cast<int>(getItPos(container));
+
+    while (pos != getItPos(container)) {
+        next((direction < 0) ? PREV : NEXT, container);
+    }
+    insert(num, container, flag);
+}
+
+void MergeInsortMakerList::insert(int num, int container, int flag) {
+    std::list<int>& auxContainer = getContainer(container);
+    std::list<int>::iterator& auxIterator = (container == ONE) ? _current1 : _current2;
+
+    if (flag != DELETE) {
+        if (auxIterator == getBegin(container)) {
+            auxContainer.insert(auxIterator, num);
+        } else {
+            auxIterator = auxContainer.insert(auxIterator, num);
+        }
+    } else {
+        std::list<int>::iterator temp = auxIterator;
+        if (auxIterator != getEnd(container)) {
+            auxIterator = auxContainer.erase(temp);
+        } else {
+            auxContainer.pop_back();
+            auxIterator = getEnd(container);
+        }
+        getCurrent(container) = auxIterator;
+    }
+}
+
+void MergeInsortMakerList::begin(int container) {
+    getCurrent(container) = (container == ONE) ? _contenedor.begin() : _contenedor2.begin();
+    getItPos(container) = 0;
+}
+
+void MergeInsortMakerList::next(int direction, int container) {
+    std::list<int>::iterator& auxIterator = (container == ONE) ? _current1 : _current2;
+    size_t& auxNumPos = (container == ONE) ? _itPos1 : _itPos2;
+
+    if (direction == NEXT) {
+        ++auxIterator;
+        ++auxNumPos;
+    } else if (direction == PREV) {
+        --auxIterator;
+        --auxNumPos;
+    }
+}
+
+std::list<int>& MergeInsortMakerList::getContainer(int container) {
+    return (container == ONE) ? _contenedor : _contenedor2;
+}
+
+size_t MergeInsortMakerList::size(int container) {
+    return (container == ONE) ? _contenedor.size() : _contenedor2.size();
+}
+
+std::list<int>::iterator& MergeInsortMakerList::getCurrent(int container) {
+    return (container == ONE) ? _current1 : _current2;
+}
+
+size_t& MergeInsortMakerList::getItPos(int container) {
+    return (container == ONE) ? _itPos1 : _itPos2;
+}
+
+std::list<int>::iterator MergeInsortMakerList::getBegin(int container) {
+    return (container == ONE) ? _contenedor.begin() : _contenedor2.begin();
+}
+
+std::list<int>::iterator MergeInsortMakerList::getEnd(int container) {
+    return (container == ONE) ? _contenedor.end() : _contenedor2.end();
+}
+
+void MergeInsortMakerList::printContent(std::ostream& os, int container) {
+    os << "MergeInsortMakerList Content: ";
+    std::list<int>& cont = getContainer(container);
+    for (std::list<int>::const_iterator it = cont.begin(); it != cont.end(); ++it) {
+        os << *it << " ";
+    }
+}
+void printContainerLIST(const std::list<int>& cont) {
+    std::cout << "Container: ";
+    for (std::list<int>::const_iterator it = cont.begin(); it != cont.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << "\n";
+};
+
+
