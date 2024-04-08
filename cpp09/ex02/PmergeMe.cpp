@@ -14,7 +14,6 @@ void MergeInsortMakerVec::mergeInShort() {
     std::vector<long int> vec;
     size_t length = size(ONE);
 
-
     std::cout << "MERGE\n";
     merge(vec, (length % 2) == 0 ? length : length - 1, ONE);
     std::cout << "1 ";
@@ -24,12 +23,29 @@ void MergeInsortMakerVec::mergeInShort() {
     std::cout << "VECTOR EXTRA:\n";
     printContainerLONGVEC(vec);
 
-    std::cout << "INSERT\n";
-    // PUSHBACK THE PAIR OF THE SMALLEST ON 'S' SECUENCIE
+    getContainer(TWO).insert(getBegin(TWO),vec[0]);
+    getContainer(ONE).erase(std::find(getBegin(ONE), getEnd(ONE), vec[0]));
+
+    vec.insert(vec.begin(), 0xFFFFFFFF);
+
+    std::cout << "PASS\n";
+    std::cout << "1 ";
+    printContainerVEC(getContainer(ONE));
+    std::cout << "S ";
+    printContainerVEC(getContainer(TWO));
+    std::cout << "VECTOR EXTRA:\n";
+    printContainerLONGVEC(vec);
 
     // SWAP GROUPS OVER CONTAINER 1 IN ORDER 2^x - prev.x;
 
+    std::cout << "INSERT\n";
     insert(ONE, vec);
+    std::cout << "1 ";
+    printContainerVEC(getContainer(ONE));
+    std::cout << "S ";
+    printContainerVEC(getContainer(TWO));
+    std::cout << "VECTOR EXTRA:\n";
+    printContainerLONGVEC(vec);
 
     //_contenedor = _contenedor2;
     //_contenedor2.clear();
@@ -53,7 +69,7 @@ void MergeInsortMakerVec::merge(std::vector<long int> &vec, size_t threshold, in
     if (auxContainer.empty()) {
         auxContainer.push_back(number);
         vec.push_back(package[0]);
-        insertNumberInPos(lap, 0, container, DELETE);
+        insertNumberInPos(pos, 0, container, DELETE);
         return ;
     }
 
@@ -87,14 +103,13 @@ void MergeInsortMakerVec::insert(int container, std::vector<long int> &vec){
     int pair;
     int odd = 0;
 
-    if(auxContainer.size() % 2 == 0)
+    if(auxContainer.size() % 2 != 0)
         odd = 1;
 
     while(auxContainer.size() - odd){
         value = getNumber(0, container); 
         insertNumberInPos(0, 0, container, DELETE);
 
-        
         std::cout << value << std::endl;
 
         pair = *(std::find(vec.begin(), vec.end(), value));
@@ -108,14 +123,8 @@ void MergeInsortMakerVec::insert(int container, std::vector<long int> &vec){
 
         vec.insert(vecIter, 0xFFFFFFFF); 
         auxContainer2.insert(aux, value);
-
-        std::cout << "1 ";
-        printContainerVEC(getContainer(ONE));
-        std::cout << "S ";
-        printContainerVEC(getContainer(TWO));
-        std::cout << "VECTOR EXTRA:\n";
-        printContainerLONGVEC(vec);
     }
+    std::cout << "SALGO" << std::endl;
 }
 
 
@@ -245,7 +254,10 @@ void printContainerVEC(const std::vector<int>& cont) {
 void printContainerLONGVEC(const std::vector<long int>& cont) {
     std::cout << "Container: ";
     for (size_t i = 0; i < cont.size(); ++i) {
-        std::cout << cont[i] << " ";
+        if(cont[i] != 0xFFFFFFFF)
+            std::cout << cont[i] << " ";
+        else
+            std::cout << "X ";
     }
     std::cout << "\n";
 }
