@@ -8,22 +8,25 @@ MergeInsortMakerVec::MergeInsortMakerVec(std::vector<int> contenedor) : _contene
 }
 
 void MergeInsortMakerVec::mergeInShort() {
+    std::vector<int> vec;
     size_t length = size(ONE);
 
-    merge((length % 2) == 0 ? length : length - 1, ONE);
+    merge(vec, (length % 2) == 0 ? length : length - 1, ONE);
     
-    insert(ONE);
+    insert(ONE, vec);
 
-    _contenedor = _contenedor2;
-    _contenedor2.clear();
+    //_contenedor = _contenedor2;
+    //_contenedor2.clear();
 
-    std::cout << "1:\n";
+    std::cout << "1 ";
     printContainerVEC(getContainer(ONE));
-    std::cout << "2:\n";
+    std::cout << "S ";
     printContainerVEC(getContainer(TWO));
+    std::cout << "VECTOR EXTRA:\n";
+    printContainerVEC(vec);
 }
 
-void MergeInsortMakerVec::insert(int container){
+void MergeInsortMakerVec::insert(int container, std::vector<int> &vec){
     std::vector<int>& auxContainer = getContainer(container);
     std::vector<int>& auxContainer2 = getContainer(OTHER(container));
     std::vector<int>::iterator aux;
@@ -37,42 +40,45 @@ void MergeInsortMakerVec::insert(int container){
     }
 }
 
-void MergeInsortMakerVec::merge(size_t threshold, int container, size_t lap) {
+void MergeInsortMakerVec::merge(std::vector<int> &vec, size_t threshold, int container, size_t lap) {
     std::vector<int>& auxContainer = getContainer(OTHER(container));
 
     if (lap >= threshold)
         return;
 
     int package[2] = {getNumber(lap + 1, container), getNumber(lap, container)};
-    merge(threshold, container, lap + 2);
+    merge(vec, threshold, container, lap + 2);
     int pos = (package[0] < package[1]) ? lap + 1 : lap;
-    int number = (package[0] > package[1]) ? package[1] : package[0];
-    package[0] = (package[0] > package[1]) ? package[0] : package[1];
+    int number = (package[0] < package[1]) ? package[1] : package[0];
+    package[0] = (package[0] < package[1]) ? package[0] : package[1];
     package[1] =  number; 
 
     if (auxContainer.empty()) {
         auxContainer.push_back(package[1]);
-        auxContainer.push_back(package[0]);
+        vec.push_back(package[0]);
         insertNumberInPos(lap, 0, container, DELETE);
-        insertNumberInPos(lap, 0, container, DELETE);
-        return;
+        return ;
     }
 
     std::vector<int>::iterator it = auxContainer.begin();
+    std::vector<int>::iterator it2 = vec.begin();
     while (*it < number) {
         ++it;
+        ++it2;
         if(it == auxContainer.end())
             break;
     }
 
     if (it != auxContainer.end()) {
         auxContainer.insert(it, number);
+        vec.insert(it2, package[0]);
     } else {
         auxContainer.push_back(number);
+        vec.push_back(package[0]);
     }
 
     insertNumberInPos(pos, 0, container, DELETE);
-
+    return ;
 }
 
 std::vector<int>::iterator MergeInsortMakerVec::binarySearch(int value, std::vector<int>::iterator start, std::vector<int>::iterator end) {

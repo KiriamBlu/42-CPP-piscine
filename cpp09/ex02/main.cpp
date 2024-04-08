@@ -45,20 +45,20 @@ int main(int argc, char* argv[]) {
     std::cout << "Tiempo transcurrido (ms): " << duration.count() << std::endl;
     std::cout << std::endl;
 
-    std::cout << "LIST------------------------------------------------------------------------" << std::endl;
-    std::cout << "Before: ";
-    for (std::list<int>::iterator it = list.begin(); it != list.end(); ++it) {
-        std::cout << *it << " ";
-    }
-    std::cout << std::endl;
+    // std::cout << "LIST------------------------------------------------------------------------" << std::endl;
+    // std::cout << "Before: ";
+    // for (std::list<int>::iterator it = list.begin(); it != list.end(); ++it) {
+    //     std::cout << *it << " ";
+    // }
+    // std::cout << std::endl;
 
-    MergeInsortMakerList makerList(list);
-    start = std::chrono::high_resolution_clock::now();
-    makerList.mergeInShort();
-    end = std::chrono::high_resolution_clock::now();
-    duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-    std::cout << "Tiempo transcurrido (ms): " << duration.count() << std::endl;
-    std::cout << std::endl;
+    // MergeInsortMakerList makerList(list);
+    // start = std::chrono::high_resolution_clock::now();
+    // makerList.mergeInShort();
+    // end = std::chrono::high_resolution_clock::now();
+    // duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    // std::cout << "Tiempo transcurrido (ms): " << duration.count() << std::endl;
+    // std::cout << std::endl;
 
 
 }

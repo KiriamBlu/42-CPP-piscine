@@ -31,8 +31,8 @@ public:
     MergeInsortMakerVec(std::vector<int> contenedor);
 
     void mergeInShort();
-    void merge(size_t threshold, int container, size_t lap = 0);
-    void insert(int container);
+    void merge(std::vector<int> &vec, size_t threshold, int container, size_t lap = 0);
+    void insert(int container, std::vector<int> &vec);
     std::vector<int>::iterator binarySearch(int value, std::vector<int>::iterator start, std::vector<int>::iterator end);
     int getNumber(size_t position, int container);
     void insertNumberInPos(size_t pos, int num, int container, int flag = INSERT);
