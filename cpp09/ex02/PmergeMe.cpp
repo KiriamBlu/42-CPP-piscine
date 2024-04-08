@@ -13,7 +13,7 @@ void MergeInsortMakerVec::mergeInShort() {
 
     merge(vec, (length % 2) == 0 ? length : length - 1, ONE);
     
-    insert(ONE, vec);
+    //insert(ONE, vec);
 
     //_contenedor = _contenedor2;
     //_contenedor2.clear();
