@@ -14,7 +14,7 @@ void MergeInsortMakerVec::mergeInShort() {
     std::vector<long int> vec;
     size_t length = size(ONE);
 
-    std::cout << "MERGE\n";
+    //std::cout << "MERGE\n";
     merge(vec, (length % 2) == 0 ? length : length - 1, ONE);
     std::cout << "1 ";
     printContainerVEC(getContainer(ONE));
@@ -93,6 +93,15 @@ void MergeInsortMakerVec::merge(std::vector<long int> &vec, size_t threshold, in
     insertNumberInPos(pos, 0, container, DELETE);
     return ;
 }
+
+// void MergeInsortMakerVec::groupSwapper(int container){
+//     std::vector<int>& auxContainer = getContainer(container);
+//     size_t swapper[2] = {0, 2};
+
+//     for (size_t i = 0; i < auxContainer.size(), i ){
+//         for (size_t swapper, )
+//     }
+// }
 
 void MergeInsortMakerVec::insert(int container, std::vector<long int> &vec){
     std::vector<int>& auxContainer = getContainer(container);
