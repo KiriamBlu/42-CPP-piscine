@@ -33,7 +33,7 @@ void MergeInsortMakerVec::mergeInShort() {
     printContainerVEC(getContainer(ONE));
     std::cout << "S ";
     printContainerVEC(getContainer(TWO));
-    std::cout << "VECTOR EXTRA:\n";
+    std::cout << "VECTOR EXTRA:\n"; 
     printContainerLONGVEC(vec);
 
     // SWAP GROUPS OVER CONTAINER 1 IN ORDER 2^x - prev.x;
@@ -99,32 +99,31 @@ void MergeInsortMakerVec::insert(int container, std::vector<long int> &vec){
     std::vector<int>& auxContainer2 = getContainer(OTHER(container));
     std::vector<int>::iterator bend;
     std::vector<int>::iterator aux;
+    std::vector<long int>::iterator vecIter;
     int value;
     int pair;
-    int odd = 0;
 
-    if(auxContainer.size() % 2 != 0)
-        odd = 1;
-
-    while(auxContainer.size() - odd){
+    while(auxContainer.size()){
         value = getNumber(0, container); 
         insertNumberInPos(0, 0, container, DELETE);
 
-        std::cout << value << std::endl;
+        vecIter = std::find(vec.begin(), vec.end(), value);
 
-        pair = *(std::find(vec.begin(), vec.end(), value));
+        bend = auxContainer2.end();
 
-        bend = std::find(auxContainer2.begin(), auxContainer2.end(), value);
+        if(vecIter != vec.end()){
+            pair = *vecIter;
+            bend = std::find(auxContainer2.begin(), auxContainer2.end(), value);
+        }
 
         aux = binarySearch(vec, value, auxContainer2.begin(), bend);
 
         size_t vecPos = std::distance(auxContainer2.begin(), aux);
-        std::vector<long int>::iterator vecIter = vec.begin() + vecPos;
+        vecIter = vec.begin() + vecPos;
 
         vec.insert(vecIter, 0xFFFFFFFF); 
         auxContainer2.insert(aux, value);
     }
-    std::cout << "SALGO" << std::endl;
 }
 
 
