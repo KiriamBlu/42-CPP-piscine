@@ -14,8 +14,8 @@ void MergeInsortMakerVec::mergeInShort() {
     std::vector<long int> vec;
     size_t length = size(ONE);
 
-    //std::cout << "MERGE\n";
-    merge(vec, (length % 2) == 0 ? length : length - 1, ONE);
+    std::cout << "MERGE\n";
+    merge((length % 2) == 0 ? length : length - 1, ONE);
     std::cout << "1 ";
     printContainerVEC(getContainer(ONE));
     std::cout << "S ";
@@ -23,12 +23,28 @@ void MergeInsortMakerVec::mergeInShort() {
     std::cout << "VECTOR EXTRA:\n";
     printContainerLONGVEC(vec);
 
-    getContainer(TWO).insert(getBegin(TWO),vec[0]);
-    getContainer(ONE).erase(std::find(getBegin(ONE), getEnd(ONE), vec[0]));
+    std::cout << "FIX\n";
+    fixSecuencies(ONE);
+    std::cout << "1 ";
+    printContainerVEC(getContainer(ONE));
+    std::cout << "S ";
+    printContainerVEC(getContainer(TWO));
+    std::cout << "VECTOR EXTRA:\n";
+    printContainerLONGVEC(vec);
 
-    vec.insert(vec.begin(), 0xFFFFFFFF);
+    std::cout << "PAIRS\n";
+    getPairs(vec, ONE);
+    std::cout << "1 ";
+    printContainerVEC(getContainer(ONE));
+    std::cout << "S ";
+    printContainerVEC(getContainer(TWO));
+    std::cout << "VECTOR EXTRA:\n";
+    printContainerLONGVEC(vec);
 
     std::cout << "PASS\n";
+    getContainer(TWO).insert(getBegin(TWO),vec[0]);
+    getContainer(ONE).erase(std::find(getBegin(ONE), getEnd(ONE), vec[0]));
+    vec.insert(vec.begin(), 0xFFFFFFFF);
     std::cout << "1 ";
     printContainerVEC(getContainer(ONE));
     std::cout << "S ";
@@ -36,7 +52,7 @@ void MergeInsortMakerVec::mergeInShort() {
     std::cout << "VECTOR EXTRA:\n"; 
     printContainerLONGVEC(vec);
 
-    // SWAP GROUPS OVER CONTAINER 1 IN ORDER 2^x - prev.x;
+    // // SWAP GROUPS OVER CONTAINER 1 IN ORDER 2^x - prev.x;
 
     std::cout << "INSERT\n";
     insert(ONE, vec);
@@ -53,47 +69,48 @@ void MergeInsortMakerVec::mergeInShort() {
     
 }
 
-void MergeInsortMakerVec::merge(std::vector<long int> &vec, size_t threshold, int container, size_t lap) {
+void MergeInsortMakerVec::merge(size_t threshold, int container, size_t lap) {
     std::vector<int>& auxContainer = getContainer(OTHER(container));
 
     if (lap >= threshold)
         return;
 
     int package[2] = {getNumber(lap + 1, container), getNumber(lap, container)};
-    merge(vec, threshold, container, lap + 2);
+    merge(threshold, container, lap + 2);
     int pos = (package[0] > package[1]) ? lap + 1 : lap;
     int number = (package[0] < package[1]) ? package[1] : package[0];
     package[0] = (package[0] < package[1]) ? package[0] : package[1];
     package[1] =  number; 
 
-    if (auxContainer.empty()) {
-        auxContainer.push_back(number);
-        vec.push_back(package[0]);
-        insertNumberInPos(pos, 0, container, DELETE);
-        return ;
-    }
-
-    std::vector<int>::iterator it = auxContainer.begin();
-    std::vector<long int>::iterator it2 = vec.begin();
-    while (*it < number) {
-        ++it;
-        ++it2;
-        if(it == auxContainer.end())
-            break;
-    }
-
-    if (it != auxContainer.end()) {
-        auxContainer.insert(it, number);
-        vec.insert(it2, package[0]);
-    } else {
-        auxContainer.push_back(number);
-        vec.push_back(package[0]);
-    }
+    auxContainer.insert(auxContainer.begin(), number);
 
     insertNumberInPos(pos, 0, container, DELETE);
     return ;
 }
 
+void MergeInsortMakerVec::fixSecuencies(int container) {
+    std::vector<int>& one = getContainer(container);
+    std::vector<int>& S = getContainer(OTHER(container));
+
+    for (size_t i = 0; i + 1 < S.size(); i++) {
+        if (S[i + 1] < S[i]) {
+            std::swap(S[i], S[i + 1]);
+            std::swap(one[i], one[i + 1]);
+
+            if (i > 0)
+                i -= 2;
+        }
+    }
+}
+
+void MergeInsortMakerVec::getPairs(std::vector<long int> &vec, int container) {
+    std::vector<int>::iterator beginIterator = getBegin(container);
+    std::vector<int>::iterator endIterator = getEnd(container);
+
+    for (std::vector<int>::iterator it = beginIterator; it != endIterator; ++it) {
+        vec.push_back(*it);
+    }
+}
 // void MergeInsortMakerVec::groupSwapper(int container){
 //     std::vector<int>& auxContainer = getContainer(container);
 //     size_t swapper[2] = {0, 2};
