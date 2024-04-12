@@ -323,17 +323,17 @@ MergeInsortMakerDeque::MergeInsortMakerDeque(std::deque<int> contenedor) : _cont
 }
 
 void MergeInsortMakerDeque::mergeInShort() {
-    std::deque<long int> vec;
+    std::deque<long int> deq;
     size_t length = size(ONE);
 
     merge((length % 2) == 0 ? length : length - 1, ONE);
     fixSequences(ONE);
-    getPairs(vec, ONE);
-    getContainer(TWO).insert(getBegin(TWO),vec[0]);
+    getPairs(deq, ONE);
+    getContainer(TWO).insert(getBegin(TWO),deq[0]);
     getContainer(ONE).erase(getBegin(ONE));
-    vec.insert(vec.begin(), 0xFFFFFFFF);
+    deq.insert(deq.begin(), 0xFFFFFFFF);
     groupSwapper(ONE);
-    insertAlg(ONE, vec);
+    insertAlg(ONE, deq);
 }
 
 void MergeInsortMakerDeque::merge(size_t threshold, int container, size_t lap) {
@@ -369,11 +369,11 @@ void MergeInsortMakerDeque::fixSequences(int container) {
     }
 }
 
-void MergeInsortMakerDeque::getPairs(std::deque<long int> &vec, int container) {
+void MergeInsortMakerDeque::getPairs(std::deque<long int> &deq, int container) {
     std::deque<int>::iterator beginIterator = getBegin(container);
     std::deque<int>::iterator endIterator = getEnd(container);
     for (std::deque<int>::iterator it = beginIterator; it != endIterator; ++it)
-        vec.push_back(*it);
+        deq.push_back(*it);
 }
 
 
@@ -404,7 +404,7 @@ void MergeInsortMakerDeque::groupSwapper(int container) {
 }
 
 
-void MergeInsortMakerDeque::insertAlg(int container, std::deque<long int> &vec){
+void MergeInsortMakerDeque::insertAlg(int container, std::deque<long int> &deq){
     std::deque<int>& auxContainer = getContainer(container);
     std::deque<int>& auxContainer2 = getContainer(OTHER(container));
     std::deque<int>::iterator bend;
@@ -417,26 +417,26 @@ void MergeInsortMakerDeque::insertAlg(int container, std::deque<long int> &vec){
         value = getNumber(0, container); 
         insertNumberInPos(0, 0, container, DELETE);
 
-        vecIter = std::find(vec.begin(), vec.end(), value);
+        vecIter = std::find(deq.begin(), deq.end(), value);
 
         bend = auxContainer2.end();
 
-        if(vecIter != vec.end()){
+        if(vecIter != deq.end()){
             pair = *vecIter;
             bend = std::find(auxContainer2.begin(), auxContainer2.end(), value);
         }
 
-        aux = binarySearch(vec, value, auxContainer2.begin(), bend);
+        aux = binarySearch(deq, value, auxContainer2.begin(), bend);
 
         size_t vecPos = std::distance(auxContainer2.begin(), aux);
-        vecIter = vec.begin() + vecPos;
+        vecIter = deq.begin() + vecPos;
 
-        vec.insert(vecIter, 0xFFFFFFFF); 
+        deq.insert(vecIter, 0xFFFFFFFF); 
         auxContainer2.insert(aux, value);
     }
 }
 
-std::deque<int>::iterator MergeInsortMakerDeque::binarySearch(std::deque<long int> &vec, int value, std::deque<int>::iterator start, std::deque<int>::iterator end) {
+std::deque<int>::iterator MergeInsortMakerDeque::binarySearch(std::deque<long int> &deq, int value, std::deque<int>::iterator start, std::deque<int>::iterator end) {
     int comparativeValue;
     std::deque<int>::iterator comparativePos;
 
@@ -451,9 +451,9 @@ std::deque<int>::iterator MergeInsortMakerDeque::binarySearch(std::deque<long in
         return comparativePos;
 
     if (*comparativePos > value)
-        return binarySearch(vec, value, start, comparativePos);
+        return binarySearch(deq, value, start, comparativePos);
     else
-        return binarySearch(vec, value, ++comparativePos, end);
+        return binarySearch(deq, value, ++comparativePos, end);
 }
 
 

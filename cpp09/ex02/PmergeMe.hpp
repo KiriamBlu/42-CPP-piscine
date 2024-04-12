@@ -68,10 +68,10 @@ public:
     void mergeInShort();
     void merge(size_t threshold, int container, size_t lap = 0);
     void fixSequences(int container);
-    void getPairs(std::deque<long int> &vec ,int container);
+    void getPairs(std::deque<long int> &deq ,int container);
     void groupSwapper(int container);
-    void insertAlg(int container, std::deque<long int> &vec);
-    std::deque<int>::iterator binarySearch(std::deque<long int> &vec, int value, std::deque<int>::iterator start, std::deque<int>::iterator end);
+    void insertAlg(int container, std::deque<long int> &deq);
+    std::deque<int>::iterator binarySearch(std::deque<long int> &deq, int value, std::deque<int>::iterator start, std::deque<int>::iterator end);
     int getNumber(size_t position, int container);
     void insertNumberInPos(size_t pos, int num, int container, int flag = INSERT);
     void insert(int num, int container, int flag = INSERT);

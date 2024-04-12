@@ -1,14 +1,14 @@
 #include "PmergeMe.hpp"
 #include <iostream>
 #include <vector>
-#include <list>
+#include <deque>
 #include <chrono>
 #include <sstream>
 #include <algorithm>
 
 int main(int argc, char* argv[]) { // PROBAR MAX INT
     std::vector<int> vec;
-    std::list<int> list;
+    std::deque<int> deque;
 
     if (argc != 2) {
         std::cerr << "Usage: " << argv[0] << " <numbers_string>" << std::endl;
@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) { // PROBAR MAX INT
             return 1;
         }
         vec.push_back(static_cast<int>(number));
-        list.push_back(static_cast<int>(number));
+        deque.push_back(static_cast<int>(number));
         if (iss.peek() == ' ') {
             iss.ignore();
         }
@@ -50,14 +50,14 @@ int main(int argc, char* argv[]) { // PROBAR MAX INT
     std::cout << "Tiempo transcurrido (ms): " << duration.count() << std::endl;
     std::cout << std::endl;
 
-    // std::cout << "LIST------------------------------------------------------------------------" << std::endl;
+    // std::cout << "deque------------------------------------------------------------------------" << std::endl;
     // std::cout << "Before: ";
-    // for (std::list<int>::iterator it = list.begin(); it != list.end(); ++it) {
+    // for (std::deque<int>::iterator it = deque.begin(); it != deque.end(); ++it) {
     //     std::cout << *it << " ";
     // }
     // std::cout << std::endl;
 
-    // MergeInsortMakerList makerList(list);
+    // MergeInsortMakerList makerList(deque);
     // start = std::chrono::high_resolution_clock::now();
     // makerList.mergeInShort();
     // end = std::chrono::high_resolution_clock::now();
