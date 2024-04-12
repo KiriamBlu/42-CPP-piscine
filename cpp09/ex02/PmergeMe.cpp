@@ -61,7 +61,7 @@ void MergeInsortMakerVec::mergeInShort() {
     printContainerLONGVEC(vec);
 
     std::cout << "INSERT\n";
-    insert(ONE, vec);
+    insertAlg(ONE, vec);
     std::cout << "1 ";
     printContainerVEC(getContainer(ONE));
     std::cout << "S ";
@@ -139,7 +139,7 @@ void MergeInsortMakerVec::groupSwapper(int container){
     }
 }
 
-void MergeInsortMakerVec::insert(int container, std::vector<long int> &vec){
+void MergeInsortMakerVec::insertAlg(int container, std::vector<long int> &vec){
     std::vector<int>& auxContainer = getContainer(container);
     std::vector<int>& auxContainer2 = getContainer(OTHER(container));
     std::vector<int>::iterator bend;
@@ -191,8 +191,6 @@ std::vector<int>::iterator MergeInsortMakerVec::binarySearch(std::vector<long in
     else
         return binarySearch(vec, value, ++comparativePos, end);
 }
-
-
 
 int MergeInsortMakerVec::getNumber(size_t position, int container) {
 
@@ -254,7 +252,6 @@ void MergeInsortMakerVec::next(int direction, int container) {
     }
 }
 
-
 std::vector<int>& MergeInsortMakerVec::getContainer(int container) {
     return (container == ONE) ? _contenedor : _contenedor2;
 }
@@ -314,92 +311,153 @@ size_t powerOfTwo(size_t exponent) {
     return result;
 }
 
-//------------------------------------------------------------DEQUE-----------------------------------------------------------------//
+//------------------------------------------------------------DEQUE---------------------------------------------------------------//
 
-MergeInsortMakerList::MergeInsortMakerList(std::list<int> contenedor) : _contenedor(contenedor) {
+
+size_t powerOfTwo(size_t exponent);
+void printContainerLONGDEQUE(const std::deque<long int>& cont);
+
+MergeInsortMakerDeque::MergeInsortMakerDeque(std::deque<int> contenedor) : _contenedor(contenedor) {
     begin(ONE);
     begin(TWO);
 }
 
-void MergeInsortMakerList::mergeInShort() {
+void MergeInsortMakerDeque::mergeInShort() {
+    std::deque<long int> vec;
     size_t length = size(ONE);
 
     merge((length % 2) == 0 ? length : length - 1, ONE);
-
-    insert(ONE);
-
-    _contenedor = _contenedor2;
-    _contenedor2.clear();
-
-    std::cout << "1:\n";
-    printContainerLIST(getContainer(ONE));
-    std::cout << "2:\n";
-    printContainerLIST(getContainer(TWO));
+    fixSequences(ONE);
+    getPairs(vec, ONE);
+    getContainer(TWO).insert(getBegin(TWO),vec[0]);
+    getContainer(ONE).erase(getBegin(ONE));
+    vec.insert(vec.begin(), 0xFFFFFFFF);
+    groupSwapper(ONE);
+    insertAlg(ONE, vec);
 }
 
-void MergeInsortMakerList::insert(int container) {
-    std::list<int>& auxContainer = getContainer(container);
-    std::list<int>& auxContainer2 = getContainer(OTHER(container));
-    std::list<int>::iterator aux;
-    int value;
+void MergeInsortMakerDeque::merge(size_t threshold, int container, size_t lap) {
+    if (lap >= threshold)
+        return;
 
-    while (!auxContainer.empty()) {
-        value = getNumber(0, container);
+    std::deque<int>& auxContainer = getContainer(OTHER(container));
+
+    int package[2] = {getNumber(lap + 1, container), getNumber(lap, container)};
+    merge(threshold, container, lap + 2);
+    int pos = (package[0] > package[1]) ? lap + 1 : lap;
+    int number = (package[0] < package[1]) ? package[1] : package[0];
+    package[0] = std::min(package[0], package[1]);
+    package[1] = number;
+
+    auxContainer.push_front(number);
+
+    insertNumberInPos(pos, 0, container, DELETE);
+}
+
+void MergeInsortMakerDeque::fixSequences(int container) {
+    std::deque<int>& one = getContainer(container);
+    std::deque<int>& S = getContainer(OTHER(container));
+
+    for (size_t i = 0; i + 1 < S.size(); i++) {
+        if (S[i + 1] < S[i]) {
+            std::swap(S[i], S[i + 1]);
+            std::swap(one[i], one[i + 1]);
+
+            if (i > 0)
+                i -= 2;
+        }
+    }
+}
+
+void MergeInsortMakerDeque::getPairs(std::deque<long int> &vec, int container) {
+    std::deque<int>::iterator beginIterator = getBegin(container);
+    std::deque<int>::iterator endIterator = getEnd(container);
+    for (std::deque<int>::iterator it = beginIterator; it != endIterator; ++it)
+        vec.push_back(*it);
+}
+
+
+void MergeInsortMakerDeque::groupSwapper(int container) {
+    std::deque<int>& auxContainer = getContainer(container);
+    size_t swapper[2] = {2, 2};
+    size_t threshold;
+    size_t i = 0;
+    size_t lap = 2;
+    uint8_t last = 0;
+
+    while (swapper[1] <= auxContainer.size()) {
+        threshold = swapper[1] / 2;
+        i += threshold;
+
+        for (size_t j = 0;  j < threshold; j++) {
+            std::swap(auxContainer[i - threshold + j], auxContainer[(i + threshold - j) - 1]);
+        }
+        i += threshold;
+        swapper[1] = powerOfTwo(lap) - swapper[0];
+        swapper[0] = swapper[1];
+        lap++;
+        if (i + swapper[1] > auxContainer.size() && last == 0) {
+            swapper[1] = auxContainer.size() - i;
+            last = 1;
+        }
+    }
+}
+
+
+void MergeInsortMakerDeque::insertAlg(int container, std::deque<long int> &vec){
+    std::deque<int>& auxContainer = getContainer(container);
+    std::deque<int>& auxContainer2 = getContainer(OTHER(container));
+    std::deque<int>::iterator bend;
+    std::deque<int>::iterator aux;
+    std::deque<long int>::iterator vecIter;
+    int value;
+    int pair;
+
+    while(auxContainer.size()){
+        value = getNumber(0, container); 
         insertNumberInPos(0, 0, container, DELETE);
-        aux = binarySearch(value, getBegin(OTHER(container)), getEnd(OTHER(container)));
+
+        vecIter = std::find(vec.begin(), vec.end(), value);
+
+        bend = auxContainer2.end();
+
+        if(vecIter != vec.end()){
+            pair = *vecIter;
+            bend = std::find(auxContainer2.begin(), auxContainer2.end(), value);
+        }
+
+        aux = binarySearch(vec, value, auxContainer2.begin(), bend);
+
+        size_t vecPos = std::distance(auxContainer2.begin(), aux);
+        vecIter = vec.begin() + vecPos;
+
+        vec.insert(vecIter, 0xFFFFFFFF); 
         auxContainer2.insert(aux, value);
     }
 }
 
-void MergeInsortMakerList::merge(size_t threshold, int container, size_t lap) {
-    std::list<int>& auxContainer = getContainer(OTHER(container));
+std::deque<int>::iterator MergeInsortMakerDeque::binarySearch(std::deque<long int> &vec, int value, std::deque<int>::iterator start, std::deque<int>::iterator end) {
+    int comparativeValue;
+    std::deque<int>::iterator comparativePos;
 
-    if (lap >= threshold)
-        return;
+    comparativePos = start;
+    std::advance(comparativePos, std::distance(start, end) / 2);
+    comparativeValue = *comparativePos;
 
-    int package[2] = {getNumber(lap + 1, container), getNumber(lap, container)};
-    merge(threshold, container, lap + 2);
-    int pos = (package[0] < package[1]) ? lap + 1 : lap;
-    int number = (package[0] > package[1]) ? package[1] : package[0];
-    package[0] = (package[0] > package[1]) ? package[0] : package[1];
-    package[1] = number;
+    if (start == end)
+        return comparativePos;
 
-    if (auxContainer.empty()) {
-        auxContainer.push_back(package[1]);
-        auxContainer.push_back(package[0]);
-        insertNumberInPos(lap, 0, container, DELETE);
-        insertNumberInPos(lap, 0, container, DELETE);
-        return;
-    }
+    if (comparativeValue == value)
+        return comparativePos;
 
-    std::list<int>::iterator it = auxContainer.begin();
-    while (*it < number) {
-        ++it;
-        if (it == auxContainer.end())
-            break;
-    }
-
-    auxContainer.insert(it, number);
-    insertNumberInPos(pos, 0, container, DELETE);
+    if (*comparativePos > value)
+        return binarySearch(vec, value, start, comparativePos);
+    else
+        return binarySearch(vec, value, ++comparativePos, end);
 }
 
-std::list<int>::iterator MergeInsortMakerList::binarySearch(int value, std::list<int>::iterator start, std::list<int>::iterator end) {
-    while (start != end) {
 
-        if (*start == value) {
-            return start;
-        }
-
-        if (*start > value) {
-            end = start;
-        } else {
-            ++start;
-        }
-    }
-    return start;
-}
-
-int MergeInsortMakerList::getNumber(size_t position, int container) {
+int MergeInsortMakerDeque::getNumber(size_t position, int container) {
 
     while (position != getItPos(container)) {
         next((position < getItPos(container)) ? PREV : NEXT, container);
@@ -407,18 +465,20 @@ int MergeInsortMakerList::getNumber(size_t position, int container) {
     return *getCurrent(container);
 }
 
-void MergeInsortMakerList::insertNumberInPos(size_t pos, int num, int container, int flag) {
+void MergeInsortMakerDeque::insertNumberInPos(size_t pos, int num, int container, int flag) {
     int direction = static_cast<int>(pos) - static_cast<int>(getItPos(container));
 
-    while (pos != getItPos(container)) {
+    while (pos != getItPos(container)){
         next((direction < 0) ? PREV : NEXT, container);
     }
     insert(num, container, flag);
+
 }
 
-void MergeInsortMakerList::insert(int num, int container, int flag) {
-    std::list<int>& auxContainer = getContainer(container);
-    std::list<int>::iterator& auxIterator = (container == ONE) ? _current1 : _current2;
+
+void MergeInsortMakerDeque::insert(int num, int container, int flag) {
+    std::deque<int>& auxContainer = getContainer(container);
+    std::deque<int>::iterator& auxIterator = (container == ONE) ? _current1 : _current2;
 
     if (flag != DELETE) {
         if (auxIterator == getBegin(container)) {
@@ -427,24 +487,25 @@ void MergeInsortMakerList::insert(int num, int container, int flag) {
             auxIterator = auxContainer.insert(auxIterator, num);
         }
     } else {
-        std::list<int>::iterator temp = auxIterator;
+        std::deque<int>::iterator temp = auxIterator;
         if (auxIterator != getEnd(container)) {
             auxIterator = auxContainer.erase(temp);
         } else {
             auxContainer.pop_back();
-            auxIterator = getEnd(container);
+            auxIterator = getEnd(container) - 1;
         }
         getCurrent(container) = auxIterator;
     }
 }
 
-void MergeInsortMakerList::begin(int container) {
+
+void MergeInsortMakerDeque::begin(int container) {
     getCurrent(container) = (container == ONE) ? _contenedor.begin() : _contenedor2.begin();
     getItPos(container) = 0;
 }
 
-void MergeInsortMakerList::next(int direction, int container) {
-    std::list<int>::iterator& auxIterator = (container == ONE) ? _current1 : _current2;
+void MergeInsortMakerDeque::next(int direction, int container) {
+    std::deque<int>::iterator& auxIterator = (container == ONE) ? _current1 : _current2;
     size_t& auxNumPos = (container == ONE) ? _itPos1 : _itPos2;
 
     if (direction == NEXT) {
@@ -456,43 +517,52 @@ void MergeInsortMakerList::next(int direction, int container) {
     }
 }
 
-std::list<int>& MergeInsortMakerList::getContainer(int container) {
+std::deque<int>& MergeInsortMakerDeque::getContainer(int container) {
     return (container == ONE) ? _contenedor : _contenedor2;
 }
 
-size_t MergeInsortMakerList::size(int container) {
+size_t MergeInsortMakerDeque::size(int container) {
     return (container == ONE) ? _contenedor.size() : _contenedor2.size();
 }
 
-std::list<int>::iterator& MergeInsortMakerList::getCurrent(int container) {
+std::deque<int>::iterator& MergeInsortMakerDeque::getCurrent(int container) {
     return (container == ONE) ? _current1 : _current2;
 }
 
-size_t& MergeInsortMakerList::getItPos(int container) {
+size_t& MergeInsortMakerDeque::getItPos(int container) {
     return (container == ONE) ? _itPos1 : _itPos2;
 }
 
-std::list<int>::iterator MergeInsortMakerList::getBegin(int container) {
+std::deque<int>::iterator MergeInsortMakerDeque::getBegin(int container) {
     return (container == ONE) ? _contenedor.begin() : _contenedor2.begin();
 }
 
-std::list<int>::iterator MergeInsortMakerList::getEnd(int container) {
+std::deque<int>::iterator MergeInsortMakerDeque::getEnd(int container) {
     return (container == ONE) ? _contenedor.end() : _contenedor2.end();
 }
 
-void MergeInsortMakerList::printContent(std::ostream& os, int container) {
-    os << "MergeInsortMakerList Content: ";
-    std::list<int>& cont = getContainer(container);
-    for (std::list<int>::const_iterator it = cont.begin(); it != cont.end(); ++it) {
+void MergeInsortMakerDeque::printContent(std::ostream& os, int container)  {
+    os << "MergeInsortMakerDeque Content: ";
+    std::deque<int>& cont = getContainer(container);
+    for (std::deque<int>::const_iterator it = cont.begin(); it != cont.end(); ++it) {
         os << *it << " ";
     }
 }
-void printContainerLIST(const std::list<int>& cont) {
+void printContainerDEQUE(const std::deque<int>& cont) {
     std::cout << "Container: ";
-    for (std::list<int>::const_iterator it = cont.begin(); it != cont.end(); ++it) {
-        std::cout << *it << " ";
+    for (size_t i = 0; i < cont.size(); ++i) {
+        std::cout << cont[i] << " ";
     }
     std::cout << "\n";
-};
+}
 
-
+void printContainerLONGDEQUE(const std::deque<long int>& cont) {
+    std::cout << "Container: ";
+    for (size_t i = 0; i < cont.size(); ++i) {
+        if(cont[i] != 0xFFFFFFFF)
+            std::cout << cont[i] << " ";
+        else
+            std::cout << "X ";
+    }
+    std::cout << "\n";
+}
