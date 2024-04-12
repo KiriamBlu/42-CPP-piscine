@@ -21,14 +21,19 @@ int main(int argc, char* argv[]) { // PROBAR MAX INT
     std::chrono::high_resolution_clock::time_point end;
     std::chrono::milliseconds duration;
 
-    int number;
+    long long int number;
     while (iss >> number) {
-        vec.push_back(number);
-        list.push_back(number);
+        if (number > std::numeric_limits<int>::max() || number < std::numeric_limits<int>::min()) {
+            std::cerr << "El número está fuera de los límites permitidos para int." << std::endl;
+            return 1;
+        }
+        vec.push_back(static_cast<int>(number));
+        list.push_back(static_cast<int>(number));
         if (iss.peek() == ' ') {
             iss.ignore();
         }
     }
+
     std::cout << "VEC------------------------------------------------------------------------" << std::endl;
     std::cout << "Before: ";
     for (size_t i = 0; i < vec.size(); ++i) {

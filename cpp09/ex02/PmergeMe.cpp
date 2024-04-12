@@ -40,7 +40,6 @@ void MergeInsortMakerVec::mergeInShort() {
     std::cout << "VECTOR EXTRA:\n";
     printContainerLONGVEC(vec);
 
-    //EASIER WAY TO DO THIS, CHANGE IT
     std::cout << "PASS\n";
     getContainer(TWO).insert(getBegin(TWO),vec[0]);
     getContainer(ONE).erase(getBegin(ONE));
@@ -51,8 +50,6 @@ void MergeInsortMakerVec::mergeInShort() {
     printContainerVEC(getContainer(TWO));
     std::cout << "VECTOR EXTRA:\n"; 
     printContainerLONGVEC(vec);
-
-    // // SWAP GROUPS OVER CONTAINER 1 IN ORDER 2^x - prev.x;
 
     std::cout << "SWAPPER\n";
     groupSwapper(ONE);
@@ -71,11 +68,6 @@ void MergeInsortMakerVec::mergeInShort() {
     printContainerVEC(getContainer(TWO));
     std::cout << "VECTOR EXTRA:\n";
     printContainerLONGVEC(vec);
-
-    //_contenedor = _contenedor2;
-    //_contenedor2.clear();
-
-    
 }
 
 void MergeInsortMakerVec::merge(size_t threshold, int container, size_t lap) {
@@ -322,7 +314,7 @@ size_t powerOfTwo(size_t exponent) {
     return result;
 }
 
-//------------------------------------------------------------LIST-----------------------------------------------------------------//
+//------------------------------------------------------------DEQUE-----------------------------------------------------------------//
 
 MergeInsortMakerList::MergeInsortMakerList(std::list<int> contenedor) : _contenedor(contenedor) {
     begin(ONE);
