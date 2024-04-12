@@ -34,6 +34,7 @@ public:
     void merge(size_t threshold, int container, size_t lap = 0);
     void fixSecuencies(int container);
     void getPairs(std::vector<long int> &vec ,int container);
+    void groupSwapper(int container);
     void insert(int container, std::vector<long int> &vec);
     std::vector<int>::iterator binarySearch(std::vector<long int> &vec, int value, std::vector<int>::iterator start, std::vector<int>::iterator end);
     int getNumber(size_t position, int container);

@@ -1,8 +1,7 @@
 #include "PmergeMe.hpp"
 
 //------------------------------------------------------------VECTOR---------------------------------------------------------------//
-
-
+size_t powerOfTwo(size_t exponent);
 void printContainerLONGVEC(const std::vector<long int>& cont);
 
 MergeInsortMakerVec::MergeInsortMakerVec(std::vector<int> contenedor) : _contenedor(contenedor) {
@@ -41,9 +40,10 @@ void MergeInsortMakerVec::mergeInShort() {
     std::cout << "VECTOR EXTRA:\n";
     printContainerLONGVEC(vec);
 
+    //EASIER WAY TO DO THIS, CHANGE IT
     std::cout << "PASS\n";
     getContainer(TWO).insert(getBegin(TWO),vec[0]);
-    getContainer(ONE).erase(std::find(getBegin(ONE), getEnd(ONE), vec[0]));
+    getContainer(ONE).erase(getBegin(ONE));
     vec.insert(vec.begin(), 0xFFFFFFFF);
     std::cout << "1 ";
     printContainerVEC(getContainer(ONE));
@@ -53,6 +53,15 @@ void MergeInsortMakerVec::mergeInShort() {
     printContainerLONGVEC(vec);
 
     // // SWAP GROUPS OVER CONTAINER 1 IN ORDER 2^x - prev.x;
+
+    std::cout << "SWAPPER\n";
+    groupSwapper(ONE);
+     std::cout << "1 ";
+    printContainerVEC(getContainer(ONE));
+    std::cout << "S ";
+    printContainerVEC(getContainer(TWO));
+    std::cout << "VECTOR EXTRA:\n";
+    printContainerLONGVEC(vec);
 
     std::cout << "INSERT\n";
     insert(ONE, vec);
@@ -111,14 +120,32 @@ void MergeInsortMakerVec::getPairs(std::vector<long int> &vec, int container) {
         vec.push_back(*it);
     }
 }
-// void MergeInsortMakerVec::groupSwapper(int container){
-//     std::vector<int>& auxContainer = getContainer(container);
-//     size_t swapper[2] = {0, 2};
 
-//     for (size_t i = 0; i < auxContainer.size(), i ){
-//         for (size_t swapper, )
-//     }
-// }
+void MergeInsortMakerVec::groupSwapper(int container){
+    std::vector<int>& auxContainer = getContainer(container);
+    size_t swapper[2] = {2, 2};
+    size_t threshold;
+    size_t i = 0;
+    size_t lap = 2;
+    uint8_t last = 0;
+
+    while (swapper[1] <= auxContainer.size()){
+        threshold = swapper[1] / 2;
+        i += threshold;
+
+        for (size_t j = 0;  j < threshold; j++){
+            std::swap(auxContainer[i - threshold + j ], auxContainer[(i + threshold - j) - 1]);
+        }
+        i += threshold;
+        swapper[1] = powerOfTwo(lap) - swapper[0];
+        swapper[0] = swapper[1];
+        lap++;
+        if ( i + swapper[1] > auxContainer.size() && last == 0){
+            swapper[1] = auxContainer.size() - i;
+            last = 1;
+        }
+    }
+}
 
 void MergeInsortMakerVec::insert(int container, std::vector<long int> &vec){
     std::vector<int>& auxContainer = getContainer(container);
@@ -287,6 +314,13 @@ void printContainerLONGVEC(const std::vector<long int>& cont) {
     std::cout << "\n";
 }
 
+size_t powerOfTwo(size_t exponent) {
+    size_t result = 1;
+    for (size_t i = 0; i < exponent; ++i) {
+        result *= 2;
+    }
+    return result;
+}
 
 //------------------------------------------------------------LIST-----------------------------------------------------------------//
 
