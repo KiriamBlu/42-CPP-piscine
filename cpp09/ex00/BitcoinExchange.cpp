@@ -175,11 +175,13 @@ void BitcoinExchange::findAndCompare(std::string fileName){
         throw std::runtime_error("Error: File could not be opened");
     }
 
-	std::getline(file, str);
 	while (std::getline(file, str)) {
 		pos = str.find('|');
 		help[0] = "";
 
+		if(str == "date | value"){
+			continue;
+		}
 		if(pos != -1){
 			help[0] = str.substr(0, pos);
 			help[1] = str.substr(pos + 1, str.length());
