@@ -1,5 +1,13 @@
 #include "PmergeMe.hpp"
 
+void printer(std::string msg){
+    #if DEBUG == 1
+        std::cout << msg << std::endl;
+    #elif DEBUG == 0
+        (void)msg;
+    #endif
+}
+
 //------------------------------------------------------------VECTOR---------------------------------------------------------------//
 size_t powerOfTwo(size_t exponent);
 void printContainerLONGVEC(const std::vector<long int>& cont);
@@ -13,29 +21,29 @@ void MergeInsortMakerVec::mergeInShort() {
     std::vector<long int> vec;
     size_t length = size(ONE);
 
-    std::cout << "MERGE\n";
+    printer("MERGE");
     merge((length % 2) == 0 ? length : length - 1, ONE);
     printAndTime(vec);
 
-    std::cout << "FIX\n";
+    printer("FIX");
     fixSecuencies(ONE);
     printAndTime(vec);
 
-    std::cout << "PAIRS\n";
+    printer("PAIRS");
     getPairs(vec, ONE);
     printAndTime(vec);
 
-    std::cout << "PASS\n";
+    printer("PASS");
     getContainer(TWO).insert(getBegin(TWO),vec[0]);
     getContainer(ONE).erase(getBegin(ONE));
     vec.insert(vec.begin(), 0xFFFFFFFF);
     printAndTime(vec);
 
-    std::cout << "SWAPPER\n";
+    printer("SWAPPER");
     groupSwapper(ONE);
     printAndTime(vec);
 
-    std::cout << "INSERT\n";
+    printer("INSERTALG");
     insertAlg(ONE, vec);
     printAndTime(vec);
 }
@@ -251,9 +259,9 @@ void MergeInsortMakerVec::printContent(std::ostream& os, int container)  {
 
 void printContainerVEC(const std::vector<int>& cont) {
     for (size_t i = 0; i < cont.size(); ++i) {
-        std::cout << cont[i] << " ";
+       std::cout << cont[i] << " ";
     }
-    std::cout << "\n";
+   std::cout << std::endl;
 }
 
 void printContainerLONGVEC(const std::vector<long int>& cont) {
@@ -264,7 +272,7 @@ void printContainerLONGVEC(const std::vector<long int>& cont) {
         else
             std::cout << "X ";
     }
-    std::cout << "\n";
+    std::cout << std::endl;
 }
 
 size_t powerOfTwo(size_t exponent) {
@@ -282,17 +290,20 @@ void MergeInsortMakerVec::printAndTime(std::vector<long int> &vec) {
         start_time = std::chrono::high_resolution_clock::now();
         return;
     }
-
-    std::chrono::high_resolution_clock::time_point end_time = std::chrono::high_resolution_clock::now();
-    std::chrono::milliseconds duration =  std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
-
-    std::cout << "1 ";
-    printContainerVEC(getContainer(ONE));
-    std::cout << "S ";
-    printContainerVEC(getContainer(TWO));
-    std::cout << "VEC EXTRA:\n";
-    printContainerLONGVEC(vec);
-    std::cout << "Time elapsed: " << duration.count() << " milliseconds\n";
+ 
+    #if DEBUG == 1
+        std::chrono::high_resolution_clock::time_point end_time = std::chrono::high_resolution_clock::now();
+        std::chrono::milliseconds duration =  std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        std::cout << "1 ";
+        printContainerVEC(getContainer(ONE));
+        std::cout << "S ";
+        printContainerVEC(getContainer(TWO));
+        std::cout << "VEC EXTRA: " << std::endl;
+        printContainerLONGVEC(vec);
+        std::cout << "Time elapsed: " << duration.count() << " milliseconds" << std::endl;
+    #elif DEBUG == 0
+        (void)vec;
+    #endif
 
     start_time = std::chrono::high_resolution_clock::now();
 }
@@ -313,29 +324,29 @@ void MergeInsortMakerDeque::mergeInShort() {
     size_t length = size(ONE);
     
     printAndTime(deq);
-    std::cout << "MERGE\n";
+    printer("MERGE");
     merge((length % 2) == 0 ? length : length - 1, ONE);
     printAndTime(deq);
 
-    std::cout << "FIX\n";
+    printer("FIX");
     fixSequences(ONE);
     printAndTime(deq);
 
-    std::cout << "PAIR\n";
+    printer("PAIR");
     getPairs(deq, ONE);
     printAndTime(deq);
     
-    std::cout << "INSERT2\n";
+    printer("PASS");
     getContainer(TWO).insert(getBegin(TWO),deq[0]);
     getContainer(ONE).erase(getBegin(ONE));
     deq.insert(deq.begin(), 0xFFFFFFFF);
     printAndTime(deq);
 
-    std::cout << "SWAPPER\n";
+    printer("SWAPPER");
     groupSwapper(ONE);
     printAndTime(deq);
 
-    std::cout << "INSERT\n";
+    printer("INSERTALG");
     insertAlg(ONE, deq);
     printAndTime(deq);
 }
@@ -558,7 +569,7 @@ void printContainerDEQUE(const std::deque<int>& cont) {
     for (size_t i = 0; i < cont.size(); ++i) {
         std::cout << cont[i] << " ";
     }
-    std::cout << "\n";
+    std::cout << std::endl;
 }
 
 void printContainerLONGDEQUE(const std::deque<long int>& cont) {
@@ -569,7 +580,7 @@ void printContainerLONGDEQUE(const std::deque<long int>& cont) {
         else
             std::cout << "X ";
     }
-    std::cout << "\n";
+    std::cout << std::endl;
 }
 
 void MergeInsortMakerDeque::printAndTime(std::deque<long int> &deq) {
@@ -580,16 +591,19 @@ void MergeInsortMakerDeque::printAndTime(std::deque<long int> &deq) {
         return;
     }
 
-    std::chrono::high_resolution_clock::time_point end_time = std::chrono::high_resolution_clock::now();
-    std::chrono::milliseconds duration =  std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
 
-    std::cout << "1 ";
-    printContainerDEQUE(getContainer(ONE));
-    std::cout << "S ";
-    printContainerDEQUE(getContainer(TWO));
-    std::cout << "DEQ EXTRA:\n";
-    printContainerLONGDEQUE(deq);
-    std::cout << "Time elapsed: " << duration.count() << " milliseconds\n";
-
+    #if DEBUG == 1
+        std::chrono::high_resolution_clock::time_point end_time = std::chrono::high_resolution_clock::now();
+        std::chrono::milliseconds duration =  std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        std::cout << "1 ";
+        printContainerDEQUE(getContainer(ONE));
+        std::cout << "S ";
+        printContainerDEQUE(getContainer(TWO));
+        std::cout << "DEQ EXTRA: " << std::endl;
+        printContainerLONGDEQUE(deq);
+        std::cout << "Time elapsed: " << duration.count() << " milliseconds" << std::endl;
+    #elif DEBUG == 0
+        (void)deq;
+    #endif
     start_time = std::chrono::high_resolution_clock::now();
 }

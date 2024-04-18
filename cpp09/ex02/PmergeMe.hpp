@@ -10,6 +10,8 @@
 #define NEXT 1
 #define PREV -1
 
+#define DEBUG 0
+
 #define ONE 0
 #define TWO 1
 
