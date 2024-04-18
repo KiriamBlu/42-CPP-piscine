@@ -34,7 +34,6 @@ RPN::~RPN( void ) {
   
 }
 
-
 int RPN::popAndRet(void){
   int var = this->storage.top();
   this->storage.pop();
