@@ -49,6 +49,7 @@ public:
     std::vector<int>::iterator getBegin(int container);
     std::vector<int>::iterator getEnd(int container);
     void printContent(std::ostream& os, int container);
+    void printAndTime(std::vector<long int> &vec);
 };
 
 //------------------------------------------------------------DEQUE-----------------------------------------------------------------//
@@ -84,6 +85,8 @@ public:
     std::deque<int>::iterator getBegin(int container);
     std::deque<int>::iterator getEnd(int container);
     void printContent(std::ostream& os, int container);
+    void printAndTime(std::deque<long int> &deq);
 };
+void printContainerDEQUE(const std::deque<int>& cont);
 
 #endif

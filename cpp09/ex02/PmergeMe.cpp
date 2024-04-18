@@ -15,59 +15,29 @@ void MergeInsortMakerVec::mergeInShort() {
 
     std::cout << "MERGE\n";
     merge((length % 2) == 0 ? length : length - 1, ONE);
-    std::cout << "1 ";
-    printContainerVEC(getContainer(ONE));
-    std::cout << "S ";
-    printContainerVEC(getContainer(TWO));
-    std::cout << "VECTOR EXTRA:\n";
-    printContainerLONGVEC(vec);
+    printAndTime(vec);
 
     std::cout << "FIX\n";
     fixSecuencies(ONE);
-    std::cout << "1 ";
-    printContainerVEC(getContainer(ONE));
-    std::cout << "S ";
-    printContainerVEC(getContainer(TWO));
-    std::cout << "VECTOR EXTRA:\n";
-    printContainerLONGVEC(vec);
+    printAndTime(vec);
 
     std::cout << "PAIRS\n";
     getPairs(vec, ONE);
-    std::cout << "1 ";
-    printContainerVEC(getContainer(ONE));
-    std::cout << "S ";
-    printContainerVEC(getContainer(TWO));
-    std::cout << "VECTOR EXTRA:\n";
-    printContainerLONGVEC(vec);
+    printAndTime(vec);
 
     std::cout << "PASS\n";
     getContainer(TWO).insert(getBegin(TWO),vec[0]);
     getContainer(ONE).erase(getBegin(ONE));
     vec.insert(vec.begin(), 0xFFFFFFFF);
-    std::cout << "1 ";
-    printContainerVEC(getContainer(ONE));
-    std::cout << "S ";
-    printContainerVEC(getContainer(TWO));
-    std::cout << "VECTOR EXTRA:\n"; 
-    printContainerLONGVEC(vec);
+    printAndTime(vec);
 
     std::cout << "SWAPPER\n";
     groupSwapper(ONE);
-     std::cout << "1 ";
-    printContainerVEC(getContainer(ONE));
-    std::cout << "S ";
-    printContainerVEC(getContainer(TWO));
-    std::cout << "VECTOR EXTRA:\n";
-    printContainerLONGVEC(vec);
+    printAndTime(vec);
 
     std::cout << "INSERT\n";
     insertAlg(ONE, vec);
-    std::cout << "1 ";
-    printContainerVEC(getContainer(ONE));
-    std::cout << "S ";
-    printContainerVEC(getContainer(TWO));
-    std::cout << "VECTOR EXTRA:\n";
-    printContainerLONGVEC(vec);
+    printAndTime(vec);
 }
 
 void MergeInsortMakerVec::merge(size_t threshold, int container, size_t lap) {
@@ -142,34 +112,29 @@ void MergeInsortMakerVec::groupSwapper(int container){
 void MergeInsortMakerVec::insertAlg(int container, std::vector<long int> &vec){
     std::vector<int>& auxContainer = getContainer(container);
     std::vector<int>& auxContainer2 = getContainer(OTHER(container));
-    std::vector<int>::iterator bend;
-    std::vector<int>::iterator aux;
     std::vector<long int>::iterator vecIter;
+    std::vector<int>::iterator bend, aux;
     int value;
-    int pair;
 
-    while(auxContainer.size()){
-        value = getNumber(0, container); 
-        insertNumberInPos(0, 0, container, DELETE);
+    while (!auxContainer.empty()) {
+        value = auxContainer.front();
+        auxContainer.erase(auxContainer.begin());
 
         vecIter = std::find(vec.begin(), vec.end(), value);
 
-        bend = auxContainer2.end();
-
-        if(vecIter != vec.end()){
-            pair = *vecIter;
+        if (vecIter != vec.end()) {
             bend = std::find(auxContainer2.begin(), auxContainer2.end(), value);
+            aux = binarySearch(vec, value, auxContainer2.begin(), bend);
+
+            size_t vecPos = std::distance(auxContainer2.begin(), aux);
+            vecIter = vec.begin() + vecPos;
+
+            vec.insert(vecIter, 0xFFFFFFFF);
+            auxContainer2.insert(aux, value);
         }
-
-        aux = binarySearch(vec, value, auxContainer2.begin(), bend);
-
-        size_t vecPos = std::distance(auxContainer2.begin(), aux);
-        vecIter = vec.begin() + vecPos;
-
-        vec.insert(vecIter, 0xFFFFFFFF); 
-        auxContainer2.insert(aux, value);
     }
 }
+
 
 
 std::vector<int>::iterator MergeInsortMakerVec::binarySearch(std::vector<long int> &vec, int value, std::vector<int>::iterator start, std::vector<int>::iterator end) {
@@ -285,7 +250,6 @@ void MergeInsortMakerVec::printContent(std::ostream& os, int container)  {
 }
 
 void printContainerVEC(const std::vector<int>& cont) {
-    std::cout << "Container: ";
     for (size_t i = 0; i < cont.size(); ++i) {
         std::cout << cont[i] << " ";
     }
@@ -311,10 +275,32 @@ size_t powerOfTwo(size_t exponent) {
     return result;
 }
 
+void MergeInsortMakerVec::printAndTime(std::vector<long int> &vec) {
+    static std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
+
+    if (start_time.time_since_epoch().count() == 0) {
+        start_time = std::chrono::high_resolution_clock::now();
+        return;
+    }
+
+    std::chrono::high_resolution_clock::time_point end_time = std::chrono::high_resolution_clock::now();
+    std::chrono::milliseconds duration =  std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+
+    std::cout << "1 ";
+    printContainerVEC(getContainer(ONE));
+    std::cout << "S ";
+    printContainerVEC(getContainer(TWO));
+    std::cout << "VEC EXTRA:\n";
+    printContainerLONGVEC(vec);
+    std::cout << "Time elapsed: " << duration.count() << " milliseconds\n";
+
+    start_time = std::chrono::high_resolution_clock::now();
+}
+
 //------------------------------------------------------------DEQUE---------------------------------------------------------------//
 
 
-size_t powerOfTwo(size_t exponent);
+void printContainerDEQUE(const std::deque<int>& cont);
 void printContainerLONGDEQUE(const std::deque<long int>& cont);
 
 MergeInsortMakerDeque::MergeInsortMakerDeque(std::deque<int> contenedor) : _contenedor(contenedor) {
@@ -325,15 +311,33 @@ MergeInsortMakerDeque::MergeInsortMakerDeque(std::deque<int> contenedor) : _cont
 void MergeInsortMakerDeque::mergeInShort() {
     std::deque<long int> deq;
     size_t length = size(ONE);
-
+    
+    printAndTime(deq);
+    std::cout << "MERGE\n";
     merge((length % 2) == 0 ? length : length - 1, ONE);
+    printAndTime(deq);
+
+    std::cout << "FIX\n";
     fixSequences(ONE);
+    printAndTime(deq);
+
+    std::cout << "PAIR\n";
     getPairs(deq, ONE);
+    printAndTime(deq);
+    
+    std::cout << "INSERT2\n";
     getContainer(TWO).insert(getBegin(TWO),deq[0]);
     getContainer(ONE).erase(getBegin(ONE));
     deq.insert(deq.begin(), 0xFFFFFFFF);
+    printAndTime(deq);
+
+    std::cout << "SWAPPER\n";
     groupSwapper(ONE);
+    printAndTime(deq);
+
+    std::cout << "INSERT\n";
     insertAlg(ONE, deq);
+    printAndTime(deq);
 }
 
 void MergeInsortMakerDeque::merge(size_t threshold, int container, size_t lap) {
@@ -358,16 +362,23 @@ void MergeInsortMakerDeque::fixSequences(int container) {
     std::deque<int>& one = getContainer(container);
     std::deque<int>& S = getContainer(OTHER(container));
 
-    for (size_t i = 0; i + 1 < S.size(); i++) {
-        if (S[i + 1] < S[i]) {
-            std::swap(S[i], S[i + 1]);
-            std::swap(one[i], one[i + 1]);
+    size_t i = 0;
+    size_t n = S.size();
+    bool swapped = true;
 
-            if (i > 0)
-                i -= 2;
+    while (swapped) {
+        swapped = false;
+        for (i = 0; i + 1 < n; ++i) {
+            if (S[i + 1] < S[i]) {
+                std::swap(S[i], S[i + 1]);
+                std::swap(one[i], one[i + 1]);
+                swapped = true;
+            }
         }
+        --n;
     }
 }
+
 
 void MergeInsortMakerDeque::getPairs(std::deque<long int> &deq, int container) {
     std::deque<int>::iterator beginIterator = getBegin(container);
@@ -407,34 +418,29 @@ void MergeInsortMakerDeque::groupSwapper(int container) {
 void MergeInsortMakerDeque::insertAlg(int container, std::deque<long int> &deq){
     std::deque<int>& auxContainer = getContainer(container);
     std::deque<int>& auxContainer2 = getContainer(OTHER(container));
-    std::deque<int>::iterator bend;
-    std::deque<int>::iterator aux;
     std::deque<long int>::iterator vecIter;
+    std::deque<int>::iterator bend, aux;
     int value;
-    int pair;
 
-    while(auxContainer.size()){
-        value = getNumber(0, container); 
-        insertNumberInPos(0, 0, container, DELETE);
+    while (!auxContainer.empty()) {
+        value = auxContainer.front();
+        auxContainer.pop_front();
 
         vecIter = std::find(deq.begin(), deq.end(), value);
 
-        bend = auxContainer2.end();
-
-        if(vecIter != deq.end()){
-            pair = *vecIter;
+        if (vecIter != deq.end()) {
             bend = std::find(auxContainer2.begin(), auxContainer2.end(), value);
+            aux = binarySearch(deq, value, auxContainer2.begin(), bend);
+
+            size_t vecPos = std::distance(auxContainer2.begin(), aux);
+            vecIter = deq.begin() + vecPos;
+
+            deq.insert(vecIter, 0xFFFFFFFF);
+            auxContainer2.insert(aux, value);
         }
-
-        aux = binarySearch(deq, value, auxContainer2.begin(), bend);
-
-        size_t vecPos = std::distance(auxContainer2.begin(), aux);
-        vecIter = deq.begin() + vecPos;
-
-        deq.insert(vecIter, 0xFFFFFFFF); 
-        auxContainer2.insert(aux, value);
     }
 }
+
 
 std::deque<int>::iterator MergeInsortMakerDeque::binarySearch(std::deque<long int> &deq, int value, std::deque<int>::iterator start, std::deque<int>::iterator end) {
     int comparativeValue;
@@ -549,7 +555,6 @@ void MergeInsortMakerDeque::printContent(std::ostream& os, int container)  {
     }
 }
 void printContainerDEQUE(const std::deque<int>& cont) {
-    std::cout << "Container: ";
     for (size_t i = 0; i < cont.size(); ++i) {
         std::cout << cont[i] << " ";
     }
@@ -565,4 +570,26 @@ void printContainerLONGDEQUE(const std::deque<long int>& cont) {
             std::cout << "X ";
     }
     std::cout << "\n";
+}
+
+void MergeInsortMakerDeque::printAndTime(std::deque<long int> &deq) {
+    static std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
+
+    if (start_time.time_since_epoch().count() == 0) {
+        start_time = std::chrono::high_resolution_clock::now();
+        return;
+    }
+
+    std::chrono::high_resolution_clock::time_point end_time = std::chrono::high_resolution_clock::now();
+    std::chrono::milliseconds duration =  std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+
+    std::cout << "1 ";
+    printContainerDEQUE(getContainer(ONE));
+    std::cout << "S ";
+    printContainerDEQUE(getContainer(TWO));
+    std::cout << "DEQ EXTRA:\n";
+    printContainerLONGDEQUE(deq);
+    std::cout << "Time elapsed: " << duration.count() << " milliseconds\n";
+
+    start_time = std::chrono::high_resolution_clock::now();
 }

@@ -47,23 +47,29 @@ int main(int argc, char* argv[]) { // PROBAR MAX INT
     makerVec.mergeInShort();
     end = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "After: ";
+    printContainerVEC(makerVec.getContainer(TWO));
+    std::cout << std::endl;
     std::cout << "Tiempo transcurrido (ms): " << duration.count() << std::endl;
     std::cout << std::endl;
 
-    // std::cout << "deque------------------------------------------------------------------------" << std::endl;
-    // std::cout << "Before: ";
-    // for (std::deque<int>::iterator it = deque.begin(); it != deque.end(); ++it) {
-    //     std::cout << *it << " ";
-    // }
-    // std::cout << std::endl;
+    std::cout << "DEQ------------------------------------------------------------------------" << std::endl;
+    std::cout << "Before: ";
+    for (std::deque<int>::iterator it = deque.begin(); it != deque.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
 
-    // MergeInsortMakerList makerList(deque);
-    // start = std::chrono::high_resolution_clock::now();
-    // makerList.mergeInShort();
-    // end = std::chrono::high_resolution_clock::now();
-    // duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-    // std::cout << "Tiempo transcurrido (ms): " << duration.count() << std::endl;
-    // std::cout << std::endl;
+    MergeInsortMakerDeque makerDeq(deque);
+    start = std::chrono::high_resolution_clock::now();
+    makerDeq.mergeInShort();
+    end = std::chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "After: ";
+    printContainerDEQUE(makerDeq.getContainer(TWO));
+    std::cout << std::endl;
+    std::cout << "Tiempo transcurrido (ms): " << duration.count() << std::endl;
+    std::cout << std::endl;
 
 
 }
