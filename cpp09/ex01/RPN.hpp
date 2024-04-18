@@ -21,8 +21,6 @@ class	RPN {
 		RPN ( std::string str );
 		~RPN ( void );
 
-
-		void    setNewStr(std::string newStr);
 		int    operate(void);
 };
 

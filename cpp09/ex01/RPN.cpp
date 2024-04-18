@@ -1,6 +1,6 @@
 #include "RPN.hpp"
 
-#define DEBUG 1
+//#define DEBUG 1
 
 std::string  RPN::checkRPN(std::string str){
   size_t lenght = str.length();
@@ -34,9 +34,6 @@ RPN::~RPN( void ) {
   
 }
 
-void    RPN::setNewStr(std::string newStr){
-   this->str = checkRPN(newStr);
-}
 
 int RPN::popAndRet(void){
   int var = this->storage.top();
