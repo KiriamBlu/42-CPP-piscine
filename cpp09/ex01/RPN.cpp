@@ -21,7 +21,7 @@ std::string  RPN::checkRPN(std::string str){
     std::cout << i << std::endl;
     return "ERROR: Not allowed char [" + std::string(1, str[i]) + "]";
   }
-  if(j > 10)
+  if(j > 10) // FIX THIS, MORE THAN 10 NUMBERS ALLOWED BUT ONLY 0-9
     return "ERROR: Bad reverse polish notation";
   return (str);
 }
