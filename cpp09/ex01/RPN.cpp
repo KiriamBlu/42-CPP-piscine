@@ -9,8 +9,9 @@ std::string  RPN::checkRPN(std::string str){
 
   while( str[i] ){
     if(isdigit(str[i])){
-      while(isdigit(str[i]) && str[i++]);
-      j++;
+      if(isdigit(str[++i]))
+         j++;
+      //while(isdigit(str[i]) && str[i++]);
     }
     else if(compareWithDict(str[i], " *+-/") && str[i])
       i++;
@@ -21,8 +22,9 @@ std::string  RPN::checkRPN(std::string str){
     std::cout << i << std::endl;
     return "ERROR: Not allowed char [" + std::string(1, str[i]) + "]";
   }
-  if(j > 10) // FIX THIS, MORE THAN 10 NUMBERS ALLOWED BUT ONLY 0-9
-    return "ERROR: Bad reverse polish notation";
+  //if(j > 10) // FIX THIS, MORE THAN 10 NUMBERS ALLOWED BUT ONLY 0-9
+  if(j != 0)
+     return "ERROR: Bad reverse polish notation";
   return (str);
 }
 
