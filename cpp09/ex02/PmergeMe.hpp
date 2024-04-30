@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <deque>
+#include <algorithm> 
+#include <ctime>
 
 #define INSERT 1
 #define DELETE -1

@@ -97,7 +97,7 @@ void MergeInsortMakerVec::groupSwapper(int container){
     size_t threshold;
     size_t i = 0;
     size_t lap = 2;
-    uint8_t last = 0;
+    int last = 0;
 
     while (swapper[1] <= auxContainer.size()){
         threshold = swapper[1] / 2;
@@ -284,29 +284,30 @@ size_t powerOfTwo(size_t exponent) {
 }
 
 void MergeInsortMakerVec::printAndTime(std::vector<long int> &vec) {
-    static std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
+    static clock_t start_time = 0;
 
-    if (start_time.time_since_epoch().count() == 0) {
-        start_time = std::chrono::high_resolution_clock::now();
+    if (start_time == 0) {
+        start_time = clock();
         return;
     }
- 
+
     #if DEBUG == 1
-        std::chrono::high_resolution_clock::time_point end_time = std::chrono::high_resolution_clock::now();
-        std::chrono::milliseconds duration =  std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        clock_t end_time = clock();
+        double duration = static_cast<double>(end_time - start_time) / CLOCKS_PER_SEC;
         std::cout << "1 ";
         printContainerVEC(getContainer(ONE));
         std::cout << "S ";
         printContainerVEC(getContainer(TWO));
         std::cout << "VEC EXTRA: " << std::endl;
         printContainerLONGVEC(vec);
-        std::cout << "Time elapsed: " << duration.count() << " milliseconds" << std::endl;
+        std::cout << "Time elapsed: " << (duration * 1000) << " milliseconds" << std::endl;
     #elif DEBUG == 0
         (void)vec;
     #endif
 
-    start_time = std::chrono::high_resolution_clock::now();
+    start_time = clock();
 }
+
 
 //------------------------------------------------------------DEQUE---------------------------------------------------------------//
 
@@ -405,7 +406,7 @@ void MergeInsortMakerDeque::groupSwapper(int container) {
     size_t threshold;
     size_t i = 0;
     size_t lap = 2;
-    uint8_t last = 0;
+    int last = 0;
 
     while (swapper[1] <= auxContainer.size()) {
         threshold = swapper[1] / 2;
@@ -584,26 +585,26 @@ void printContainerLONGDEQUE(const std::deque<long int>& cont) {
 }
 
 void MergeInsortMakerDeque::printAndTime(std::deque<long int> &deq) {
-    static std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
+    static clock_t start_time = 0;
 
-    if (start_time.time_since_epoch().count() == 0) {
-        start_time = std::chrono::high_resolution_clock::now();
+    if (start_time == 0) {
+        start_time = clock();
         return;
     }
 
-
     #if DEBUG == 1
-        std::chrono::high_resolution_clock::time_point end_time = std::chrono::high_resolution_clock::now();
-        std::chrono::milliseconds duration =  std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        clock_t end_time = clock();
+        double duration = static_cast<double>(end_time - start_time) / CLOCKS_PER_SEC;
         std::cout << "1 ";
         printContainerDEQUE(getContainer(ONE));
         std::cout << "S ";
         printContainerDEQUE(getContainer(TWO));
         std::cout << "DEQ EXTRA: " << std::endl;
         printContainerLONGDEQUE(deq);
-        std::cout << "Time elapsed: " << duration.count() << " milliseconds" << std::endl;
+        std::cout << "Time elapsed: " << (duration * 1000) << " milliseconds" << std::endl;
     #elif DEBUG == 0
         (void)deq;
     #endif
-    start_time = std::chrono::high_resolution_clock::now();
+
+    start_time = clock();
 }

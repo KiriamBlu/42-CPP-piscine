@@ -2,11 +2,11 @@
 #include <iostream>
 #include <vector>
 #include <deque>
-#include <chrono>
+#include <ctime>
 #include <sstream>
-#include <algorithm>
+#include <limits>
 
-int main(int argc, char* argv[]) { // PROBAR MAX INT
+int main(int argc, char* argv[]) {
     std::vector<int> vec;
     std::deque<int> deque;
 
@@ -16,10 +16,13 @@ int main(int argc, char* argv[]) { // PROBAR MAX INT
     }
 
     std::string numbersString(argv[1]);
+
+    if(numbersString.length() == 0){
+        std::cerr << "Usage: " << argv[0] << " <numbers_string>" << std::endl;
+        return 1;
+    }
+
     std::istringstream iss(numbersString);
-    std::chrono::high_resolution_clock::time_point start;
-    std::chrono::high_resolution_clock::time_point end;
-    std::chrono::milliseconds duration;
 
     long long int number;
     while (iss >> number) {
@@ -41,16 +44,15 @@ int main(int argc, char* argv[]) { // PROBAR MAX INT
     }
     std::cout << std::endl;
 
-
     MergeInsortMakerVec makerVec(vec);
-    start = std::chrono::high_resolution_clock::now();
+    clock_t start = clock();
     makerVec.mergeInShort();
-    end = std::chrono::high_resolution_clock::now();
-    duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    clock_t end = clock();
+    double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC;
     std::cout << "After: ";
     printContainerVEC(makerVec.getContainer(TWO));
     std::cout << std::endl;
-    std::cout << "Tiempo transcurrido (ms): " << duration.count() << std::endl;
+    std::cout << "Tiempo transcurrido (ms): " << (duration * 1000) << std::endl;
     std::cout << std::endl;
 
     std::cout << "DEQ------------------------------------------------------------------------" << std::endl;
@@ -61,15 +63,15 @@ int main(int argc, char* argv[]) { // PROBAR MAX INT
     std::cout << std::endl;
 
     MergeInsortMakerDeque makerDeq(deque);
-    start = std::chrono::high_resolution_clock::now();
+    start = clock();
     makerDeq.mergeInShort();
-    end = std::chrono::high_resolution_clock::now();
-    duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    end = clock();
+    duration = static_cast<double>(end - start) / CLOCKS_PER_SEC;
     std::cout << "After: ";
     printContainerDEQUE(makerDeq.getContainer(TWO));
     std::cout << std::endl;
-    std::cout << "Tiempo transcurrido (ms): " << duration.count() << std::endl;
+    std::cout << "Tiempo transcurrido (ms): " << (duration * 1000) << std::endl;
     std::cout << std::endl;
 
-
+    return 0;
 }
