@@ -9,6 +9,8 @@
 #include <iomanip>
 #include <sstream>
 #include <ctime>
+#include <cstdlib>
+#include <cstring>
 
 enum identifyer{
 	LOCAL = 0,

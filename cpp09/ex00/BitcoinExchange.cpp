@@ -73,13 +73,12 @@ static inline bool dateFormat(const std::string& input) {
 		}
 	}
 
-	int year = std::stoi(input.substr(0, 4));
-	int month = std::stoi(input.substr(5, 2));
-	int day = std::stoi(input.substr(8, 2));
+	int year = atoi(input.substr(0, 4).c_str());
+	int month = atoi(input.substr(5, 2).c_str());
+	int day = atoi(input.substr(8, 2).c_str());
 
 	return isValidDate(day, month, year);
 }
-
 
 static inline float getNumber(std::string numStr) {
     float var;
@@ -113,6 +112,7 @@ time_t BitcoinExchange::convertDateToTime(std::string help) {
     struct tm timeinfo;
     std::istringstream ss(help);
     time_t time;
+
 
     memset(&timeinfo, 0, sizeof(timeinfo));
     ss >> timeinfo.tm_year;
@@ -165,7 +165,7 @@ std::map<std::string, float>::iterator BitcoinExchange::getIterator(bool flag = 
 
 
 void BitcoinExchange::findAndCompare(std::string fileName){
-	std::ifstream file(fileName);
+	std::ifstream file(fileName.c_str());
 	std::string help[2];
 	float floatVal;
 	int pos;
@@ -228,6 +228,13 @@ void BitcoinExchange::checkValues(std::string date, float value, std::string str
 }
 
 
+template<typename T>
+std::string to_string(const T& value) {
+    std::stringstream ss;
+    ss << value;
+    return ss.str();
+}
+
 void BitcoinExchange::crossValue(time_t date, float value) {
     std::map<std::string, float>::iterator it;
     time_t lastVal[2] = {0, 0};
@@ -237,24 +244,29 @@ void BitcoinExchange::crossValue(time_t date, float value) {
         lastVal[1] = convertDateToTime(it->first);
 
         if (lastVal[1] > date) {
-            if (std::abs(lastVal[0] - date) > std::abs(lastVal[1] - date)) {
-                std::cout << convertTimeToDate(lastVal[1]) << " => " << cleanValue(std::to_string(value)) << " = " << cleanValue(std::to_string(var * value)) << std::endl;
-            } else {
-                std::cout << convertTimeToDate(lastVal[0]) << " => " << cleanValue(std::to_string(value)) << " = " << cleanValue(std::to_string(it->second * value)) << std::endl;
-            }
+            float crossValue = var * value;
+            std::string dateStr = convertTimeToDate(lastVal[0]);
+            std::string valueStr = cleanValue(to_string(value));
+            std::string crossValueStr = cleanValue(to_string(crossValue));
+
+            std::cout << dateStr << " => " << valueStr << " = " << crossValueStr << std::endl;
             return;
         } else if (lastVal[1] > lastVal[0]) {
             lastVal[0] = lastVal[1];
             var = it->second;
         }
     }
-    std::cout << convertTimeToDate(lastVal[0]) << " => " << cleanValue(std::to_string(value)) << " = " << cleanValue(std::to_string(var * value)) << std::endl;
+
+    float crossValue = var * value;
+    std::string dateStr = convertTimeToDate(lastVal[0]);
+    std::string valueStr = cleanValue(to_string(value));
+    std::string crossValueStr = cleanValue(to_string(crossValue));
+
+    std::cout << dateStr << " => " << valueStr << " = " << crossValueStr << std::endl;
 }
 
-
-
 void BitcoinExchange::loadStorage(std::string fileName, std::map<std::string, float>& storage) {
-    std::ifstream file(fileName);
+    std::ifstream file(fileName.c_str());
     std::string str;
     std::string help[2];
 
