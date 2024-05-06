@@ -168,7 +168,7 @@ void BitcoinExchange::findAndCompare(std::string fileName){
 	std::ifstream file(fileName.c_str());
 	std::string help[2];
 	float floatVal;
-	int pos;
+	int pos = 0;
 	std::string str;
 
 	if (!file.is_open()) {
@@ -176,12 +176,13 @@ void BitcoinExchange::findAndCompare(std::string fileName){
     }
 
 	while (std::getline(file, str)) {
+		if(str == "date | value"){
+			pos = 1;
+			continue;
+		}
 		pos = str.find('|');
 		help[0] = "";
 
-		if(str == "date | value"){
-			continue;
-		}
 		if(pos != -1){
 			help[0] = str.substr(0, pos);
 			help[1] = str.substr(pos + 1, str.length());
