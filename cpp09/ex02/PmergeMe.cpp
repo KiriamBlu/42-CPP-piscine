@@ -21,6 +21,9 @@ void MergeInsortMakerVec::mergeInShort() {
     std::vector<long int> vec;
     size_t length = size(ONE);
 
+    if(dupeNum(_contenedor))
+        throw std::runtime_error("Duplicated number");
+
     printer("MERGE");
     merge((length % 2) == 0 ? length : length - 1, ONE);
     printAndTime(vec);
@@ -163,6 +166,17 @@ std::vector<int>::iterator MergeInsortMakerVec::binarySearch(std::vector<long in
         return binarySearch(vec, value, start, comparativePos);
     else
         return binarySearch(vec, value, ++comparativePos, end);
+}
+
+bool MergeInsortMakerVec::dupeNum(const std::vector<int>& vec) {
+    for (std::vector<int>::const_iterator it = vec.begin(); it != vec.end(); ++it) {
+        for (std::vector<int>::const_iterator jt = it + 1; jt != vec.end(); ++jt) {
+            if (*it == *jt) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 int MergeInsortMakerVec::getNumber(size_t position, int container) {
@@ -324,6 +338,9 @@ void MergeInsortMakerDeque::mergeInShort() {
     std::deque<long int> deq;
     size_t length = size(ONE);
     
+    if(dupeNum(_contenedor))
+        throw std::runtime_error("Duplicated number");
+
     printAndTime(deq);
     printer("MERGE");
     merge((length % 2) == 0 ? length : length - 1, ONE);
@@ -474,6 +491,16 @@ std::deque<int>::iterator MergeInsortMakerDeque::binarySearch(std::deque<long in
         return binarySearch(deq, value, ++comparativePos, end);
 }
 
+bool MergeInsortMakerDeque::dupeNum(const std::deque<int>& deq) {
+    for (std::deque<int>::const_iterator it = deq.begin(); it != deq.end(); ++it) {
+        for (std::deque<int>::const_iterator jt = it + 1; jt != deq.end(); ++jt) {
+            if (*it == *jt) {
+                return true; 
+            }
+        }
+    }
+    return false;
+}
 
 int MergeInsortMakerDeque::getNumber(size_t position, int container) {
 

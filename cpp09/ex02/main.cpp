@@ -46,15 +46,20 @@ int main(int argc, char* argv[]) {
 
     MergeInsortMakerVec makerVec(vec);
     clock_t start = clock();
-    makerVec.mergeInShort();
-    clock_t end = clock();
-    double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC;
-    std::cout << "After: ";
-    printContainerVEC(makerVec.getContainer(TWO));
-    std::cout << std::endl;
-    std::cout << "Tiempo transcurrido (ms): " << (duration * 1000) << std::endl;
-    std::cout << std::endl;
-
+    try{
+        makerVec.mergeInShort();
+        clock_t end = clock();
+        double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC;
+        std::cout << "After: ";
+        printContainerVEC(makerVec.getContainer(TWO));
+        std::cout << std::endl;
+        std::cout << "Tiempo transcurrido (ms): " << (duration * 1000) << std::endl;
+        std::cout << std::endl;
+    }
+    catch(std::exception &e){
+        std::cout << e.what() << std::endl;
+    }
+    
     std::cout << "DEQ------------------------------------------------------------------------" << std::endl;
     std::cout << "Before: ";
     for (std::deque<int>::iterator it = deque.begin(); it != deque.end(); ++it) {
@@ -64,14 +69,19 @@ int main(int argc, char* argv[]) {
 
     MergeInsortMakerDeque makerDeq(deque);
     start = clock();
-    makerDeq.mergeInShort();
-    end = clock();
-    duration = static_cast<double>(end - start) / CLOCKS_PER_SEC;
-    std::cout << "After: ";
-    printContainerDEQUE(makerDeq.getContainer(TWO));
-    std::cout << std::endl;
-    std::cout << "Tiempo transcurrido (ms): " << (duration * 1000) << std::endl;
-    std::cout << std::endl;
+    try{
+        makerDeq.mergeInShort();
+        clock_t end = clock();
+        double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC;
+        std::cout << "After: ";
+        printContainerDEQUE(makerDeq.getContainer(TWO));
+        std::cout << std::endl;
+        std::cout << "Tiempo transcurrido (ms): " << (duration * 1000) << std::endl;
+        std::cout << std::endl;
+    }
+    catch(std::exception &e){
+        std::cout << e.what() << std::endl;
+    }
 
     return 0;
 }

@@ -6,6 +6,7 @@
 #include <deque>
 #include <algorithm> 
 #include <ctime>
+#include <exception>
 
 #define INSERT 1
 #define DELETE -1
@@ -41,6 +42,7 @@ public:
     void groupSwapper(int container);
     void insertAlg(int container, std::vector<long int> &vec);
     std::vector<int>::iterator binarySearch(std::vector<long int> &vec, int value, std::vector<int>::iterator start, std::vector<int>::iterator end);
+    bool dupeNum(const std::vector<int>& vec);
     int getNumber(size_t position, int container);
     void insertNumberInPos(size_t pos, int num, int container, int flag = INSERT);
     void insert(int num, int container, int flag = INSERT);
@@ -77,6 +79,7 @@ public:
     void groupSwapper(int container);
     void insertAlg(int container, std::deque<long int> &deq);
     std::deque<int>::iterator binarySearch(std::deque<long int> &deq, int value, std::deque<int>::iterator start, std::deque<int>::iterator end);
+    bool dupeNum(const std::deque<int>& deq);
     int getNumber(size_t position, int container);
     void insertNumberInPos(size_t pos, int num, int container, int flag = INSERT);
     void insert(int num, int container, int flag = INSERT);
