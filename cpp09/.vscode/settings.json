@@ -68,6 +68,15 @@
         "iomanip": "cpp",
         "map": "cpp",
         "__memory": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "clocale": "cpp",
+        "*.tcc": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "memory_resource": "cpp",
+        "numeric": "cpp",
+        "random": "cpp",
+        "numbers": "cpp",
+        "ranges": "cpp"
     }
 }

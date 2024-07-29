@@ -37,6 +37,7 @@ private:
 public:
 	BitcoinExchange( void );
 	BitcoinExchange( std::string fileName );
+	BitcoinExchange( const BitcoinExchange& other );
 	~BitcoinExchange( void );
 
 	size_t size(void);
@@ -46,6 +47,7 @@ public:
 
 	void findAndCompare(std::string fileName);
 	void loadStorage(std::string fileName, std::map<std::string, float>& storage);
+    BitcoinExchange& operator=( const BitcoinExchange& other );
 
 };
 

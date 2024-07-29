@@ -17,6 +17,30 @@ MergeInsortMakerVec::MergeInsortMakerVec(std::vector<int> contenedor) : _contene
     begin(TWO);
 }
 
+MergeInsortMakerVec::MergeInsortMakerVec(const MergeInsortMakerVec& other)
+    : _contenedor(other._contenedor),
+      _contenedor2(other._contenedor2),
+      _current1(other._current1),
+      _current2(other._current2),
+      _itPos1(other._itPos1),
+      _itPos2(other._itPos2) {}
+
+MergeInsortMakerVec& MergeInsortMakerVec::operator=(const MergeInsortMakerVec& other) {
+    if (this != &other) {
+        _contenedor = other._contenedor;
+        _contenedor2 = other._contenedor2;
+        _current1 = other._current1;
+        _current2 = other._current2;
+        _itPos1 = other._itPos1;
+        _itPos2 = other._itPos2;
+    }
+    return *this;
+}
+
+MergeInsortMakerVec::~MergeInsortMakerVec(){
+    
+}
+
 void MergeInsortMakerVec::mergeInShort() {
     std::vector<long int> vec;
     size_t length = size(ONE);
@@ -332,6 +356,30 @@ void printContainerLONGDEQUE(const std::deque<long int>& cont);
 MergeInsortMakerDeque::MergeInsortMakerDeque(std::deque<int> contenedor) : _contenedor(contenedor) {
     begin(ONE);
     begin(TWO);
+}
+
+MergeInsortMakerDeque::~MergeInsortMakerDeque(){
+
+}
+
+MergeInsortMakerDeque::MergeInsortMakerDeque(const MergeInsortMakerDeque& other)
+    : _contenedor(other._contenedor),
+      _contenedor2(other._contenedor2),
+      _current1(other._current1),
+      _current2(other._current2),
+      _itPos1(other._itPos1),
+      _itPos2(other._itPos2) {}
+
+MergeInsortMakerDeque& MergeInsortMakerDeque::operator=(const MergeInsortMakerDeque& other) {
+    if (this != &other) {
+        _contenedor = other._contenedor;
+        _contenedor2 = other._contenedor2;
+        _current1 = other._current1;
+        _current2 = other._current2;
+        _itPos1 = other._itPos1;
+        _itPos2 = other._itPos2;
+    }
+    return *this;
 }
 
 void MergeInsortMakerDeque::mergeInShort() {

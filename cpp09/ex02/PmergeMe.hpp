@@ -34,7 +34,11 @@ private:
 
 public:
     MergeInsortMakerVec(std::vector<int> contenedor);
+    MergeInsortMakerVec(const MergeInsortMakerVec& other);
+    ~MergeInsortMakerVec();
 
+    MergeInsortMakerVec& operator=(const MergeInsortMakerVec& other);
+    
     void mergeInShort();
     void merge(size_t threshold, int container, size_t lap = 0);
     void fixSecuencies(int container);
@@ -71,7 +75,11 @@ private:
 
 public:
     MergeInsortMakerDeque(std::deque<int> contenedor);
+    MergeInsortMakerDeque(const MergeInsortMakerDeque& other);  // Constructor de copia
+    ~MergeInsortMakerDeque();
 
+    MergeInsortMakerDeque& operator=(const MergeInsortMakerDeque& other);  // Operador de asignación
+    
     void mergeInShort();
     void merge(size_t threshold, int container, size_t lap = 0);
     void fixSequences(int container);

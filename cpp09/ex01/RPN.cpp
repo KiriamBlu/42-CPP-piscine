@@ -4,30 +4,39 @@
 
 std::string  RPN::checkRPN(std::string str){
   size_t lenght = str.length();
-  int j = 0;
   int i = 0;
 
   while( str[i] ){
     if(isdigit(str[i])){
-      if(isdigit(str[++i]))
-         j++;
+      ++i;
     }
     else if(compareWithDict(str[i], " *+-/") && str[i])
+    {
       i++;
-    else
+    } 
+    else{
       break;
+    }
   }
   if(i != (int)lenght){
     std::cout << i << std::endl;
     return "ERROR: Not allowed char [" + std::string(1, str[i]) + "]";
   }
-  if(j != 0)
-     return "ERROR: Bad reverse polish notation";
   return (str);
 }
 
 RPN::RPN( std::string str ) {
   this->str = checkRPN(str);
+}
+
+RPN::RPN(const RPN& other) : storage(other.storage), str(other.str) {}
+
+RPN& RPN::operator=(const RPN& other) {
+    if (this != &other) {
+        this->storage = other.storage;
+        this->str = other.str;
+    }
+    return *this;
 }
 
 RPN::~RPN( void ) {
@@ -71,7 +80,7 @@ int    RPN::operate(void){
 
   while(str[i] && this->str[0] != 'E'){
     try{
-      while(!isdigit(str[i]) && str[i]){
+      while(((!isdigit(str[i]) && str[i] != '-') || (str[i] == '-' &&(str[i + 1] == ' ' || !str[i + 1]))) && str[i] ){
         if(this->compareWithDict(str[i], "*+-/"))
         {
           if(this->storage.size() >= 2)
@@ -89,17 +98,21 @@ int    RPN::operate(void){
     catch(...){
       throw (std::runtime_error("Error: Not posible computing"));
     }
-    
-    j = i - 1;
+    if(str[i]){
+      j = i + 1; 
+      while(str[j] && isdigit(str[j])){
+        ++j;
+      }
+      if(j - i > 10 || (j - i > 11 && str[i] == '-')){
+        throw(std::runtime_error("Error: Not valid number"));
+      }
 
-    while(isdigit(str[++j]) && str[j]);
-    
-    if(j != i)
       this->storage.push(atoi(str.substr(i,  j - i).c_str()));
-    i = j;
-    #ifdef DEBUG 
-      std::cout << "Lenght storage:" << this->storage.size() << std::endl;
-    #endif
+      i = j;
+      #ifdef DEBUG 
+        std::cout << "Lenght storage:" << this->storage.size() << std::endl;
+      #endif
+    }
   } 
   if(this->str[0] == 'E')
     throw(std::runtime_error(this->str));

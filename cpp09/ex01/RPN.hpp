@@ -4,7 +4,7 @@
 #include <iostream>
 #include <stack>
 #include <cstdlib>
-
+//#define DEBUG 1
 
 class	RPN {
 
@@ -20,6 +20,8 @@ class	RPN {
 	public:
 
 		RPN ( std::string str );
+		RPN(const RPN& other);
+    	RPN& operator=(const RPN& other);
 		~RPN ( void );
 
 		int    operate(void);

@@ -6,6 +6,7 @@ BitcoinExchange::BitcoinExchange(std::string fileName) {
 	loadStorage(fileName, storage);
 }
 
+BitcoinExchange::BitcoinExchange(const BitcoinExchange& other) : storage(other.storage) {}
 
 int BitcoinExchange::StringEraseAp(int start, int iteratorDir, std::string &aux, int character){
 	int limiter = aux.length();
@@ -23,6 +24,14 @@ int BitcoinExchange::StringEraseAp(int start, int iteratorDir, std::string &aux,
 
 
 BitcoinExchange::~BitcoinExchange() {
+}
+
+
+BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& other) {
+    if (this != &other) {
+        this->storage = other.storage;
+    }
+    return *this;
 }
 
 std::ostream& operator<<(std::ostream& out, BitcoinExchange& exchange) {
@@ -285,7 +294,7 @@ void BitcoinExchange::loadStorage(std::string fileName, std::map<std::string, fl
         help[0] = str.substr(0, pos);
         help[1] = str.substr(pos + 1, str.length());
         var = atof(help[1].c_str());
-        storage.insert(std::make_pair(help[0], var));
+        storage[help[0]] = var;
     }
     file.close();
 }
