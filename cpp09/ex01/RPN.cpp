@@ -61,6 +61,8 @@ int RPN::operateTwoValues(int value2, int value1, int op){
     case '+':
       return value1 + value2;
     case '/':
+      if (value2 == 0)
+				throw std::invalid_argument("Dividing on Zero\n");
       return value1 / value2; 
   }
   return -1;
@@ -103,11 +105,19 @@ int    RPN::operate(void){
       while(str[j] && isdigit(str[j])){
         ++j;
       }
-      if(j - i > 10 || (j - i > 11 && str[i] == '-')){
-        throw(std::runtime_error("Error: Not valid number"));
-      }
+      try {
+          long num = atol(str.substr(i,  j - i).c_str());
 
-      this->storage.push(atoi(str.substr(i,  j - i).c_str()));
+          if (num > 2147483647 || num < -2147483648) {
+              throw std::runtime_error("Error: Not valid number due to range");
+          }
+
+           this->storage.push((int)num);
+      } catch (const std::out_of_range& e) {
+          throw std::runtime_error("Error: Not valid number due to out_of_range");
+      } catch (const std::invalid_argument& e) {
+          throw std::runtime_error("Error: Not valid number due to invalid_argument");
+      }
       i = j;
       #ifdef DEBUG 
         std::cout << "Lenght storage:" << this->storage.size() << std::endl;

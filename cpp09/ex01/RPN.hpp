@@ -4,7 +4,7 @@
 #include <iostream>
 #include <stack>
 #include <cstdlib>
-//#define DEBUG 1
+#define DEBUG 0
 
 class	RPN {
 

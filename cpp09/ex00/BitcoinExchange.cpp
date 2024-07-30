@@ -203,9 +203,6 @@ void BitcoinExchange::findAndCompare(std::string fileName){
 		else{
 			floatVal = BAD_INDEX;
 		}
-		if ((str.length() < 14 || str.length() > 17) && floatVal > 0){
-			floatVal = BAD_INDEX;
-		}
 		try {
 			checkValues(help[0], floatVal, str);
 		}
@@ -289,6 +286,8 @@ void BitcoinExchange::loadStorage(std::string fileName, std::map<std::string, fl
         throw std::runtime_error("Error: File could not be opened");
     }
     while (std::getline(file, str)) {
+		if(str == "date,exchange_rate")
+			continue;
         pos = str.find(',');
 
         help[0] = str.substr(0, pos);

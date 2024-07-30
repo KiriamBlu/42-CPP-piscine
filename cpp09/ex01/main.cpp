@@ -2,7 +2,7 @@
 
 int main(int argc, char **argv){
 	if(argc != 2)
-		std::cout << "ERROR: Too many args" << std::endl;
+		std::cout << "ERROR: Too many args/few" << std::endl;
 	else{
 		std::string var(argv[1]);
 		RPN aux(var);
